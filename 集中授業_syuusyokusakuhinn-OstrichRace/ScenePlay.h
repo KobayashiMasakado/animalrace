@@ -188,21 +188,21 @@ public:
 	//CPUの角度を変える
 	void EnemyDirection();
 	//プレイヤー作成
-	void PlayerCreate(Collision::Capsule capsulePlayer);
+	void PlayerCreate();
 	//CPU作成
-	void CPUCreate(Collision::Capsule capsuleCPU);
+	void CPUCreate();
 	//アイテム作成(プレイヤー)
-	void ItemPlayerCreate(Collision::Capsule capsuleItemPlayer[ITEM_SET_NUM]);
+	void ItemPlayerCreate();
 	//アイテム効果切れ(プレイヤー)
-	void ItemPlayerEraseCreate(Collision::Capsule capsuleItemPlayerErase[ITEM_SET_NUM]);
+	void ItemPlayerEraseCreate();
 	//アイテム作成(CPU)
-	void ItemCPUCreate(Collision::Capsule capsuleItemCPU[ITEM_SET_NUM]);
+	void ItemCPUCreate();
 	//アイテム効果切れ(CPU)
-	void ItemCPUEraseCreate(Collision::Capsule capsuleItemCPUErase[ITEM_SET_NUM]);
+	void ItemCPUEraseCreate();
 	//コース作成
 	void CourseCreate();
 	//ゴール作成
-	void GoalCreate(Collision::Capsule capsuleGoal[GOAL_SET_NUM]);
+	void GoalCreate();
 	//CPUの移動用の当たり判定
 	void EnemyHitMoveCreate();
 

@@ -466,42 +466,29 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_itemCPUModel = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);
 	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
 
-	//カプセル型の当たり判定
-	Collision::Capsule capsulePlayer;
-	Collision::Capsule capsuleCPU;
-	Collision::Capsule capsuleItemPlayer[ITEM_SET_NUM];
-	Collision::Capsule capsuleItemPlayerErase[ITEM_SET_NUM];
-	Collision::Capsule capsuleItemCPU[ITEM_SET_NUM];
-	Collision::Capsule capsuleItemCPUErase[ITEM_SET_NUM];
-	//Collision::Capsule capsulebox[ENEMY_HITCHECK_NUM];
-	Collision::Capsule capsuleGoal[GOAL_SET_NUM];
-
 	//プレイヤー作成
-	PlayerCreate(capsulePlayer);
+	PlayerCreate();
 
 	//CPU作成
-	CPUCreate(capsuleCPU);
+	CPUCreate();
 	
 	//アイテム作成(プレイヤー)
-	ItemPlayerCreate(capsuleItemPlayer);
+	ItemPlayerCreate();
 
 	//アイテム効果切れ(プレイヤー)
-	ItemPlayerEraseCreate(capsuleItemPlayerErase);
+	ItemPlayerEraseCreate();
 
 	//アイテム作成(CPU)
-	ItemCPUCreate(capsuleItemCPU);
+	ItemCPUCreate();
 
 	//アイテム効果切れ(CPU)
-	ItemCPUEraseCreate(capsuleItemCPUErase);
+	ItemCPUEraseCreate();
 
 	//ゴール作成
-	GoalCreate(capsuleGoal);
+	GoalCreate();
 
 	//道の作成
 	CourseCreate();
-	//m_root = m_taskManager.AddTask<Obj3D>();
-	//m_root->SetGame(m_game);
-	//m_root->SetModel(m_rootModel.get());
 
 	////床のコリジョンメッシュを作成
 	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Root.obj");
@@ -561,8 +548,10 @@ void ScenePlay::EnemyDirection()
 	}
 }
 //プレイヤーを作成
-void ScenePlay::PlayerCreate(Collision::Capsule capsulePlayer)
+void ScenePlay::PlayerCreate()
 {
+	Collision::Capsule capsulePlayer;
+
 	m_player = m_taskManager.AddTask<Player>();
 	m_player->SetPosition(Vector3(-93.5f, 0, 1.5f));
 	m_player->SetGame(m_game);
@@ -575,8 +564,9 @@ void ScenePlay::PlayerCreate(Collision::Capsule capsulePlayer)
 	m_player->SetCollision(capsulePlayer);
 }
 //CPU作成
-void ScenePlay::CPUCreate(Collision::Capsule capsuleCPU)
+void ScenePlay::CPUCreate()
 {
+	Collision::Capsule capsuleCPU;
 	m_cpu = std::make_unique<Enemy>();
 	m_cpu->SetPosition(Vector3(-97.5f, 0, 1.5f));
 	m_cpu->SetGame(m_game);
@@ -588,11 +578,12 @@ void ScenePlay::CPUCreate(Collision::Capsule capsuleCPU)
 	m_cpu->SetCollision(capsuleCPU);
 }
 //アイテム作成(プレイヤー)
-void ScenePlay::ItemPlayerCreate(Collision::Capsule capsuleItemPlayer[ITEM_SET_NUM])
+void ScenePlay::ItemPlayerCreate()
 {
+	Collision::Capsule capsuleItemPlayer[ITEM_SET_NUM];
+
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->SetGame(m_game);
 		m_itemPlayer[i]->SetModel(m_itemPlayerModel.get());
@@ -617,8 +608,10 @@ void ScenePlay::ItemPlayerCreate(Collision::Capsule capsuleItemPlayer[ITEM_SET_N
 	}
 }
 //アイテム効果切れ(プレイヤー)
-void ScenePlay::ItemPlayerEraseCreate(Collision::Capsule capsuleItemPlayerErase[ITEM_SET_NUM])
+void ScenePlay::ItemPlayerEraseCreate()
 {
+	Collision::Capsule capsuleItemPlayerErase[ITEM_SET_NUM];
+
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayerErase[i] = std::make_unique<CollisionCapsule>();
@@ -644,16 +637,15 @@ void ScenePlay::ItemPlayerEraseCreate(Collision::Capsule capsuleItemPlayerErase[
 	}
 }
 
-void ScenePlay::ItemCPUCreate(Collision::Capsule capsuleItemCPU[ITEM_SET_NUM])
+void ScenePlay::ItemCPUCreate()
 {
+	Collision::Capsule capsuleItemCPU[ITEM_SET_NUM];
+
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-
 		m_itemCPU[i] = std::make_unique<Item>();
 		m_itemCPU[i]->SetGame(m_game);
 		m_itemCPU[i]->SetModel(m_itemCPUModel.get());
-
-		// カプセル型のコリジョンをつける
 		capsuleItemCPU[i].r = 1.5f;                                    //半径
 		if (i == 0)
 		{
@@ -673,8 +665,10 @@ void ScenePlay::ItemCPUCreate(Collision::Capsule capsuleItemCPU[ITEM_SET_NUM])
 	}
 }
 //アイテム効果切れ(CPU)
-void ScenePlay::ItemCPUEraseCreate(Collision::Capsule capsuleItemCPUErase[ITEM_SET_NUM])
+void ScenePlay::ItemCPUEraseCreate()
 {
+	Collision::Capsule capsuleItemCPUErase[ITEM_SET_NUM];
+
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemCPUErase[i] = std::make_unique<CollisionCapsule>();
@@ -707,12 +701,13 @@ void ScenePlay::CourseCreate()
 	m_root->SetGame(m_game);
 	m_root->SetModel(m_rootModel.get());
 
-
 }
 
 //ゴール作成
-void ScenePlay::GoalCreate(Collision::Capsule capsuleGoal[GOAL_SET_NUM])
+void ScenePlay::GoalCreate()
 {
+	Collision::Capsule capsuleGoal[GOAL_SET_NUM];
+
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		m_goal[i] = std::make_unique<CollisionCapsule>();
@@ -766,14 +761,6 @@ void ScenePlay::GoalCreate(Collision::Capsule capsuleGoal[GOAL_SET_NUM])
 	}
 }
 
-//void ScenePlay::SetBoxCapsule(int element,Vector3 position, Vector3 start, Vector3 end, float r)
-//{
-//	m_box[element]->SetPosition(position);
-//	capsulebox[element].start = start;
-//	capsulebox[element].end = end;
-//	capsulebox[element].r = r;
-//}
-
 void ScenePlay::EnemyHitMoveCreate()
 {
 	Collision::Capsule capsulebox[ENEMY_HITCHECK_NUM];
@@ -784,7 +771,6 @@ void ScenePlay::EnemyHitMoveCreate()
 		m_box[i]->SetGame(m_game);
 
 		m_box[i]->SetPosition(Vector3(-96.0f, 0.0f, 0.0f));
-		//m_box[i]->SetCollision(Collision::Capsule{ Vector3(0.0f, 0.0f, 80.0f) , Vector3(0.0f, 0.0f, -80.0f) ,5.0f });
 		capsulebox[i].start = Vector3(0.0f, 0.0f, 80.0f);
 		capsulebox[i].end = Vector3(0.0f, 0.0f, -80.0f);
 		capsulebox[i].r = 5.0f;
