@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>c2d376cd-01d3-4161-ae70-8caf697a9abf</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>33d27b96-0970-45dd-ba5c-04a726dfdc18</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{2b766a06-04b8-48a0-9997-90bca1c8c26a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceResources.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugCamera.h" />
+    <ClInclude Include="GridFloor.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Obj3D.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="CollisionField.h" />
+    <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Root.h" />
+    <ClInclude Include="CollisionCapsule.h" />
+    <ClInclude Include="DebugCapsule.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneTitle.h" />
+    <ClInclude Include="ScenePlay.h" />
+    <ClInclude Include="Number.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="CollisionMesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="DeviceResources.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCamera.cpp" />
+    <ClCompile Include="GridFloor.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Obj3d.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Root.cpp" />
+    <ClCompile Include="DebugCapsule.cpp" />
+    <ClCompile Include="CollisionCapsule.cpp" />
+    <ClCompile Include="ScenePlay.cpp" />
+    <ClCompile Include="Number.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="CollisionMesh.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="directx.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <MeshContentTask Include="FBX\savanna.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Ostrich&amp;Human.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\newSavanna.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Tiger.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Item.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\esaC.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="FBX\Root.FBX">
+      <Filter>Models</Filter>
+    </MeshContentTask>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PixelShader.inc" />
+    <None Include="VertexShader.inc" />
+    <None Include="DebugCapsule.inc" />
+  </ItemGroup>
+</Project>

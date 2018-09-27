@@ -1,0 +1,125 @@
+#include "pch.h"
+#include "Enemy.h"
+#include "Game.h"
+
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+/// <summary>
+/// コンストラクタ
+/// </summary>
+Enemy::Enemy()
+{
+	m_move = 0;
+	m_dir = 0.0f;
+}
+/// <summary>
+/// デストラクタ
+/// </summary>
+Enemy::~Enemy()
+{
+}
+/// <summary>
+/// 更新
+/// </summary>
+/// <param name="elapsedTime"></param>
+/// <returns></returns>
+bool Enemy::Update(float elapsedTime)
+{
+	Vector3 vec(0, 0, 0);
+	if (m_move & (1 << NONE))
+	{
+		vec.z = 0.0f;
+	}
+	//前進
+	if (m_move & (1 << FRONT))
+	{
+		vec.z = 0.48f;
+		//vec.z = 0.8f;
+	}
+	//前進(アイテム獲得で速度は速い)
+	else if (m_move & (1 << FRONT_ITEMGET))
+	{
+		vec.z = 0.65f;
+	}
+	//後進
+	if (m_move & (1 << BACK))
+	{
+		m_dir = XMConvertToRadians(180.0f);
+	}
+	//右ナナメ前
+	if (m_move & (1 << RIGHT_OBLF))
+	{
+		m_dir = XMConvertToRadians(40.0f);
+	}
+	//左ナナメ前
+	else if (m_move & (1 << LEFT_OBLF))
+	{
+		m_dir = XMConvertToRadians(-45.0f);
+	}
+	if (m_move & (1 << RIGHT_OBLF40))
+	{
+		m_dir = XMConvertToRadians(30.0f);
+	}
+	//右横
+	if (m_move & (1 << RIGHT_SIDE))
+	{
+		m_dir = XMConvertToRadians(90.0f);
+	}
+	//左横
+	else if (m_move & (1 << LEFT_SIDE))
+	{
+		m_dir = XMConvertToRadians(-90.0f);
+	}
+	//右ナナメ後ろ
+	if (m_move & (1 << RIGHT_OBLB))
+	{
+		m_dir = XMConvertToRadians(135.0f);
+	}
+	//左ナナメ後ろ
+	else if (m_move & (1 << LEFT_OBLB))
+	{
+		m_dir = XMConvertToRadians(-135.0f);
+	}
+	//前進
+	if (m_move & (1 << FRONT_SECOND))
+	{
+		m_dir = XMConvertToRadians(0.0f);
+	}
+	//ビットフラグをリセット
+	m_move = 0;
+
+	//オブジェクトを移動する
+	m_rotation = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), m_dir);
+	vec = Vector3::Transform(vec, m_rotation);
+	m_position += vec;
+
+	//ワールド行列を作成する
+	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
+
+	return true;
+}
+/// <summary>
+/// 描画
+/// </summary>
+void Enemy::Render()
+{
+	if (m_game && m_model)
+	{
+		//モデルの描画
+		m_model->Draw(m_game->GetContext(), *m_game->GetState(),
+			m_world, m_game->GetView(), m_game->GetProjection());
+	
+		//デバッグ用コリジョンモデルの描画
+		//DrawCollision();
+	}
+}
+/// <summary>
+/// CPUが走る
+/// </summary>
+/// <param name="dir"></param>
+void Enemy::EnemyChangeAngle(Direction dir)
+{
+	//ビットフラグ
+	m_move |= (1 << dir);
+}
+
