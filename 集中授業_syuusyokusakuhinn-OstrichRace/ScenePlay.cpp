@@ -131,30 +131,33 @@ void ScenePlay::Update(float elapsedTime)
 				PlayerOperationwOutSide(kb);
 				
 			}
-	        //プレイヤーのアイテム取得
-			if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[0]->GetCollision(), m_player->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemPlayer[1]->GetCollision(), m_player->GetCollision()) == true)
-			{
-				m_itemPlayerCheck = true;
-			}
-			
-			if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[1]->GetCollision(), m_player->GetCollision()) == true)
-			{
-				m_itemPlayerCheck = false;
-			}
-			//Bad
-			if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_player->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_player->GetCollision()) == true)
-			{
-				m_itemPlayerCheck = true;
-			}
 
-			if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_player->GetCollision()) == true)
-			{
-				m_itemPlayerCheck = false;
-			}
+			ItemGet();
+
+	  //      //プレイヤーのアイテム取得
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[0]->GetCollision(), m_player->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemPlayer[1]->GetCollision(), m_player->GetCollision()) == true)
+			//{
+			//	m_itemPlayerCheck = true;
+			//}
+			//
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[0]->GetCollision(), m_player->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[1]->GetCollision(), m_player->GetCollision()) == true)
+			//{
+			//	m_itemPlayerCheck = false;
+			//}
+			////Bad
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_player->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_player->GetCollision()) == true)
+			//{
+			//	m_itemPlayerCheck = true;
+			//}
+
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_player->GetCollision()) == true)
+			//{
+			//	m_itemPlayerCheck = false;
+			//}
  
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -517,6 +520,7 @@ void ScenePlay::PlayerOperation(Keyboard::State &kb)
 		m_player->PlayerMove(Player::LEFT_TURN);
 	}
 }
+//プレイヤー操作(コース外)
 void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 {
 	//上キーが押されたら
@@ -534,6 +538,35 @@ void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 	{
 		m_player->PlayerMove(Player::LEFT_TURN);
 	}
+}
+//アイテム取得
+void ScenePlay::ItemGet()
+{
+	//プレイヤーのアイテム取得
+	if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[0]->GetCollision(), m_player->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemPlayer[1]->GetCollision(), m_player->GetCollision()) == true)
+	{
+		m_itemPlayerCheck = true;
+	}
+
+	if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[0]->GetCollision(), m_player->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[1]->GetCollision(), m_player->GetCollision()) == true)
+	{
+		m_itemPlayerCheck = false;
+	}
+	//Bad
+	if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_player->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_player->GetCollision()) == true)
+	{
+		m_itemPlayerCheck = true;
+	}
+
+	if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_player->GetCollision()) == true)
+	{
+		m_itemPlayerCheck = false;
+	}
+
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()

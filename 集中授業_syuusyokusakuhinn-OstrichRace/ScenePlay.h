@@ -172,6 +172,9 @@ public:
 	//プレイヤー操作(コース外)
 	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
 
+	//アイテム取得
+	void ItemGet();
+
 	//CPUの角度を変える
 	void EnemyDirection();
 	//プレイヤー作成
