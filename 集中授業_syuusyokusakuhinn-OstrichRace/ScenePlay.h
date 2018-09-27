@@ -25,6 +25,7 @@ private:
 	static const int GOAL_SET_NUM = 6;
 	static const int ITEM_SET_NUM = 2;
 	static const int TIME_SET_NUM = 3;
+	static const int TIME_TYPE_NUM = 10;
 private:
 
 	// Device resources.
@@ -118,27 +119,7 @@ private:
 	//GO!
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCGo;
 	//数字
-	//0
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCZero;
-//	ID3D11ShaderResourceView* m_tCZero;
-	//1
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCOne;
-	//2
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCTwo;
-	//3
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCThree;
-	//4
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCFour;
-	//5
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCFive;
-	//6
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCSix;
-	//7
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCSeven;
-	//8
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCEight;
-	//9
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCNine;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tCNum[TIME_TYPE_NUM];
 
 	Number m_number[TIME_SET_NUM];
 
@@ -184,6 +165,9 @@ public:
 
 	void Finalize() override {}
 	void CreateDeviceDependentResources();
+
+	//プレイヤー操作
+	void PlayerOperation();
 
 	//CPUの角度を変える
 	void EnemyDirection();

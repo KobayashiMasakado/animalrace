@@ -330,15 +330,15 @@ void ScenePlay::Render()
 	//カウントダウンの描画-----------------------
 	if (m_count > 0 && m_count < 59)
 	{
-		m_sprites->Draw(m_tCThree.Get(), Vector2(380, 220));
+		m_sprites->Draw(m_tCNum[3].Get(), Vector2(380, 220));
 	}
 	if (m_count > 60 && m_count <119)
 	{
-		m_sprites->Draw(m_tCTwo.Get(), Vector2(380, 220));
+		m_sprites->Draw(m_tCNum[2].Get(), Vector2(380, 220));
 	}
 	if (m_count > 120 && m_count < 179)
 	{
-		m_sprites->Draw(m_tCOne.Get(), Vector2(380, 220));
+		m_sprites->Draw(m_tCNum[1].Get(), Vector2(380, 220));
 	}
 	if (m_count > 180 && m_count < 200)
 	{
@@ -400,10 +400,6 @@ void ScenePlay::Render()
 		m_sprites->Draw(m_tFlipGoal.Get(), Vector2(100, 100));
 	}
 
-	if (m_itemCPUCheck == true)
-	{
-//		m_sprites->Draw(m_tFlipGoal.Get(), Vector2(100, 100));
-	}
 	m_sprites->End();
 }
 
@@ -426,32 +422,27 @@ void ScenePlay::CreateDeviceDependentResources()
 	CreateWICTextureFromFile(device, L"Textures\\km.png",           nullptr, m_tKm.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\YouWin.png",       nullptr, m_tPlayerGoal.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\YouLose.png",      nullptr, m_tCPUGoal.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\0_red.png",        nullptr, m_tCZero.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\1_red.png",        nullptr, m_tCOne.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\2_red.png",        nullptr, m_tCTwo.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\3_red.png",        nullptr, m_tCThree.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\4_red.png",        nullptr, m_tCFour.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\5_red.png",        nullptr, m_tCFive.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\6_red.png",        nullptr, m_tCSix.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\7_red.png",        nullptr, m_tCSeven.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\8_red.png",        nullptr, m_tCEight.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\9_red.png",        nullptr, m_tCNine.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\0_red.png", nullptr, m_tCNum[0].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\1_red.png", nullptr, m_tCNum[1].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\2_red.png", nullptr, m_tCNum[2].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\3_red.png", nullptr, m_tCNum[3].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\4_red.png", nullptr, m_tCNum[4].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\5_red.png", nullptr, m_tCNum[5].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\6_red.png", nullptr, m_tCNum[6].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\7_red.png", nullptr, m_tCNum[7].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\8_red.png", nullptr, m_tCNum[8].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\9_red.png", nullptr, m_tCNum[9].GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\GO.png",           nullptr, m_tCGo.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\Waening.png",      nullptr, m_tFlipGoal.GetAddressOf());
 	
 	//数字の描画--------------------------------
 	for (int i = 0; i < TIME_SET_NUM; i++)
 	{
-		m_number[i].SetTexture(0, m_tCZero.Get());
-		m_number[i].SetTexture(1, m_tCOne.Get());
-		m_number[i].SetTexture(2, m_tCTwo.Get());
-		m_number[i].SetTexture(3, m_tCThree.Get());
-		m_number[i].SetTexture(4, m_tCFour.Get());
-		m_number[i].SetTexture(5, m_tCFive.Get());
-		m_number[i].SetTexture(6, m_tCSix.Get());
-		m_number[i].SetTexture(7, m_tCSeven.Get());
-		m_number[i].SetTexture(8, m_tCEight.Get());
-		m_number[i].SetTexture(9, m_tCNine.Get());
+		for (int j = 0; j < TIME_TYPE_NUM; j++)
+		{
+			m_number[i].SetTexture(j, m_tCNum[j].Get());
+		}
+
 	}
 	//-------------------------------------------
 
@@ -535,6 +526,9 @@ void ScenePlay::CreateDeviceDependentResources()
 			basicEffect->SetEmissiveColor(Vector3(1.0f, 1.0f, 1.0f));
 		}
 	});
+}
+void ScenePlay::PlayerOperation()
+{
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()
