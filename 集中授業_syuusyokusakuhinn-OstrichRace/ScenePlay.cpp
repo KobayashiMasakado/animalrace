@@ -131,34 +131,9 @@ void ScenePlay::Update(float elapsedTime)
 				PlayerOperationwOutSide(kb);
 				
 			}
-
+			//アイテム取得
 			ItemGet();
 
-	  //      //プレイヤーのアイテム取得
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[0]->GetCollision(), m_player->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemPlayer[1]->GetCollision(), m_player->GetCollision()) == true)
-			//{
-			//	m_itemPlayerCheck = true;
-			//}
-			//
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[1]->GetCollision(), m_player->GetCollision()) == true)
-			//{
-			//	m_itemPlayerCheck = false;
-			//}
-			////Bad
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_player->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_player->GetCollision()) == true)
-			//{
-			//	m_itemPlayerCheck = true;
-			//}
-
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_player->GetCollision()) == true)
-			//{
-			//	m_itemPlayerCheck = false;
-			//}
- 
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
 			{
@@ -167,17 +142,8 @@ void ScenePlay::Update(float elapsedTime)
 			//ゴールしてないなら
 			else if (m_hitCpuFlag == true)
 			{
-				//CPUの移動
-				//m_cpu->EnemyMove(Enemy::FRONT);
-		       
-				if (m_itemCPUCheck == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
-				}
-				else if (m_itemCPUCheck == false)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT);
-				}
+				
+				//CPUの方向を変えて移動させる
 				EnemyDirection();
 			}
 			//下がる
@@ -571,6 +537,16 @@ void ScenePlay::ItemGet()
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()
 {
+	//アイテム取得時の移動速度
+	if (m_itemCPUCheck == true)
+	{
+		m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
+	}//通常の移動速度
+	else if (m_itemCPUCheck == false)
+	{
+		m_cpu->EnemyChangeAngle(Enemy::FRONT);
+	}
+	//当たった場所によってCPUの方向を変える
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision(), m_cpu->GetCollision()))
