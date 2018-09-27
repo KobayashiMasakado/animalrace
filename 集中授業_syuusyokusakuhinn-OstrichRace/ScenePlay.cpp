@@ -99,7 +99,6 @@ void ScenePlay::Update(float elapsedTime)
 				m_goalPlayerFlag[i] = true;
 				m_checkPoint = i+1;
 			}
-	
 		}
 		//ゴールとCPUの当たり判定をする
 		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
@@ -123,52 +122,13 @@ void ScenePlay::Update(float elapsedTime)
 			}
 			else if (m_hitPlayerFlag == true)
 			{
-				//上キーが押されたら
-				if (kb.Up || kb.W)
-				{
-					if (m_itemPlayerCheck == true)
-					{
-						m_player->PlayerMove(Player::FRONT_ITEMGET);
-					}
-					else if (m_itemPlayerCheck == false)
-					{
-						m_player->PlayerMove(Player::FRONT);
-					}
-				}
-				//下キーが押されたら
-				if (kb.Down || kb.S)
-				{
-				//	m_player->PlayerMove(Player::UP_ANGLE);
-				}
-				//右キーが押されたら
-				if (kb.Right || kb.D)
-				{
-					m_player->PlayerMove(Player::RIGHT_TURN);
-				}
-				//左キーが押されたら
-				if (kb.Left || kb.A)
-				{
-					m_player->PlayerMove(Player::LEFT_TURN);
-				}
-				
+				//プレイヤー操作
+				PlayerOperation(kb);
 			}
 			else if (m_hitPlayerFlag == false)
 			{
-				//上キーが押されたら
-				if (kb.Up || kb.W)
-				{
-					m_player->PlayerMove(Player::FBONT_SPEEDDOWN);
-				}
-				//右キーが押されたら
-				if (kb.Right || kb.D)
-				{
-					m_player->PlayerMove(Player::RIGHT_TURN);
-				}
-				//左キーが押されたら
-				if (kb.Left || kb.A)
-				{
-					m_player->PlayerMove(Player::LEFT_TURN);
-				}
+				//プレイヤー操作(コース外)
+				PlayerOperationwOutSide(kb);
 				
 			}
 	        //プレイヤーのアイテム取得
@@ -442,7 +402,6 @@ void ScenePlay::CreateDeviceDependentResources()
 		{
 			m_number[i].SetTexture(j, m_tCNum[j].Get());
 		}
-
 	}
 	//-------------------------------------------
 
@@ -527,8 +486,54 @@ void ScenePlay::CreateDeviceDependentResources()
 		}
 	});
 }
-void ScenePlay::PlayerOperation()
+//プレイヤー操作
+void ScenePlay::PlayerOperation(Keyboard::State &kb)
 {
+	//上キーが押されたら
+	if (kb.Up || kb.W)
+	{
+		if (m_itemPlayerCheck == true)
+		{
+			m_player->PlayerMove(Player::FRONT_ITEMGET);
+		}
+		else if (m_itemPlayerCheck == false)
+		{
+			m_player->PlayerMove(Player::FRONT);
+		}
+	}
+	//下キーが押されたら
+	if (kb.Down || kb.S)
+	{
+		//	m_player->PlayerMove(Player::UP_ANGLE);
+	}
+	//右キーが押されたら
+	if (kb.Right || kb.D)
+	{
+		m_player->PlayerMove(Player::RIGHT_TURN);
+	}
+	//左キーが押されたら
+	if (kb.Left || kb.A)
+	{
+		m_player->PlayerMove(Player::LEFT_TURN);
+	}
+}
+void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
+{
+	//上キーが押されたら
+	if (kb.Up || kb.W)
+	{
+		m_player->PlayerMove(Player::FBONT_SPEEDDOWN);
+	}
+	//右キーが押されたら
+	if (kb.Right || kb.D)
+	{
+		m_player->PlayerMove(Player::RIGHT_TURN);
+	}
+	//左キーが押されたら
+	if (kb.Left || kb.A)
+	{
+		m_player->PlayerMove(Player::LEFT_TURN);
+	}
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()

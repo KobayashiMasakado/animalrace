@@ -167,7 +167,10 @@ public:
 	void CreateDeviceDependentResources();
 
 	//プレイヤー操作
-	void PlayerOperation();
+	void PlayerOperation(DirectX::Keyboard::State &kb);
+
+	//プレイヤー操作(コース外)
+	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
 
 	//CPUの角度を変える
 	void EnemyDirection();
