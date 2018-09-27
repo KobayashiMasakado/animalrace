@@ -132,7 +132,7 @@ void ScenePlay::Update(float elapsedTime)
 				
 			}
 			//アイテム取得
-			ItemGet();
+			PlayerItemGet();
 
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -142,7 +142,6 @@ void ScenePlay::Update(float elapsedTime)
 			//ゴールしてないなら
 			else if (m_hitCpuFlag == true)
 			{
-				
 				//CPUの方向を変えて移動させる
 				EnemyDirection();
 			}
@@ -152,17 +151,19 @@ void ScenePlay::Update(float elapsedTime)
 				m_cpu->EnemyChangeAngle(Enemy::BACK);
 			}
 			//CPUアイテム取得
-			if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_cpu->GetCollision()) == true)
-			{
-				m_itemCPUCheck = true;
-			}
+			CPUItemGet();
+			////CPUアイテム取得
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_cpu->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_cpu->GetCollision()) == true)
+			//{
+			//	m_itemCPUCheck = true;
+			//}
 
-			if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-				Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_cpu->GetCollision()) == true)
-			{
-				m_itemCPUCheck = false;
-			}
+			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()) == true ||
+			//	Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_cpu->GetCollision()) == true)
+			//{
+			//	m_itemCPUCheck = false;
+			//}
 		}
 	}
 	//プレイヤーとコースの当たり判定
@@ -172,7 +173,6 @@ void ScenePlay::Update(float elapsedTime)
 	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
 	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
 	{
-		
 		s.y -= 0.1f;
 		m_player->SetPosition(s);
 	}
@@ -501,7 +501,7 @@ void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 	}
 }
 //アイテム取得
-void ScenePlay::ItemGet()
+void ScenePlay::PlayerItemGet()
 {
 	//プレイヤーのアイテム取得
 	for (int i = 0; i < ITEM_SET_NUM; i++)
@@ -512,7 +512,7 @@ void ScenePlay::ItemGet()
 			m_itemPlayerCheck = true;
 		}
 		//プレイヤー用のアイテム効果切れ
-		if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[i]->GetCollision(), m_player->GetCollision()))
+		else if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[i]->GetCollision(), m_player->GetCollision()))
 		{
 			m_itemPlayerCheck = false;
 		}
@@ -522,12 +522,41 @@ void ScenePlay::ItemGet()
 			m_itemPlayerBadCheck = true;
 		}
 		//CPU用のアイテム効果切れ
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()))
+		else if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[i]->GetCollision(), m_player->GetCollision()))
 		{
 			m_itemPlayerBadCheck = false;
 		}
 	}
 
+}
+void ScenePlay::CPUItemGet()
+{
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		//CPUアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_cpu->GetCollision()))
+		{
+			m_itemCPUCheck = true;
+		}
+
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()))
+		{
+			m_itemCPUCheck = false;
+		}
+	
+	}
+	//CPUアイテム取得
+	/*if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_cpu->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_cpu->GetCollision()) == true)
+	{
+		m_itemCPUCheck = true;
+	}
+
+	if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()) == true ||
+		Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_cpu->GetCollision()) == true)
+	{
+		m_itemCPUCheck = false;
+	}*/
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()

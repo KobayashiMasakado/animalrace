@@ -173,7 +173,10 @@ public:
 	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
 
 	//アイテム取得
-	void ItemGet();
+	//プレイヤー用
+	void PlayerItemGet();
+	//CPU用
+	void CPUItemGet();
 
 	//CPUの角度を変える
 	void EnemyDirection();
