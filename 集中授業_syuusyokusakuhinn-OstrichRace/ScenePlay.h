@@ -26,6 +26,8 @@ private:
 	static const int ITEM_SET_NUM = 2;
 	static const int TIME_SET_NUM = 3;
 	static const int TIME_TYPE_NUM = 10;
+	static const int GAME_START_TIME = 180;
+	static const int TIME_MINUTE = 60;
 private:
 
 	// Device resources.
@@ -172,11 +174,23 @@ public:
 	//プレイヤー操作(コース外)
 	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
 
+	//コースとキャラの当たり判定
+	void HitCourseCheck();
+
+	//ゴールとキャラの当たり判定
+	void HitGoalCheck();
+
 	//アイテム取得
 	//プレイヤー用
 	void PlayerItemGet();
 	//CPU用
 	void CPUItemGet();
+
+	//カウントダウン
+	void CountDownStart();
+
+	//レース結果
+	void RaceEnd();
 
 	//CPUの角度を変える
 	void EnemyDirection();

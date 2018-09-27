@@ -54,7 +54,6 @@ void ScenePlay::Update(float elapsedTime)
 		m_itemCPU[i]->Update(elapsedTime);
 		m_itemCPUErase[i]->Update(elapsedTime);
 	}
-
 	//ゴールの更新
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -71,57 +70,12 @@ void ScenePlay::Update(float elapsedTime)
 	m_hitPlayerFlag = false;
 	m_hitCpuFlag = false;
 	///当たり判定////////////
-	/// //プレイヤーとコースの当たり判定
-	static int id;
-	Vector3 s;
-	Vector3 playerPos = m_player->GetPlayer();
-	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
-	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
-	{
-		m_hitPlayerFlag = true;
-		s.y -= 0.1f;
-		m_player->SetPosition(s);
-	}
-	/// 
-	/*for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
-			, m_player->GetCollision()) == true)
-		{
-			m_hitPlayerFlag = true;
-		}
-	}*/
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
-		{
-			m_hitCpuFlag = true;
-		}
-	}
-	//ゴールとキャラの当たり判定////////////////////////////////////
-	for (int i = 0; i < GOAL_SET_NUM; i++)
-	{
-		//ゴールとプレイヤーの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_player->GetCollision()) == true)
-		{
-			if (m_checkPoint == i)
-			{
-				m_goalPlayerFlag[i] = true;
-				m_checkPoint = i+1;
-			}
-		}
-		//ゴールとCPUの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
-		{
-			m_goalCPUFlag[i] = true;
-		}
-	}
-	/////////
+	//プレイヤーとコースの当たり判定
+	HitCourseCheck();
+	//ゴールとキャラの当たり判定////
+	HitGoalCheck();
 	//カウントダウンが終わったら
-	if (m_count > 180)
+	if (m_count > GAME_START_TIME)
 	{
 		m_time += 1.0f;
 		m_timeS += 1.0f;
@@ -208,8 +162,6 @@ void ScenePlay::Render()
 		m_itemCPUErase[i]->Render();
 //		m_itemCPUErase[i]->DrawCollision();
 	}
-	//道の描画
-//	m_root->Render();
 //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -249,23 +201,8 @@ void ScenePlay::Render()
 	m_sprites->Draw(m_tHO.Get(), Vector2(15, 250));
 	m_sprites->Draw(m_tKm.Get(), Vector2(10, 500));
 	//カウントダウンの描画-----------------------
-	if (m_count > 0 && m_count < 59)
-	{
-		m_sprites->Draw(m_tCNum[3].Get(), Vector2(380, 220));
-	}
-	if (m_count > 60 && m_count <119)
-	{
-		m_sprites->Draw(m_tCNum[2].Get(), Vector2(380, 220));
-	}
-	if (m_count > 120 && m_count < 179)
-	{
-		m_sprites->Draw(m_tCNum[1].Get(), Vector2(380, 220));
-	}
-	if (m_count > 180 && m_count < 200)
-	{
-		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
-	}
-
+	CountDownStart();
+	
 	//タイム--------------------------------------
 	//ミリ秒
 	float miri = m_time;
@@ -300,21 +237,22 @@ void ScenePlay::Render()
 	}
 	
 	/////////////////////////////////////
-	//プレイヤーがゴールしたら
-	if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
-		m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
-	{
-		//YOU WIN!画像表示
-		m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
-	}
+	RaceEnd();
+	////プレイヤーがゴールしたら
+	//if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
+	//	m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
+	//{
+	//	//YOU WIN!画像表示
+	//	m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
+	//}
 
-	//CPUがゴールしたら
-	else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
-		m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
-	{
-		//YOU LOSE...画像表示
-		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
-	}
+	////CPUがゴールしたら
+	//else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
+	//	m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
+	//{
+	//	//YOU LOSE...画像表示
+	//	m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
+	//}
 
 	m_sprites->End();
 }
@@ -492,6 +430,53 @@ void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 		m_player->PlayerMove(Player::LEFT_TURN);
 	}
 }
+//コースとキャラの当たり判定
+void ScenePlay::HitCourseCheck()
+{
+	//プレイヤーとコースの当たり判定
+	static int id;
+	Vector3 s;
+	Vector3 playerPos = m_player->GetPlayer();
+	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
+	{
+		m_hitPlayerFlag = true;
+		s.y -= 0.1f;
+		m_player->SetPosition(s);
+	}
+	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_hitCpuFlag = true;
+		}
+	}
+}
+//ゴールとキャラの当たり判定
+void ScenePlay::HitGoalCheck()
+{
+	for (int i = 0; i < GOAL_SET_NUM; i++)
+	{
+		//ゴールとプレイヤーの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_player->GetCollision()) == true)
+		{
+			if (m_checkPoint == i)
+			{
+				m_goalPlayerFlag[i] = true;
+				m_checkPoint = i + 1;
+			}
+		}
+		//ゴールとCPUの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_goalCPUFlag[i] = true;
+		}
+	}
+
+}
 //アイテム取得(プレイヤー用)
 void ScenePlay::PlayerItemGet()
 {
@@ -538,6 +523,41 @@ void ScenePlay::CPUItemGet()
 		}
 	
 	}
+}
+//カウントダウン
+void ScenePlay::CountDownStart()
+{
+	for (int i = 3; i > 0; i--)
+	{
+		if (m_count > ((i * TIME_MINUTE) - GAME_START_TIME) * -1 && m_count < (((i * TIME_MINUTE) - GAME_START_TIME) * -1) + (TIME_MINUTE - 1))
+		{
+			m_sprites->Draw(m_tCNum[i].Get(), Vector2(380, 220));
+		}
+	}
+	if (m_count > GAME_START_TIME && m_count < 200)
+	{
+		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
+	}
+
+}
+void ScenePlay::RaceEnd()
+{
+	//プレイヤーがゴールしたら
+	if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
+		m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
+	{
+		//YOU WIN!画像表示
+		m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
+	}
+
+	//CPUがゴールしたら
+	else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
+		m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
+	{
+		//YOU LOSE...画像表示
+		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
+	}
+	
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()
