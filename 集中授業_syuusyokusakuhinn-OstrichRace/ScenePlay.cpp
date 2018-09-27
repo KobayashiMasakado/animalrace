@@ -324,11 +324,6 @@ void ScenePlay::Render()
 		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
 	}
 
-	if (m_itemPlayerBadCheck == true)
-	{
-		m_sprites->Draw(m_tFlipGoal.Get(), Vector2(100, 100));
-	}
-
 	m_sprites->End();
 }
 
@@ -509,28 +504,28 @@ void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 void ScenePlay::ItemGet()
 {
 	//プレイヤーのアイテム取得
-	if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[0]->GetCollision(), m_player->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemPlayer[1]->GetCollision(), m_player->GetCollision()) == true)
+	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-		m_itemPlayerCheck = true;
-	}
-
-	if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[1]->GetCollision(), m_player->GetCollision()) == true)
-	{
-		m_itemPlayerCheck = false;
-	}
-	//Bad
-	if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_player->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_player->GetCollision()) == true)
-	{
-		m_itemPlayerCheck = true;
-	}
-
-	if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_player->GetCollision()) == true)
-	{
-		m_itemPlayerCheck = false;
+		//プレイヤー用のアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[i]->GetCollision(), m_player->GetCollision()))
+		{
+			m_itemPlayerCheck = true;
+		}
+		//プレイヤー用のアイテム効果切れ
+		if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[i]->GetCollision(), m_player->GetCollision()))
+		{
+			m_itemPlayerCheck = false;
+		}
+		//CPU用のアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_player->GetCollision()))
+		{
+			m_itemPlayerBadCheck = true;
+		}
+		//CPU用のアイテム効果切れ
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_player->GetCollision()))
+		{
+			m_itemPlayerBadCheck = false;
+		}
 	}
 
 }
