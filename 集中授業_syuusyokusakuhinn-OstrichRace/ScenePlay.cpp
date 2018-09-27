@@ -587,22 +587,20 @@ void ScenePlay::ItemPlayerCreate()
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->SetGame(m_game);
 		m_itemPlayer[i]->SetModel(m_itemPlayerModel.get());
-
 		// ƒJƒvƒZƒ‹Œ^‚ÌƒRƒŠƒWƒ‡ƒ“‚ð‚Â‚¯‚é
 		capsuleItemPlayer[i].r = 1.5f;                                    //”¼Œa
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_itemPlayer[0]->SetPosition(Vector3(-93.5f, 0, 40.0f));
 			capsuleItemPlayer[0].start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
 			capsuleItemPlayer[0].end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 1)
-		{
+			break;
+		case 1:
 			m_itemPlayer[1]->SetPosition(Vector3(94.0f, 0, 10.0f));
 			capsuleItemPlayer[1].start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemPlayer[1].end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
-
+			break;
 		}
 		m_itemPlayer[i]->SetCollision(capsuleItemPlayer[i]);
 	}
