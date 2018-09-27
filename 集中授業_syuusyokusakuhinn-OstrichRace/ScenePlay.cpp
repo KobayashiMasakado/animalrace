@@ -636,7 +636,7 @@ void ScenePlay::ItemPlayerEraseCreate()
 		m_itemPlayerErase[i]->SetCollision(capsuleItemPlayerErase[i]);
 	}
 }
-
+//アイテム作成(CPU
 void ScenePlay::ItemCPUCreate()
 {
 	Collision::Capsule capsuleItemCPU[ITEM_SET_NUM];
@@ -693,7 +693,7 @@ void ScenePlay::ItemCPUEraseCreate()
 		m_itemCPUErase[i]->SetCollision(capsuleItemCPUErase[i]);
 	}
 }
-
+//コース作成
 void ScenePlay::CourseCreate()
 {
 	//道の作成												      
@@ -702,7 +702,6 @@ void ScenePlay::CourseCreate()
 	m_root->SetModel(m_rootModel.get());
 
 }
-
 //ゴール作成
 void ScenePlay::GoalCreate()
 {
@@ -760,7 +759,7 @@ void ScenePlay::GoalCreate()
 		m_goal[i]->SetCollision(capsuleGoal[i]);
 	}
 }
-
+//CPUの移動用の当たり判定
 void ScenePlay::EnemyHitMoveCreate()
 {
 	Collision::Capsule capsulebox[ENEMY_HITCHECK_NUM];
@@ -770,134 +769,117 @@ void ScenePlay::EnemyHitMoveCreate()
 		m_box[i] = std::make_unique<CollisionCapsule>();
 		m_box[i]->SetGame(m_game);
 
-		m_box[i]->SetPosition(Vector3(-96.0f, 0.0f, 0.0f));
-		capsulebox[i].start = Vector3(0.0f, 0.0f, 80.0f);
-		capsulebox[i].end = Vector3(0.0f, 0.0f, -80.0f);
 		capsulebox[i].r = 5.0f;
-		if (i == 1)
+		switch (i)
 		{
-			m_box[i]->SetPosition(Vector3(-85.0f, 0.0f, 87.0f));
-			capsulebox[i].start = Vector3(7.0f, 0.0f, 7.0f);
-			capsulebox[i].end = Vector3(-10.0f, 0.0f, -10.0f);
-			capsulebox[i].r = 5.5f;
-		}
-		if (i == 2)
-		{
-			m_box[i]->SetPosition(Vector3(0.0f, 0.0f, 95.0f));
-			capsulebox[i].start = Vector3(70.0f, 0.0f, 0.0f);
-			capsulebox[i].end = Vector3(-75.0f, 0.0f, 0.0f);
-		}
-		if (i == 3)
-		{
-			m_box[i]->SetPosition(Vector3(84.0f, 0.0f, 85.0f));
-			capsulebox[i].start = Vector3(5.0f, 0.0f, -5.0f);
-			capsulebox[i].end = Vector3(-8.0f, 0.0f, 8.0f);
-			capsulebox[i].r = 5.5f;
-		}
-		if (i == 4)
-		{
-			m_box[i]->SetPosition(Vector3(92.0f, 0.0f, 0.0f));
-			capsulebox[i].start = Vector3(0.0f, 0.0f, 75.0f);
-			capsulebox[i].end = Vector3(0.0f, 0.0f, -80.0f);
-		}
-		if (i == 5)
-		{
-			m_box[i]->SetPosition(Vector3(86.0f, 0.0f, -90.0f));
-			capsulebox[i].start = Vector3(10.0f, 0.0f, 10.0f);
-			capsulebox[i].end = Vector3(-8.0f, 0.0f, -8.0f);
-		}
-		if (i == 6)
-		{
-			m_box[i]->SetPosition(Vector3(70.0f, 0.0f, -100.0f));
-			capsulebox[i].start = Vector3(10.0f, 0.0f, 0.0f);
-			capsulebox[i].end = Vector3(-13.0f, 0.0f, 0.0f);
-		}
-		if (i == 7)
-		{//                               YOKO
-			m_box[i]->SetPosition(Vector3(25.0f, 0.0f, -70.0f));
-			capsulebox[i].start = Vector3(30.0f, 0.0f, -30.0f);
-			capsulebox[i].end = Vector3(-25.0f, 0.0f, 25.0f);
-		}
-		if (i == 8)
-		{
-			m_box[i]->SetPosition(Vector3(-5.0f, 0.0f, -25.0f));
-			capsulebox[i].start = Vector3(-0.0f, 0.0f, 3.0f);
-			capsulebox[i].end = Vector3(0.0f, 0.0f, -15.0f);
-			capsulebox[i].r = 5.5f;
-		}
-
-		if (i == 9)
-		{
-			m_box[i]->SetPosition(Vector3(17.0f, 0.0f, 7.0f));
-			capsulebox[i].start = Vector3(18.0f, 0.0f, 18.0f);
-			capsulebox[i].end = Vector3(-25.0f, 0.0f, -25.0f);
-		}
-		if (i == 10)
-		{
-			m_box[i]->SetPosition(Vector3(40.0f, 0.0f, 33.0f));
-			capsulebox[i].start = Vector3(0.0f, 0.0f, 5.0f);
-			capsulebox[i].end = Vector3(-4.0f, 0.0f, -7.0f);
-		}
-		if (i == 11)
-		{
-			m_box[i]->SetPosition(Vector3(40.0f, 0.0f, 43.0f));
-			capsulebox[i].start = Vector3(0.0f, 0.0f, 7.0f);
-			capsulebox[i].end = Vector3(1.0f, 0.0f, -5.0f);
-		}
-		if (i == 12)
-		{
-			m_box[i]->SetPosition(Vector3(33.0f, 0.0f, 60.0f));
-			capsulebox[i].start = Vector3(7.0f, 0.0f, -7.0f);
-			capsulebox[i].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsulebox[i].r = 5.5f;
-		}
-		if (i == 13)
-		{
-			m_box[i]->SetPosition(Vector3(0.0f, 0.0f, 70.0f));
-			capsulebox[i].start = Vector3(20.0f, 0.0f, 0.0f);
-			capsulebox[i].end = Vector3(-20.0f, 0.0f, 0.0f);
-		}
-
-		if (i == 14)
-		{
-			m_box[i]->SetPosition(Vector3(-30.0f, 0.0f, 65.0f));
-			capsulebox[i].start = Vector3(5.0f, 0.0f, 5.0f);
-			capsulebox[i].end = Vector3(-8.0f, 0.0f, -8.0f);
-		}
-		if (i == 15)
-		{
-			m_box[i]->SetPosition(Vector3(-40.0f, 0.0f, -10.0f));
-			capsulebox[i].start = Vector3(0.0f, 0.0f, 70.0f);
-			capsulebox[i].end = Vector3(0.0f, 0.0f, -68.0f);
-		}
-
-		if (i == 16)
-		{
-			m_box[i]->SetPosition(Vector3(-50.0f, 0.0f, -95.0f));
-			capsulebox[i].start = Vector3(7.0f, 0.0f, 10.0f);
-			capsulebox[i].end = Vector3(-10.0f, 0.0f, -5.0f);
-			capsulebox[i].r = 5.5f;
-		}
-		if (i == 17)
-		{
-			m_box[i]->SetPosition(Vector3(-70.0f, 0.0f, -100.0f));
-			capsulebox[i].start = Vector3(3.0f, 0.0f, 0.0f);
-			capsulebox[i].end = Vector3(-3.0f, 0.0f, 0.0f);
-			capsulebox[i].r = 6.5f;
-		}
-		if (i == 18)
-		{
-			m_box[i]->SetPosition(Vector3(-88.0f, 0.0f, -90.0f));
-			capsulebox[i].start = Vector3(10.0f, 0.0f, -10.0f);
-			capsulebox[i].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsulebox[i].r = 5.5f;
-		}
-		if (i == 19)
-		{
-			m_box[i]->SetPosition(Vector3(-93.5f, 0, 9.0f));
-			capsulebox[i].start = Vector3(0.5f, 0.5f, 0.5f);
-			capsulebox[i].end = Vector3(0.5f, 0.5f, 0.5f);
-			capsulebox[i].r = 3.5f;
+		case 0:
+			m_box[0]->SetPosition(Vector3(-96.0f, 0.0f, 0.0f));
+			capsulebox[0].start = Vector3(0.0f, 0.0f, 80.0f);
+			capsulebox[0].end = Vector3(0.0f, 0.0f, -80.0f);
+			break;
+		case 1:
+			m_box[1]->SetPosition(Vector3(-85.0f, 0.0f, 87.0f));
+			capsulebox[1].start = Vector3(7.0f, 0.0f, 7.0f);
+			capsulebox[1].end = Vector3(-10.0f, 0.0f, -10.0f);
+			capsulebox[1].r = 5.5f;
+			break;
+		case 2:
+			m_box[2]->SetPosition(Vector3(0.0f, 0.0f, 95.0f));
+			capsulebox[2].start = Vector3(70.0f, 0.0f, 0.0f);
+			capsulebox[2].end = Vector3(-75.0f, 0.0f, 0.0f);
+			break;
+		case 3:
+			m_box[3]->SetPosition(Vector3(84.0f, 0.0f, 85.0f));
+			capsulebox[3].start = Vector3(5.0f, 0.0f, -5.0f);
+			capsulebox[3].end = Vector3(-8.0f, 0.0f, 8.0f);
+			capsulebox[3].r = 5.5f;
+			break;
+		case 4:
+			m_box[4]->SetPosition(Vector3(92.0f, 0.0f, 0.0f));
+			capsulebox[4].start = Vector3(0.0f, 0.0f, 75.0f);
+			capsulebox[4].end = Vector3(0.0f, 0.0f, -80.0f);
+			break;
+		case 5:
+			m_box[5]->SetPosition(Vector3(86.0f, 0.0f, -90.0f));
+			capsulebox[5].start = Vector3(10.0f, 0.0f, 10.0f);
+			capsulebox[5].end = Vector3(-8.0f, 0.0f, -8.0f);
+			break;
+		case 6:
+			m_box[6]->SetPosition(Vector3(70.0f, 0.0f, -100.0f));
+			capsulebox[6].start = Vector3(10.0f, 0.0f, 0.0f);
+			capsulebox[6].end = Vector3(-13.0f, 0.0f, 0.0f);
+			break;
+		case 7:
+			m_box[7]->SetPosition(Vector3(25.0f, 0.0f, -70.0f));
+			capsulebox[8].start = Vector3(30.0f, 0.0f, -30.0f);
+			capsulebox[8].end = Vector3(-25.0f, 0.0f, 25.0f);
+			break;
+		case 8:
+			m_box[8]->SetPosition(Vector3(-5.0f, 0.0f, -25.0f));
+			capsulebox[8].start = Vector3(-0.0f, 0.0f, 3.0f);
+			capsulebox[8].end = Vector3(0.0f, 0.0f, -15.0f);
+			capsulebox[8].r = 5.5f;
+			break;
+		case 9:
+			m_box[9]->SetPosition(Vector3(17.0f, 0.0f, 7.0f));
+			capsulebox[9].start = Vector3(18.0f, 0.0f, 18.0f);
+			capsulebox[9].end = Vector3(-25.0f, 0.0f, -25.0f);
+			break;
+		case 10:
+			m_box[10]->SetPosition(Vector3(40.0f, 0.0f, 33.0f));
+			capsulebox[10].start = Vector3(0.0f, 0.0f, 5.0f);
+			capsulebox[10].end = Vector3(-4.0f, 0.0f, -7.0f);
+			break;
+		case 11:
+			m_box[11]->SetPosition(Vector3(40.0f, 0.0f, 43.0f));
+			capsulebox[11].start = Vector3(0.0f, 0.0f, 7.0f);
+			capsulebox[11].end = Vector3(1.0f, 0.0f, -5.0f);
+			break;
+		case 12:
+			m_box[12]->SetPosition(Vector3(33.0f, 0.0f, 60.0f));
+			capsulebox[12].start = Vector3(7.0f, 0.0f, -7.0f);
+			capsulebox[12].end = Vector3(-7.0f, 0.0f, 7.0f);
+			capsulebox[12].r = 5.5f;
+			break;
+		case 13:
+			m_box[13]->SetPosition(Vector3(0.0f, 0.0f, 70.0f));
+			capsulebox[13].start = Vector3(20.0f, 0.0f, 0.0f);
+			capsulebox[13].end = Vector3(-20.0f, 0.0f, 0.0f);
+			break;
+		case 14:
+			m_box[14]->SetPosition(Vector3(-30.0f, 0.0f, 65.0f));
+			capsulebox[14].start = Vector3(5.0f, 0.0f, 5.0f);
+			capsulebox[14].end = Vector3(-8.0f, 0.0f, -8.0f);
+			break;
+		case 15:
+			m_box[15]->SetPosition(Vector3(-40.0f, 0.0f, -10.0f));
+			capsulebox[15].start = Vector3(0.0f, 0.0f, 70.0f);
+			capsulebox[15].end = Vector3(0.0f, 0.0f, -68.0f);
+			break;
+		case 16:
+			m_box[16]->SetPosition(Vector3(-50.0f, 0.0f, -95.0f));
+			capsulebox[16].start = Vector3(7.0f, 0.0f, 10.0f);
+			capsulebox[16].end = Vector3(-10.0f, 0.0f, -5.0f);
+			capsulebox[16].r = 5.5f;
+			break;
+		case 17:
+			m_box[17]->SetPosition(Vector3(-70.0f, 0.0f, -100.0f));
+			capsulebox[17].start = Vector3(3.0f, 0.0f, 0.0f);
+			capsulebox[17].end = Vector3(-3.0f, 0.0f, 0.0f);
+			capsulebox[17].r = 6.5f;
+			break;
+		case 18:
+			m_box[18]->SetPosition(Vector3(-88.0f, 0.0f, -90.0f));
+			capsulebox[18].start = Vector3(10.0f, 0.0f, -10.0f);
+			capsulebox[18].end = Vector3(-7.0f, 0.0f, 7.0f);
+			capsulebox[18].r = 5.5f;
+			break;
+		case 19:
+			m_box[19]->SetPosition(Vector3(-93.5f, 0, 9.0f));
+			capsulebox[19].start = Vector3(0.5f, 0.5f, 0.5f);
+			capsulebox[19].end = Vector3(0.5f, 0.5f, 0.5f);
+			capsulebox[19].r = 3.5f;
+			break;
 		}
 
 		m_box[i]->SetCollision(capsulebox[i]);
