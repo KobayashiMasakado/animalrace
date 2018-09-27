@@ -617,21 +617,19 @@ void ScenePlay::ItemPlayerEraseCreate()
 		m_itemPlayerErase[i] = std::make_unique<CollisionCapsule>();
 		m_itemPlayerErase[i]->SetGame(m_game);
 		m_itemPlayerErase[i]->SetModel(m_itemPlayerEraseModel.get());
-
 		capsuleItemPlayerErase[i].r = 1.5f;                                    //”¼Œa
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_itemPlayerErase[0]->SetPosition(Vector3(0.0f, 14, 95.0f));
 			capsuleItemPlayerErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemPlayerErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 1)
-		{
+			break;
+		case 1:
 			m_itemPlayerErase[1]->SetPosition(Vector3(30.0f, 0, -75.0f));
 			capsuleItemPlayerErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemPlayerErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
-
+			break;
 		}
 		m_itemPlayerErase[i]->SetCollision(capsuleItemPlayerErase[i]);
 	}
@@ -647,19 +645,18 @@ void ScenePlay::ItemCPUCreate()
 		m_itemCPU[i]->SetGame(m_game);
 		m_itemCPU[i]->SetModel(m_itemCPUModel.get());
 		capsuleItemCPU[i].r = 1.5f;                                    //”¼Œa
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_itemCPU[0]->SetPosition(Vector3(-98.5f, 0, 40.0f));
 			capsuleItemCPU[0].start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
 			capsuleItemCPU[0].end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 1)
-		{
+			break;
+		case 1:
 			m_itemCPU[1]->SetPosition(Vector3(88.0f, 0, 10.0f));
 			capsuleItemCPU[1].start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemCPU[1].end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
-
+			break;
 		}
 		m_itemCPU[i]->SetCollision(capsuleItemCPU[i]);
 	}
@@ -674,21 +671,19 @@ void ScenePlay::ItemCPUEraseCreate()
 		m_itemCPUErase[i] = std::make_unique<CollisionCapsule>();
 		m_itemCPUErase[i]->SetGame(m_game);
 		m_itemCPUErase[i]->SetModel(m_itemCPUEraseModel.get());
-
 		capsuleItemCPUErase[i].r = 1.5f;                                    //”¼Œa
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_itemCPUErase[0]->SetPosition(Vector3(0.0f, 14, 95.0f));
 			capsuleItemCPUErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemCPUErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 1)
-		{
+			break;
+		case 1:
 			m_itemCPUErase[1]->SetPosition(Vector3(30.0f, 0, -75.0f));
 			capsuleItemCPUErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleItemCPUErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
-
+			break;
 		}
 		m_itemCPUErase[i]->SetCollision(capsuleItemCPUErase[i]);
 	}
@@ -713,49 +708,42 @@ void ScenePlay::GoalCreate()
 
 		m_goal[i]->SetGame(m_game);
 		m_goal[i]->SetModel(m_goalModel.get());
+		capsuleGoal[i].r = 0.6f;
 		// ƒJƒvƒZƒ‹Œ^‚ÌƒRƒŠƒWƒ‡ƒ“‚ð‚Â‚¯‚é
-		if (i == 0)
+		switch (i)
 		{
+		case 0:
 			m_goal[0]->SetPosition(Vector3(-96.0f, 0, 5.0f));
 			capsuleGoal[0].start = Vector3(5.0f, 0.0f, 0.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[0].end = Vector3(-5.0f, 0.0f, 0.0f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 1)
-		{
+			break;
+		case 1:
 			m_goal[1]->SetPosition(Vector3(0, 14, 95.0f));
 			capsuleGoal[1].start = Vector3(0.0f, 0.0f, 3.5f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[1].end = Vector3(0.0f, 0.0f, -3.5f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 2)
-		{
+			break;
+		case 2:
 			m_goal[2]->SetPosition(Vector3(93.0f, 0, 0.0f));
 			capsuleGoal[2].start = Vector3(5.0f, 0.0f, 0.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[2].end = Vector3(-5.0f, 0.0f, 0.0f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 3)
-		{
+			break;
+		case 3:
 			m_goal[3]->SetPosition(Vector3(10.0f, 0, 0));
 			capsuleGoal[3].start = Vector3(6.0f, 0.0f, 0.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[3].end = Vector3(-6.0f, 0.0f, 0.0f);		    //‹«ŠE‹…‚Ì’†S
-
-		}
-		if (i == 4)
-		{
+			break;
+		case 4:
 			m_goal[4]->SetPosition(Vector3(-40.0f, 0, 0));
 			capsuleGoal[4].start = Vector3(5.0f, 0.0f, 0.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[4].end = Vector3(-5.0f, 0.0f, 0.0f);		    //‹«ŠE‹…‚Ì’†S
-		}
-		if (i == 5)
-		{
+			break;
+		case 5:
 			m_goal[5]->SetPosition(Vector3(-96.0f, 0, -3.0f));
 			capsuleGoal[5].start = Vector3(5.0f, 0.0f, 0.0f);           //‹«ŠE‹…‚Ì’†S
 			capsuleGoal[5].end = Vector3(-5.0f, 0.0f, 0.0f);		    //‹«ŠE‹…‚Ì’†S
+			break;
 		}
-
-		capsuleGoal[i].r = 0.6f;
+		
 		m_goal[i]->SetCollision(capsuleGoal[i]);
 	}
 }
