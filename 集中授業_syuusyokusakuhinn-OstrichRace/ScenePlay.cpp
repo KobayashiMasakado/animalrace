@@ -26,14 +26,14 @@ void ScenePlay::Initialize()
 	m_time = 0.0f;
 	m_timeS = 0.0f;
 
-	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-//	m_gameCamera = std::make_unique<GameCamera>();
+//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+	m_gameCamera = std::make_unique<GameCamera>();
 }
 
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-	m_debugCamera->Update();
+//	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -71,14 +71,26 @@ void ScenePlay::Update(float elapsedTime)
 	m_hitPlayerFlag = false;
 	m_hitCpuFlag = false;
 	///当たり判定////////////
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	/// //プレイヤーとコースの当たり判定
+	static int id;
+	Vector3 s;
+	Vector3 playerPos = m_player->GetPlayer();
+	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
+	{
+		m_hitPlayerFlag = true;
+		s.y -= 0.1f;
+		m_player->SetPosition(s);
+	}
+	/// 
+	/*for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
 			, m_player->GetCollision()) == true)
 		{
 			m_hitPlayerFlag = true;
 		}
-	}
+	}*/
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
@@ -113,9 +125,10 @@ void ScenePlay::Update(float elapsedTime)
 	{
 		m_time += 1.0f;
 		m_timeS += 1.0f;
-		//プレイヤーの移動
+		
 		for (int i = 0; i < GOAL_SET_NUM; i++)
 		{
+			//プレイヤーの移動
 			if (m_goalCPUFlag[i] == true)
 			{
 				m_player->PlayerMove(Player::NONE);
@@ -129,11 +142,11 @@ void ScenePlay::Update(float elapsedTime)
 			{
 				//プレイヤー操作(コース外)
 				PlayerOperationwOutSide(kb);
-				
 			}
 			//アイテム取得
 			PlayerItemGet();
 
+			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
 			{
@@ -152,30 +165,9 @@ void ScenePlay::Update(float elapsedTime)
 			}
 			//CPUアイテム取得
 			CPUItemGet();
-			////CPUアイテム取得
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_cpu->GetCollision()) == true)
-			//{
-			//	m_itemCPUCheck = true;
-			//}
-
-			//if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-			//	Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_cpu->GetCollision()) == true)
-			//{
-			//	m_itemCPUCheck = false;
-			//}
 		}
 	}
-	//プレイヤーとコースの当たり判定
-	static int id;
-	Vector3 s;
-	Vector3 playerPos = m_player->GetPlayer();
-	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
-	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
-	{
-		s.y -= 0.1f;
-		m_player->SetPosition(s);
-	}
+	
 	//重力
 	if (m_player->GetPlayer().y >= -0.3f)
 	{
@@ -189,17 +181,17 @@ void ScenePlay::Render()
 
 	//追従カメラ
 	// ビュー行列の作成
-	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	//Vector3 target;
+	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	Vector3 target;
 
-	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	//cameraPos = Vector3::Transform(cameraPos, rotY);
-	//target = m_player->GetPlayer();
-	//m_gameCamera->SetTarget(target);
-	//m_gameCamera->SetEye(target + cameraPos);
-	//m_view = m_gameCamera->GetViewMatrix();
+	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	cameraPos = Vector3::Transform(cameraPos, rotY);
+	target = m_player->GetPlayer();
+	m_gameCamera->SetTarget(target);
+	m_gameCamera->SetEye(target + cameraPos);
+	m_view = m_gameCamera->GetViewMatrix();
 
-	m_view = m_debugCamera->GetCameraMatrix();
+//	m_view = m_debugCamera->GetCameraMatrix();
 
 	///描画///////////////////
 	//プレイヤーの描画
@@ -500,7 +492,7 @@ void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 		m_player->PlayerMove(Player::LEFT_TURN);
 	}
 }
-//アイテム取得
+//アイテム取得(プレイヤー用)
 void ScenePlay::PlayerItemGet()
 {
 	//プレイヤーのアイテム取得
@@ -529,6 +521,7 @@ void ScenePlay::PlayerItemGet()
 	}
 
 }
+//アイテム取得(CPU用)
 void ScenePlay::CPUItemGet()
 {
 	for (int i = 0; i < ITEM_SET_NUM; i++)
@@ -545,18 +538,6 @@ void ScenePlay::CPUItemGet()
 		}
 	
 	}
-	//CPUアイテム取得
-	/*if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemCPU[1]->GetCollision(), m_cpu->GetCollision()) == true)
-	{
-		m_itemCPUCheck = true;
-	}
-
-	if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()) == true ||
-		Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[1]->GetCollision(), m_cpu->GetCollision()) == true)
-	{
-		m_itemCPUCheck = false;
-	}*/
 }
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()

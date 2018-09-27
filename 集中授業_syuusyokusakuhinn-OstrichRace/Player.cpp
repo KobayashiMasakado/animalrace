@@ -46,7 +46,7 @@ bool Player::Update(float elapsedTime)
 	//前進(通常より速度は遅い)
 	else if (m_move & (1 << FBONT_SPEEDDOWN))
 	{
-		m_vec.z = 0.25f;
+		m_vec.z = 0.05f;
 	}
 	//後進
 	else if (m_move & (1 << BACK))
