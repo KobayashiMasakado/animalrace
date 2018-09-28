@@ -25,7 +25,7 @@ Player::~Player()
 /// </summary>
 /// <param name="elapsedTime"></param>
 /// <returns></returns>
-bool Player::Update(float elapsedTime)
+bool Player::Update(float elapsedTime, Keyboard::State &kb)
 {
 	m_vec = Vector3(0, 0, 0);
 
@@ -94,6 +94,8 @@ bool Player::Update(float elapsedTime)
 	//ワールド行列を作成する
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
 
+	PlayerOperation(kb);
+
 	return true;
 }
 /// <summary>
@@ -117,6 +119,37 @@ void Player::PlayerMove(Direction dir)
 {
 	//ビットフラグ
 	m_move |= (1 << dir);
+}
+
+void Player::PlayerOperation(DirectX::Keyboard::State &kb)
+{
+	//上キーが押されたら
+	if (kb.Up || kb.W)
+	{
+		/*if (m_itemPlayerCheck == true)
+		{
+			PlayerMove(Player::FRONT_ITEMGET);
+		}
+		else if (m_itemPlayerCheck == false)
+		{*/
+			PlayerMove(Player::FRONT);
+		//}
+	}
+	//下キーが押されたら
+	if (kb.Down || kb.S)
+	{
+		//	m_player->PlayerMove(Player::UP_ANGLE);
+	}
+	//右キーが押されたら
+	if (kb.Right || kb.D)
+	{
+		PlayerMove(Player::RIGHT_TURN);
+	}
+	//左キーが押されたら
+	if (kb.Left || kb.A)
+	{
+		PlayerMove(Player::LEFT_TURN);
+	}
 }
 
 void Player::SetUpEffect()

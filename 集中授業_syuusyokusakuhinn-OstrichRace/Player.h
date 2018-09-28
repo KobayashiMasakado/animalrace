@@ -47,7 +47,7 @@ public:
 	~Player();
 
 	//更新
-	bool Update(float elapsedTime);
+	bool Update(float elapsedTime, DirectX::Keyboard::State &kb);
 	//描画
 	void Render();
 
@@ -56,6 +56,9 @@ public:
 
 	//プレイヤーが走る
 	void PlayerMove(Direction dir);
+
+	//プレイヤー操作
+	void PlayerOperation(DirectX::Keyboard::State &kb);
 
 	float GetDirection()
 	{

@@ -19,12 +19,12 @@ void ScenePlay::Initialize()
 	m_itemPlayerBadCheck = false;
 	m_itemCPUBadCheck = false;
 	//カウントダウンの初期化
-	m_count = 0.0f;
+	m_count = 0;
 
 	m_checkPoint = 0;
 	
-	m_time = 0.0f;
-	m_timeS = 0.0f;
+	m_time = 0;
+	m_timeS = 0;
 
 //	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
 	m_gameCamera = std::make_unique<GameCamera>();
@@ -39,11 +39,11 @@ void ScenePlay::Update(float elapsedTime)
 	Keyboard::State kb = Keyboard::Get().GetState();
 
     //カウントダウン（処理はカウントアップ）
-	m_count += 1.0f;
+	m_count += 1;
 	
 	///更新/////////////////////
 	//プレイヤーの更新
-	m_player->Update(elapsedTime);
+	m_player->Update(elapsedTime,kb);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
 	//アイテムの更新
@@ -77,8 +77,8 @@ void ScenePlay::Update(float elapsedTime)
 	//カウントダウンが終わったら
 	if (m_count > GAME_START_TIME)
 	{
-		m_time += 1.0f;
-		m_timeS += 1.0f;
+		m_time += 1;
+		m_timeS += 1;
 		for (int i = 0; i < GOAL_SET_NUM; i++)
 		{
 			//プレイヤーの移動
@@ -89,7 +89,7 @@ void ScenePlay::Update(float elapsedTime)
 			else if (m_hitPlayerFlag == true)
 			{
 				//プレイヤー操作
-				PlayerOperation(kb);
+				//PlayerOperation(kb);
 			}
 			else if (m_hitPlayerFlag == false)
 			{
@@ -120,7 +120,7 @@ void ScenePlay::Update(float elapsedTime)
 		}
 	}
 	//重力
-	if (m_player->GetPlayer().y >= -0.3f)
+	if (m_player->GetPlayer().y >= GROUND_POSY)
 	{
 		m_player->PlayerMove(Player::GRAVITY);
 	}

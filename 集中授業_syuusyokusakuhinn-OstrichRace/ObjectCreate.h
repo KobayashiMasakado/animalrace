@@ -1,0 +1,12 @@
+
+
+class ObjectCreate
+{
+private:
+
+
+public:
+
+
+
+};

@@ -29,6 +29,7 @@ private:
 	static const int GAME_START_TIME = 180;
 	static const int TIME_MINUTE = 60;
 	static const int TIME_MIRI = 100;
+	static const int GROUND_POSY = -0.3f;
 private:
 
 	// Device resources.
@@ -127,8 +128,8 @@ private:
 	Number m_number[TIME_SET_NUM];
 
 	//タイム
-	float m_time;
-	float m_timeS;
+	int m_time;
+	int m_timeS;
 	//衝突したかどうか判定
 	bool m_hitPlayerFlag;
 	bool m_hitCpuFlag;
@@ -145,7 +146,7 @@ private:
 	bool m_itemCPUBadCheck;
 
 	//カウントダウン
-	float m_count;
+	int m_count;
 	//アイテム
 	//int m_itemCount;
 	
