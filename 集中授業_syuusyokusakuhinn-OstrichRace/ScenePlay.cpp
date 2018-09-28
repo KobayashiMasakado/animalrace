@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ScenePlay.h"
-
 #include <time.h>
 
 using namespace DirectX;
@@ -14,6 +13,7 @@ void ScenePlay::Initialize()
 		m_goalPlayerFlag[i] = false;
 		m_goalCPUFlag[i] = false;
 	}
+	//アイテムフラグの初期化
 	m_itemPlayerCheck = false;
 	m_itemCPUCheck = false;
 	m_itemPlayerBadCheck = false;
@@ -79,7 +79,6 @@ void ScenePlay::Update(float elapsedTime)
 	{
 		m_time += 1.0f;
 		m_timeS += 1.0f;
-		
 		for (int i = 0; i < GOAL_SET_NUM; i++)
 		{
 			//プレイヤーの移動
@@ -99,7 +98,6 @@ void ScenePlay::Update(float elapsedTime)
 			}
 			//アイテム取得
 			PlayerItemGet();
-
 			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -121,7 +119,6 @@ void ScenePlay::Update(float elapsedTime)
 			CPUItemGet();
 		}
 	}
-	
 	//重力
 	if (m_player->GetPlayer().y >= -0.3f)
 	{
@@ -146,7 +143,6 @@ void ScenePlay::Render()
 	m_view = m_gameCamera->GetViewMatrix();
 
 //	m_view = m_debugCamera->GetCameraMatrix();
-
 	///描画///////////////////
 	//プレイヤーの描画
 	m_player->Render();
@@ -202,18 +198,17 @@ void ScenePlay::Render()
 	m_sprites->Draw(m_tKm.Get(), Vector2(10, 500));
 	//カウントダウンの描画-----------------------
 	CountDownStart();
-	
 	//タイム--------------------------------------
 	//ミリ秒
 	float miri = m_time;
 	
 	//秒
-	float sec = (int)(miri) / 100;
+	float sec = (int)(miri) / TIME_MIRI;
 
 	//分
-	float min = (int)(sec) / 60;
+	float min = (int)(sec) / TIME_MINUTE;
 
-	if (sec >=59)
+	if (sec >= TIME_MINUTE - 1)
 	{
 		m_number[0].SetNum(min);
 		m_time = 0;
@@ -221,7 +216,7 @@ void ScenePlay::Render()
 	m_number[0].SetPos(Vector2(20, 0));
 	m_number[0].Draw(m_sprites.get());
 	
-	if (miri > 99)
+	if (miri > TIME_MIRI - 1)
 	{
 		m_number[1].SetNum(sec);
 	}
@@ -231,28 +226,14 @@ void ScenePlay::Render()
 	m_number[2].SetNum(m_timeS);
 	m_number[2].SetPos(Vector2(180, 0));
 	m_number[2].Draw(m_sprites.get());
-	if (m_timeS >= 100)
+	if (m_timeS >= TIME_MIRI)
 	{
 		m_timeS = 0;
 	}
 	
 	/////////////////////////////////////
+	//ゲーム結果
 	RaceEnd();
-	////プレイヤーがゴールしたら
-	//if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
-	//	m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
-	//{
-	//	//YOU WIN!画像表示
-	//	m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
-	//}
-
-	////CPUがゴールしたら
-	//else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
-	//	m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
-	//{
-	//	//YOU LOSE...画像表示
-	//	m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
-	//}
 
 	m_sprites->End();
 }
@@ -540,6 +521,7 @@ void ScenePlay::CountDownStart()
 	}
 
 }
+//ゲーム結果
 void ScenePlay::RaceEnd()
 {
 	//プレイヤーがゴールしたら

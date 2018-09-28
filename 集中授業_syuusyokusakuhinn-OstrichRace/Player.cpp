@@ -91,11 +91,6 @@ bool Player::Update(float elapsedTime)
 	
 	m_position += (m_vec);
 
-	//m_vec.y += -0.1f;
-	//if (m_vec.y <= 0.0f)
-	//{
-	//	m_vec.y += 0.1f;
-	//}
 	//ƒ[ƒ‹ƒhs—ñ‚ðì¬‚·‚é
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
 

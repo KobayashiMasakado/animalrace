@@ -28,6 +28,7 @@ private:
 	static const int TIME_TYPE_NUM = 10;
 	static const int GAME_START_TIME = 180;
 	static const int TIME_MINUTE = 60;
+	static const int TIME_MIRI = 100;
 private:
 
 	// Device resources.
