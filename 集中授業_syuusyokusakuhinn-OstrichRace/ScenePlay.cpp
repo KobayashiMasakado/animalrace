@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ScenePlay.h"
 #include <time.h>
+#include "ModelDate.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -26,14 +27,15 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-	m_gameCamera = std::make_unique<GameCamera>();
+	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+//	m_gameCamera = std::make_unique<GameCamera>();
+
 }
 
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-//	m_debugCamera->Update();
+	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -43,7 +45,7 @@ void ScenePlay::Update(float elapsedTime)
 	
 	///更新/////////////////////
 	//プレイヤーの更新
-	m_player->Update(elapsedTime,kb);
+	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
 	//アイテムの更新
@@ -89,7 +91,7 @@ void ScenePlay::Update(float elapsedTime)
 			else if (m_hitPlayerFlag == true)
 			{
 				//プレイヤー操作
-				//PlayerOperation(kb);
+				PlayerOperation(kb);
 			}
 			else if (m_hitPlayerFlag == false)
 			{
@@ -132,17 +134,17 @@ void ScenePlay::Render()
 
 	//追従カメラ
 	// ビュー行列の作成
-	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	Vector3 target;
+	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	//Vector3 target;
 
-	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	cameraPos = Vector3::Transform(cameraPos, rotY);
-	target = m_player->GetPlayer();
-	m_gameCamera->SetTarget(target);
-	m_gameCamera->SetEye(target + cameraPos);
-	m_view = m_gameCamera->GetViewMatrix();
+	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	//cameraPos = Vector3::Transform(cameraPos, rotY);
+	//target = m_player->GetPlayer();
+	//m_gameCamera->SetTarget(target);
+	//m_gameCamera->SetEye(target + cameraPos);
+	//m_view = m_gameCamera->GetViewMatrix();
 
-//	m_view = m_debugCamera->GetCameraMatrix();
+	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	//プレイヤーの描画
 	m_player->Render();
@@ -280,23 +282,29 @@ void ScenePlay::CreateDeviceDependentResources()
 	}
 	//-------------------------------------------
 
+	m_objCreate = new ObjectCreate();
+	m_player = new Player();
+	m_cpu = new Enemy();
+
 	// モデルを読み込み
 	// エフェクトファクトリー 
 	EffectFactory fx(device);
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
-	m_playerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Ostrich&Human.cmo", fx);
-	m_cpuModel  = Model::CreateFromCMO(device, L"Resources\\Models\\Tiger.cmo", fx);
 	m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
 	m_itemCPUModel = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);
 	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
 
-	//プレイヤー作成
-	PlayerCreate();
+	ModelDate* modelDate = ModelDate::GetInstance();
+	modelDate->Create(device);
 
-	//CPU作成
-	CPUCreate();
-	
+	////プレイヤー作成
+	//PlayerCreate();
+	m_objCreate->PlayerCreate(m_player, modelDate->GetPlayer(),m_taskManager);
+	////CPU作成
+	//CPUCreate();
+	m_objCreate->CPUCreate(m_cpu, modelDate->GetCPU(), m_taskManager);
+
 	//アイテム作成(プレイヤー)
 	ItemPlayerCreate();
 
@@ -360,6 +368,8 @@ void ScenePlay::CreateDeviceDependentResources()
 			basicEffect->SetEmissiveColor(Vector3(1.0f, 1.0f, 1.0f));
 		}
 	});
+
+	
 }
 //プレイヤー操作
 void ScenePlay::PlayerOperation(Keyboard::State &kb)
@@ -562,36 +572,7 @@ void ScenePlay::EnemyDirection()
 		}
 	}
 }
-//プレイヤーを作成
-void ScenePlay::PlayerCreate()
-{
-	Collision::Capsule capsulePlayer;
 
-	m_player = m_taskManager.AddTask<Player>();
-	m_player->SetPosition(Vector3(-93.5f, 0, 1.5f));
-	m_player->SetGame(m_game);
-	m_player->SetModel(m_playerModel.get());
-	m_player->SetUpEffect();
-	// カプセル型のコリジョンをつける
-	capsulePlayer.start = Vector3(0.3f, 0.0f, 0.2f); 		//境界球の中心
-	capsulePlayer.end = Vector3(0.3f, 3.0f, 0.2f); 		//境界球の中心
-	capsulePlayer.r = 0.6f;							     	//半径
-	m_player->SetCollision(capsulePlayer);
-}
-//CPU作成
-void ScenePlay::CPUCreate()
-{
-	Collision::Capsule capsuleCPU;
-	m_cpu = std::make_unique<Enemy>();
-	m_cpu->SetPosition(Vector3(-97.5f, 0, 1.5f));
-	m_cpu->SetGame(m_game);
-	m_cpu->SetModel(m_cpuModel.get());
-	// カプセル型のコリジョンをつける
-	capsuleCPU.start = Vector3(0.3f, 0.0f, 0.2f);           //境界球の中心
-	capsuleCPU.end = Vector3(0.3f, 3.0f, 0.2f);		        //境界球の中心
-	capsuleCPU.r = 0.6f;                                    //半径
-	m_cpu->SetCollision(capsuleCPU);
-}
 //アイテム作成(プレイヤー)
 void ScenePlay::ItemPlayerCreate()
 {

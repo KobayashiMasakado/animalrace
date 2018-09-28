@@ -4,6 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
+#include "ModelDate.h"
 
 #if _DEBUG
 #define _CRTDBG_MAP_ALLOC
@@ -218,6 +219,8 @@ void Game::CreateDeviceDependentResources()
     ID3D11Device* device = m_deviceResources->GetD3DDevice();
 	ID3D11DeviceContext* context =  m_deviceResources->GetD3DDeviceContext();
 
+	ModelDate* modelData = ModelDate::GetInstance();
+	//modelData->Create(device);
 	/*auto context = m_deviceResources->GetD3DDeviceContext();
 	auto device = m_deviceResources->GetD3DDevice();*/
 
@@ -250,6 +253,7 @@ void Game::CreateDeviceDependentResources()
 
 	// グリッドの床の作成
 //	m_gridFloor = std::make_unique<GridFloor>(device, context, m_states.get(), 10.0f, 10);
+
 
 }
 // Allocate all memory resources that change on a window SizeChanged event.

@@ -39,6 +39,9 @@
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="CollisionMesh.h" />
+    <ClInclude Include="ModelDate.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="ObjectCreate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -61,6 +64,8 @@
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="CollisionMesh.cpp" />
+    <ClCompile Include="ModelDate.cpp" />
+    <ClCompile Include="ObjectCreate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

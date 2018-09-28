@@ -13,6 +13,7 @@
 #include "TaskManager.h"
 #include "CollisionMesh.h"
 
+#include "ObjectCreate.h"
 
 #include "Number.h"
 
@@ -66,21 +67,17 @@ private:
 	// 草原
 	std::unique_ptr<DirectX::Model> m_prairie;
 
+	ObjectCreate* m_objCreate;
+
 	//プレイヤー
-//	std::unique_ptr<Player> m_player;
 	Player* m_player;
-	//プレイヤーのモデル
-	std::unique_ptr<DirectX::Model> m_playerModel;
 
 	//CPU
-	std::unique_ptr<Enemy> m_cpu;
-	//CPUのモデル
-	std::unique_ptr<DirectX::Model> m_cpuModel;
+	Enemy* m_cpu;
 
 	std::unique_ptr<CollisionCapsule> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
-	//道
-	//std::unique_ptr<Root> m_root;
+
 	Obj3D* m_root;
 	//道のモデル
 	std::unique_ptr<DirectX::Model> m_rootModel;
@@ -167,7 +164,7 @@ public:
 	//描画
 	void Render() override;
 
-	void Finalize() override {}
+	void Finalize() override { delete m_objCreate; }
 	void CreateDeviceDependentResources();
 
 	//プレイヤー操作
@@ -195,11 +192,9 @@ public:
 	void RaceEnd();
 
 	//CPUの角度を変える
-	void EnemyDirection();
-	//プレイヤー作成
-	void PlayerCreate();
+	void EnemyDirection();;
 	//CPU作成
-	void CPUCreate();
+//	void CPUCreate();
 	//アイテム作成(プレイヤー)
 	void ItemPlayerCreate();
 	//アイテム効果切れ(プレイヤー)
@@ -214,7 +209,6 @@ public:
 	void GoalCreate();
 	//CPUの移動用の当たり判定
 	void EnemyHitMoveCreate();
-
 
 	//ゲッター関数
 	//デバイスを取得する関数
