@@ -96,8 +96,6 @@ bool Player::Update(float elapsedTime)
 	//ワールド行列を作成する
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
 
-	
-
 	return true;
 }
 /// <summary>
@@ -105,13 +103,14 @@ bool Player::Update(float elapsedTime)
 /// </summary>
 void Player::Render()
 {
+	PlayerCreate();
 	if (m_game && m_model)
 	{
 		//モデルの描画
 		m_model->Draw(m_game->GetContext(),*m_game->GetState(),m_world, m_game->GetView(), m_game->GetProjection());
 		//デバッグ用コリジョンモデルの描画
 	//	DrawCollision();
-		int a = 0;
+		
 	}
 }
 /// <summary>

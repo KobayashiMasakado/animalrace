@@ -8,6 +8,11 @@ class ModelDate : public SingletonBase<ModelDate>
 private:
 	std::unique_ptr<DirectX::Model> m_playerModel;
 	std::unique_ptr<DirectX::Model> m_cpuModel;
+	std::unique_ptr<DirectX::Model> m_itemPlayerModel;
+	std::unique_ptr<DirectX::Model> m_itemCPUModel;
+
+	std::unique_ptr<DirectX::Model> m_itemPlayerEraseModel;
+	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
 
 public:
 	ModelDate();
@@ -17,4 +22,9 @@ public:
 
 	DirectX::Model* GetPlayer() { return m_playerModel.get(); }
 	DirectX::Model* GetCPU() { return m_cpuModel.get(); }
+	DirectX::Model* GetItemPlayer() { return m_itemPlayerModel.get(); }
+	DirectX::Model* GetItemCPU() { return m_itemCPUModel.get(); }
+	DirectX::Model* GetItemErasePlayer() { return m_itemPlayerEraseModel.get(); }
+	DirectX::Model* GetItemEraseCPU() { return m_itemCPUEraseModel.get(); }
+
 };

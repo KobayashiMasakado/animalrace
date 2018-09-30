@@ -21,7 +21,7 @@
 class ScenePlay : public SceneBase
 {
 
-private:
+public:
 	static const int ENEMY_HITCHECK_NUM = 19;
 	static const int GOAL_SET_NUM = 6;
 	static const int ITEM_SET_NUM = 2;
@@ -71,9 +71,10 @@ private:
 
 	//プレイヤー
 	Player* m_player;
-
+	//std::unique_ptr<DirectX::Model> m_itemPlayerModel;
 	//CPU
 	Enemy* m_cpu;
+//	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 
 	std::unique_ptr<CollisionCapsule> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
@@ -196,8 +197,7 @@ public:
 
 	//CPUの角度を変える
 	void EnemyDirection();;
-	//CPU作成
-//	void CPUCreate();
+
 	//アイテム作成(プレイヤー)
 	void ItemPlayerCreate();
 	//アイテム効果切れ(プレイヤー)

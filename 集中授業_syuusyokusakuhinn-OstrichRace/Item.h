@@ -25,5 +25,12 @@ public:
 	bool Update(float elapsedTIme);
 	//描画
 	void Render();
-
+	//アイテム作成(プレイヤー)
+	void ItemPlayerCreate();
+	////アイテム効果切れ(プレイヤー)
+	//void ItemPlayerEraseCreate();
+	//アイテム作成(CPU)
+	void ItemCPUCreate();
+	////アイテム効果切れ(CPU)
+	//void ItemCPUEraseCreate();
 };

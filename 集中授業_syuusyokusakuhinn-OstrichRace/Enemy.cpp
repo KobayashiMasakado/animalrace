@@ -2,6 +2,8 @@
 #include "Enemy.h"
 #include "Game.h"
 
+#include "ModelDate.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 /// <summary>
@@ -103,6 +105,7 @@ bool Enemy::Update(float elapsedTime)
 /// </summary>
 void Enemy::Render()
 {
+	CPUCreate();
 	if (m_game && m_model)
 	{
 		//モデルの描画
@@ -112,6 +115,24 @@ void Enemy::Render()
 		//デバッグ用コリジョンモデルの描画
 		//DrawCollision();
 	}
+}
+/// <summary>
+/// 
+/// </summary>
+void Enemy::CPUCreate()
+{
+	Collision::Capsule capsuleCPU;
+	
+	ModelDate* modelDate = ModelDate::GetInstance();
+
+	SetPosition(Vector3(-97.5f, 0, 1.5f));
+	SetGame(m_game);
+	SetModel(modelDate->GetCPU());
+	// カプセル型のコリジョンをつける
+	capsuleCPU.start = Vector3(0.3f, 0.0f, 0.2f);           //境界球の中心
+	capsuleCPU.end = Vector3(0.3f, 3.0f, 0.2f);		        //境界球の中心
+	capsuleCPU.r = 0.6f;                                    //半径
+	SetCollision(capsuleCPU);
 }
 /// <summary>
 /// CPUが走る
