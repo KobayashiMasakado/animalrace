@@ -162,6 +162,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="GridFloor.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModelDate.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="GridFloor.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />

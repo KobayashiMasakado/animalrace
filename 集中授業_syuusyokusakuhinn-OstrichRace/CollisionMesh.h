@@ -10,7 +10,9 @@
 
 #include "Collision.h"
 
-class CollisionMesh
+#include "Obj3D.h"
+
+class CollisionMesh : public Obj3D
 {
 protected:
 

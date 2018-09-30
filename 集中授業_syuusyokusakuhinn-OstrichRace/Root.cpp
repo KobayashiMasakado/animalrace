@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Root.h"
+
 #include <Effects.h> 
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h> 
@@ -39,7 +40,6 @@ bool Root::Update(float elapsedTIme)
 /// </summary>
 void Root::Render()
 {
-	CourseCreate();
 	if (m_game && m_model)
 	{
 		//ƒ‚ƒfƒ‹‚Ì•`‰æ
@@ -64,11 +64,4 @@ void Root::SetUpEffect()
 	});
 }
 
-void Root::CourseCreate()
-{
-	ModelDate* modelDate = ModelDate::GetInstance();
 
-	//“¹‚Ìì¬												      
-	SetGame(m_game);
-	SetModel(modelDate->GetRoot());
-}

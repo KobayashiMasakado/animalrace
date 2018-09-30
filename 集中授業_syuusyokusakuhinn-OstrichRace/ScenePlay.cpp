@@ -48,7 +48,7 @@ void ScenePlay::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
-	m_root->Update(elapsedTime);
+//	m_root->Update(elapsedTime);
 	//アイテムの更新
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -162,7 +162,7 @@ void ScenePlay::Render()
 //		m_itemCPUErase[i]->DrawCollision();
 	}
 	//コースの作成
-	m_root->Render();
+//	m_root->Render();
 //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -288,10 +288,7 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_objCreate = new ObjectCreate();
 	m_player = new Player();
 	m_cpu = new Enemy();
-	/*for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		m_itemPlayer[i] = new Item[2];
-	}*/
+	
 	// モデルを読み込み
 	// エフェクトファクトリー 
 	EffectFactory fx(device);
@@ -332,9 +329,9 @@ void ScenePlay::CreateDeviceDependentResources()
 	GoalCreate();
 
 	//道の作成
-	CourseCreate();
+//	CourseCreate();
 
-	////床のコリジョンメッシュを作成
+	//床のコリジョンメッシュを作成
 	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Root.obj");
 
 	//CPUの移動用の当たり判定
@@ -577,13 +574,7 @@ void ScenePlay::SetGame2()
 
 	}
 
-
-
-
-
-
-
-	m_root->SetGame(m_game);
+	m_floorMesh->SetGame(m_game);
 
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -621,54 +612,6 @@ void ScenePlay::EnemyDirection()
 	}
 }
 
-////アイテム作成(プレイヤー)
-//void ScenePlay::ItemPlayerCreate()
-//{
-//	for (int i = 0; i < ITEM_SET_NUM; i++)
-//	{
-//		m_itemPlayer[i] = std::make_unique<Item>();
-//		m_itemPlayer[i]->ItemPlayerCreate(i);
-//	}
-//}
-//アイテム効果切れ(プレイヤー)
-//void ScenePlay::ItemPlayerEraseCreate()
-//{
-//	
-//	for (int i = 0; i < ITEM_SET_NUM; i++)
-//	{
-//		m_itemPlayerErase[i] = std::make_unique<Item>();
-//		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
-//	}
-//}
-//アイテム作成(CPU)
-//void ScenePlay::ItemCPUCreate()
-//{
-//	for (int i = 0; i < ITEM_SET_NUM; i++)
-//	{
-//		m_itemCPU[i] = std::make_unique<Item>();
-//		m_itemCPU[i]->ItemCPUCreate(i);
-//	}
-//}
-//アイテム効果切れ(CPU)
-//void ScenePlay::ItemCPUEraseCreate()
-//{
-//
-//	for (int i = 0; i < ITEM_SET_NUM; i++)
-//	{
-//		m_itemCPUErase[i] = std::make_unique<Item>();
-//		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
-//	}
-//}
-
-//コース作成
-void ScenePlay::CourseCreate()
-{
-	//道の作成												      
-	m_root = m_taskManager.AddTask<Obj3D>();
-//	m_root->SetGame(m_game);
-	m_root->SetModel(m_rootModel.get());
-
-}
 //ゴール作成
 void ScenePlay::GoalCreate()
 {

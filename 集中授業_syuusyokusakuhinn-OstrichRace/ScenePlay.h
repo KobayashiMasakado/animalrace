@@ -79,7 +79,7 @@ private:
 	std::unique_ptr<CollisionCapsule> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
 
-	Obj3D* m_root;
+	//Root* m_root;
 	//ìπÇÃÉÇÉfÉã
 	std::unique_ptr<DirectX::Model> m_rootModel;
 	//ÉSÅ[Éã

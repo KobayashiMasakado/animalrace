@@ -42,6 +42,7 @@
     <ClInclude Include="ModelDate.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="ObjectCreate.h" />
+    <ClInclude Include="Goal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -66,6 +67,7 @@
     <ClCompile Include="CollisionMesh.cpp" />
     <ClCompile Include="ModelDate.cpp" />
     <ClCompile Include="ObjectCreate.cpp" />
+    <ClCompile Include="Goal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

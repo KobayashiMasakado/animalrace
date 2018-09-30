@@ -3,6 +3,8 @@
 #include <Model.h>
 #include "Utility.h"
 
+#include "CollisionMesh.h"
+
 class ModelDate : public SingletonBase<ModelDate>
 {
 private:
@@ -15,7 +17,6 @@ private:
 	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
 
 	std::unique_ptr<DirectX::Model> m_rootModel;
-
 public:
 	ModelDate();
 	~ModelDate();
@@ -28,5 +29,4 @@ public:
 	DirectX::Model* GetItemCPU() { return m_itemCPUModel.get(); }
 	DirectX::Model* GetItemErasePlayer() { return m_itemPlayerEraseModel.get(); }
 	DirectX::Model* GetItemEraseCPU() { return m_itemCPUEraseModel.get(); }
-	DirectX::Model* GetRoot() { return m_rootModel.get(); }
 };

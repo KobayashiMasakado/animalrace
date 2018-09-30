@@ -1,26 +1,18 @@
-#pragma once
-///------------------------------------------- 
-/// Root.h
-/// 
-/// ルートを司るクラス
-/// Day.7/5
-/// MasakadoKobayashi
-///------------------------------------------- 
 #include "pch.h"
 
 #include "DeviceResources.h"
 
 #include "CollisionCapsule.h"
 
-class Root : public CollisionCapsule
+class Goal : public CollisionCapsule
 {
 private:
 
 public:
 	//コンストラクタ
-	Root();
+	Goal();
 	//デストラクタ
-	~Root();
+	~Goal();
 	//更新
 	bool Update(float elapsedTIme);
 	//描画
@@ -28,4 +20,5 @@ public:
 	//エフェクトの設定関数
 	void SetUpEffect();
 
+	void CourseCreate();
 };

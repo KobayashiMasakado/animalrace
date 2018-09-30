@@ -12,6 +12,10 @@ ModelDate::ModelDate()
 ModelDate::~ModelDate()
 {
 	m_playerModel.reset();
+	m_cpuModel.reset();
+	m_itemPlayerModel.reset();
+	m_itemCPUModel.reset();
+	m_rootModel.reset();
 }
 
 void ModelDate::Create(ID3D11Device* device)
@@ -26,4 +30,5 @@ void ModelDate::Create(ID3D11Device* device)
 	m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
 	m_itemCPUModel    = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);
 	m_rootModel       = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
+	
 }
