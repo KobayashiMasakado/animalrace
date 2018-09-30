@@ -13,6 +13,7 @@ Enemy::Enemy()
 {
 	m_move = 0;
 	m_dir = 0.0f;
+	m_itemCPUCheck = false;
 }
 /// <summary>
 /// デストラクタ
@@ -144,3 +145,23 @@ void Enemy::EnemyChangeAngle(Direction dir)
 	m_move |= (1 << dir);
 }
 
+void Enemy::EnemyDirection()
+{
+	//アイテム取得時の移動速度
+	if (m_itemCPUCheck == true)
+	{
+		EnemyChangeAngle(Enemy::FRONT_ITEMGET);
+	}//通常の移動速度
+	else if (m_itemCPUCheck == false)
+	{
+		EnemyChangeAngle(Enemy::FRONT);
+	}
+	//当たった場所によってCPUの方向を変える
+	for (int i = 0; i < ScenePlay::ENEMY_HITCHECK_NUM; i++)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(GetCollision(), GetCollision()))
+		{
+			EnemyChangeAngle(static_cast<Enemy::Direction>(i));
+		}
+	}
+}

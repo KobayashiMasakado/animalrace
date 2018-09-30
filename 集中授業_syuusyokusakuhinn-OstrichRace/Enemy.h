@@ -34,6 +34,7 @@ private:
 	//移動情報（ビット）
 	int m_move;
 
+	bool m_itemCPUCheck;
 public:
 	//コンストラクタ
 	Enemy();
@@ -47,5 +48,5 @@ public:
 	//CPUが走る
 	void EnemyChangeAngle(Direction dir);
 
-	
+	void EnemyDirection();
 };

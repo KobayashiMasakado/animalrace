@@ -111,7 +111,7 @@ void ScenePlay::Update(float elapsedTime)
 			else if (m_hitCpuFlag == true)
 			{
 				//CPUの方向を変えて移動させる
-				EnemyDirection();
+				m_cpu->EnemyDirection();
 			}
 			//下がる
 			else if (m_hitCpuFlag == false)
@@ -595,26 +595,6 @@ void ScenePlay::SetGame2()
 
 	m_cpu->SetGame(m_game);
 }
-//CPUの方向を変えて移動させる
-void ScenePlay::EnemyDirection()
-{
-	//アイテム取得時の移動速度
-	if (m_itemCPUCheck == true)
-	{
-		m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
-	}//通常の移動速度
-	else if (m_itemCPUCheck == false)
-	{
-		m_cpu->EnemyChangeAngle(Enemy::FRONT);
-	}
-	//当たった場所によってCPUの方向を変える
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision(), m_cpu->GetCollision()))
-		{
-			m_cpu->EnemyChangeAngle(static_cast<Enemy::Direction>(i));
-		}
-	}
-}
+
 
 
