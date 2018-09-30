@@ -38,7 +38,6 @@ bool Item::Update(float elapsedTIme)
 /// </summary>
 void Item::Render()
 {
-	//ItemCPUEraseCreate();
 	if (m_game && m_model)
 	{
 		//ƒ‚ƒfƒ‹‚Ì•`‰æ

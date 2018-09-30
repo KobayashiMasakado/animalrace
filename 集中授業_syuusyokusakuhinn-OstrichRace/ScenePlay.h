@@ -12,6 +12,7 @@
 #include "GameCamera.h"
 #include "TaskManager.h"
 #include "CollisionMesh.h"
+#include "Goal.h"
 
 #include "ObjectCreate.h"
 
@@ -83,7 +84,7 @@ private:
 	//道のモデル
 	std::unique_ptr<DirectX::Model> m_rootModel;
 	//ゴール
-	std::unique_ptr<CollisionCapsule> m_goal[GOAL_SET_NUM];
+	std::unique_ptr<Goal> m_goal[GOAL_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_goalModel;
 	//アイテム
 	//プレイヤー用

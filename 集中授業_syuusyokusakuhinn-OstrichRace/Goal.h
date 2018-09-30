@@ -1,3 +1,5 @@
+#pragma once
+
 #include "pch.h"
 
 #include "DeviceResources.h"
@@ -20,5 +22,5 @@ public:
 	//エフェクトの設定関数
 	void SetUpEffect();
 
-	void CourseCreate();
+	void GoalCreate(int goal);
 };

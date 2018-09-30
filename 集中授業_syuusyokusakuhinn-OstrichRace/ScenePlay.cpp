@@ -326,11 +326,12 @@ void ScenePlay::CreateDeviceDependentResources()
 	}
 
 	//ゴール作成
-	GoalCreate();
-
-	//道の作成
-//	CourseCreate();
-
+	for (int i = 0; i < GOAL_SET_NUM; i++)
+	{
+		m_goal[i] = std::make_unique<Goal>();
+		m_goal[i]->GoalCreate(i);
+	}
+	
 	//床のコリジョンメッシュを作成
 	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Root.obj");
 
@@ -612,56 +613,7 @@ void ScenePlay::EnemyDirection()
 	}
 }
 
-//ゴール作成
-void ScenePlay::GoalCreate()
-{
-	Collision::Capsule capsuleGoal[GOAL_SET_NUM];
 
-	for (int i = 0; i < GOAL_SET_NUM; i++)
-	{
-		m_goal[i] = std::make_unique<CollisionCapsule>();
-
-//		m_goal[i]->SetGame(m_game);
-		m_goal[i]->SetModel(m_goalModel.get());
-		capsuleGoal[i].r = 0.6f;
-		// カプセル型のコリジョンをつける
-		switch (i)
-		{
-		case 0:
-			m_goal[0]->SetPosition(Vector3(-96.0f, 0, 5.0f));
-			capsuleGoal[0].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-			capsuleGoal[0].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-			break;
-		case 1:
-			m_goal[1]->SetPosition(Vector3(0, 14, 95.0f));
-			capsuleGoal[1].start = Vector3(0.0f, 0.0f, 3.5f);           //境界球の中心
-			capsuleGoal[1].end = Vector3(0.0f, 0.0f, -3.5f);		    //境界球の中心
-			break;
-		case 2:
-			m_goal[2]->SetPosition(Vector3(93.0f, 0, 0.0f));
-			capsuleGoal[2].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-			capsuleGoal[2].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-			break;
-		case 3:
-			m_goal[3]->SetPosition(Vector3(10.0f, 0, 0));
-			capsuleGoal[3].start = Vector3(6.0f, 0.0f, 0.0f);           //境界球の中心
-			capsuleGoal[3].end = Vector3(-6.0f, 0.0f, 0.0f);		    //境界球の中心
-			break;
-		case 4:
-			m_goal[4]->SetPosition(Vector3(-40.0f, 0, 0));
-			capsuleGoal[4].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-			capsuleGoal[4].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-			break;
-		case 5:
-			m_goal[5]->SetPosition(Vector3(-96.0f, 0, -3.0f));
-			capsuleGoal[5].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-			capsuleGoal[5].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-			break;
-		}
-		
-		m_goal[i]->SetCollision(capsuleGoal[i]);
-	}
-}
 //CPUの移動用の当たり判定
 void ScenePlay::EnemyHitMoveCreate()
 {
