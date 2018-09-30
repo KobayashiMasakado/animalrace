@@ -316,10 +316,17 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_itemCPU[i]->ItemCPUCreate(i);
 	}
 	//アイテム効果切れ(プレイヤー)
-	ItemPlayerEraseCreate();
-
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemPlayerErase[i] = std::make_unique<Item>();
+		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
+	}
 	//アイテム効果切れ(CPU)
-	ItemCPUEraseCreate();
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemCPUErase[i] = std::make_unique<Item>();
+		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
+	}
 
 	//ゴール作成
 	GoalCreate();
@@ -624,32 +631,15 @@ void ScenePlay::EnemyDirection()
 //	}
 //}
 //アイテム効果切れ(プレイヤー)
-void ScenePlay::ItemPlayerEraseCreate()
-{
-	Collision::Capsule capsuleItemPlayerErase[ITEM_SET_NUM];
-
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		m_itemPlayerErase[i] = std::make_unique<CollisionCapsule>();
-		//m_itemPlayerErase[i]->SetGame(m_game);
-		m_itemPlayerErase[i]->SetModel(m_itemPlayerEraseModel.get());
-		capsuleItemPlayerErase[i].r = 1.5f;                                    //半径
-		switch (i)
-		{
-		case 0:
-			m_itemPlayerErase[0]->SetPosition(Vector3(0.0f, 14, 95.0f));
-			capsuleItemPlayerErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
-			capsuleItemPlayerErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
-			break;
-		case 1:
-			m_itemPlayerErase[1]->SetPosition(Vector3(30.0f, 0, -75.0f));
-			capsuleItemPlayerErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
-			capsuleItemPlayerErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
-			break;
-		}
-		m_itemPlayerErase[i]->SetCollision(capsuleItemPlayerErase[i]);
-	}
-}
+//void ScenePlay::ItemPlayerEraseCreate()
+//{
+//	
+//	for (int i = 0; i < ITEM_SET_NUM; i++)
+//	{
+//		m_itemPlayerErase[i] = std::make_unique<Item>();
+//		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
+//	}
+//}
 //アイテム作成(CPU)
 //void ScenePlay::ItemCPUCreate()
 //{
@@ -660,32 +650,16 @@ void ScenePlay::ItemPlayerEraseCreate()
 //	}
 //}
 //アイテム効果切れ(CPU)
-void ScenePlay::ItemCPUEraseCreate()
-{
-	Collision::Capsule capsuleItemCPUErase[ITEM_SET_NUM];
+//void ScenePlay::ItemCPUEraseCreate()
+//{
+//
+//	for (int i = 0; i < ITEM_SET_NUM; i++)
+//	{
+//		m_itemCPUErase[i] = std::make_unique<Item>();
+//		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
+//	}
+//}
 
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		m_itemCPUErase[i] = std::make_unique<CollisionCapsule>();
-	//	m_itemCPUErase[i]->SetGame(m_game);
-		m_itemCPUErase[i]->SetModel(m_itemCPUEraseModel.get());
-		capsuleItemCPUErase[i].r = 1.5f;                                    //半径
-		switch (i)
-		{
-		case 0:
-			m_itemCPUErase[0]->SetPosition(Vector3(0.0f, 14, 95.0f));
-			capsuleItemCPUErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
-			capsuleItemCPUErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
-			break;
-		case 1:
-			m_itemCPUErase[1]->SetPosition(Vector3(30.0f, 0, -75.0f));
-			capsuleItemCPUErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
-			capsuleItemCPUErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
-			break;
-		}
-		m_itemCPUErase[i]->SetCollision(capsuleItemCPUErase[i]);
-	}
-}
 //コース作成
 void ScenePlay::CourseCreate()
 {

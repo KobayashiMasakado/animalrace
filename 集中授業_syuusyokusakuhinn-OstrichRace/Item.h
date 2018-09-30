@@ -30,10 +30,10 @@ public:
 
 	//アイテム作成(プレイヤー)
 	void ItemPlayerCreate(int item);
-	////アイテム効果切れ(プレイヤー)
-	//void ItemPlayerEraseCreate();
+	//アイテム効果切れ(プレイヤー)
+	void ItemPlayerEraseCreate(int item);
 	//アイテム作成(CPU)
 	void ItemCPUCreate(int item);
-	////アイテム効果切れ(CPU)
-	//void ItemCPUEraseCreate();
+	//アイテム効果切れ(CPU)
+	void ItemCPUEraseCreate(int item);
 };

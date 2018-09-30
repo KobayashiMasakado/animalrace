@@ -38,7 +38,6 @@ bool Item::Update(float elapsedTIme)
 /// </summary>
 void Item::Render()
 {
-	//ItemPlayerEraseCreate();
 	//ItemCPUEraseCreate();
 	if (m_game && m_model)
 	{
@@ -90,34 +89,33 @@ void Item::ItemPlayerCreate(int item)
 	}
 	SetCollision(capsule);
 }
-////アイテム効果切れ(プレイヤー)
-//void Item::ItemPlayerEraseCreate()
-//{
-//	Collision::Capsule capsuleItemPlayerErase[ScenePlay::ITEM_SET_NUM];
-//
-//	ModelDate* modelDate = ModelDate::GetInstance();
-//
-//	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
-//	{
-//		SetModel(modelDate->GetItemErasePlayer());
-//      SetUpEffect();
-//		capsuleItemPlayerErase[i].r = 1.5f;                                    //半径
-//		switch (i)
-//		{
-//		case 0:
-//			SetPosition(Vector3(0.0f, 14, 95.0f));
-//			capsuleItemPlayerErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
-//			capsuleItemPlayerErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
-//			break;
-//		case 1:
-//			SetPosition(Vector3(30.0f, 0, -75.0f));
-//			capsuleItemPlayerErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
-//			capsuleItemPlayerErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
-//			break;
-//		}
-//		SetCollision(capsuleItemPlayerErase[i]);
-//	}
-//}
+//アイテム効果切れ(プレイヤー)
+void Item::ItemPlayerEraseCreate(int item)
+{
+	Collision::Capsule capsule;
+	ModelDate* modelDate = ModelDate::GetInstance();
+
+	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
+	{
+		SetModel(modelDate->GetItemErasePlayer());
+//        SetUpEffect();
+		capsule.r = 1.5f;                                    //半径
+		switch (i)
+		{
+		case 0:
+			SetPosition(Vector3(0.0f, 14, 95.0f));
+			capsule.start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
+			capsule.end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
+			break;
+		case 1:
+			SetPosition(Vector3(30.0f, 0, -75.0f));
+			capsule.start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
+			capsule.end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
+			break;
+		}
+		SetCollision(capsule);
+	}
+}
 //アイテム作成(CPU)
 void Item::ItemCPUCreate(int item)
 {
@@ -143,31 +141,30 @@ void Item::ItemCPUCreate(int item)
 	SetCollision(capsule);
 	
 }
-////アイテム効果切れ(CPU)
-//void Item::ItemCPUEraseCreate()
-//{
-//	Collision::Capsule capsuleItemCPUErase[ScenePlay::ITEM_SET_NUM];
-//
-//	ModelDate* modelDate = ModelDate::GetInstance();
-//
-//	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
-//	{
-//		SetModel(modelDate->GetItemEraseCPU());
-//      SetUpEffect();
-//		capsuleItemCPUErase[i].r = 1.5f;                                    //半径
-//		switch (i)
-//		{
-//		case 0:
-//			SetPosition(Vector3(0.0f, 14, 95.0f));
-//			capsuleItemCPUErase[0].start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
-//			capsuleItemCPUErase[0].end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
-//			break;
-//		case 1:
-//			SetPosition(Vector3(30.0f, 0, -75.0f));
-//			capsuleItemCPUErase[1].start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
-//			capsuleItemCPUErase[1].end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
-//			break;
-//		}
-//		SetCollision(capsuleItemCPUErase[i]);
-//	}
-//}
+//アイテム効果切れ(CPU)
+void Item::ItemCPUEraseCreate(int item)
+{
+	Collision::Capsule capsule;
+	ModelDate* modelDate = ModelDate::GetInstance();
+	SetModel(modelDate->GetItemEraseCPU());
+//	SetUpEffect();
+	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
+	{
+		
+		capsule.r = 1.5f;                                    //半径
+		switch (item)
+		{
+		case 0:
+			SetPosition(Vector3(0.0f, 14, 95.0f));
+			capsule.start = Vector3(0.5f, 0.5f, 5.0f);           //境界球の中心
+			capsule.end = Vector3(0.5f, 0.5f, -5.0f);		    //境界球の中心
+			break;
+		case 1:
+			SetPosition(Vector3(30.0f, 0, -75.0f));
+			capsule.start = Vector3(3.5f, 0.5f, 5.0f);           //境界球の中心
+			capsule.end = Vector3(-3.5f, 0.5f, -5.0f);		    //境界球の中心
+			break;
+		}
+		SetCollision(capsule);
+	}
+}

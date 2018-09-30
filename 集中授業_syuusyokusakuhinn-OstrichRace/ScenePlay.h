@@ -94,10 +94,10 @@ private:
 	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 	//アイテム解除
 	//プレイヤー用
-	std::unique_ptr<CollisionCapsule> m_itemPlayerErase[ITEM_SET_NUM];
+	std::unique_ptr<Item> m_itemPlayerErase[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemPlayerEraseModel;
 	//CPU用
-	std::unique_ptr<CollisionCapsule> m_itemCPUErase[ITEM_SET_NUM];
+	std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
 	//2Dスプライト/////////////////////////////
 	//テクスチャハンドル
@@ -198,8 +198,7 @@ public:
 	//CPUの角度を変える
 	void EnemyDirection();;
 
-	//アイテム効果切れ(プレイヤー)
-	void ItemPlayerEraseCreate();
+	
 	//アイテム作成(CPU)
 	void ItemCPUCreate();
 	//アイテム効果切れ(CPU)
