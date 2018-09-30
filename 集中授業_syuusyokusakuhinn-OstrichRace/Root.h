@@ -27,5 +27,7 @@ public:
 	void Render();
 	//エフェクトの設定関数
 	void SetUpEffect();
-	void Root::EnemyHitMoveCreate(int course);
+	void EnemyHitMoveCreate(int course);
+
+	void HitCourseCheck();
 };

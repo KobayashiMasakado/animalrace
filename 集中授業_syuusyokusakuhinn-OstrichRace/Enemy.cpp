@@ -165,3 +165,21 @@ void Enemy::EnemyDirection()
 		}
 	}
 }
+
+void Enemy::CPUItemGet(std::unique_ptr<Item> m_itemCPU[2], std::unique_ptr<Item> m_itemCPUErase[2])
+{
+	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
+	{
+		//CPUƒAƒCƒeƒ€Žæ“¾
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUCheck = true;
+		}
+
+		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUCheck = false;
+		}
+
+	}
+}

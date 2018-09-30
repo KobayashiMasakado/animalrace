@@ -186,3 +186,26 @@ void Root::EnemyHitMoveCreate(int course)
 
 }
 
+////コースとキャラの当たり判定
+//void Root::HitCourseCheck()
+//{
+//	//プレイヤーとコースの当たり判定
+//	static int id;
+//	Vector3 s;
+//	Vector3 playerPos = player->GetPlayer();
+//	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+//	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
+//	{
+//		m_hitPlayerFlag = true;
+//		s.y -= 0.1f;
+//		player->SetPosition(s);
+//	}
+//	for (int i = 0; i < ScenePLay::ENEMY_HITCHECK_NUM; i++)
+//	{
+//		if (Collision::HitCheck_Capsule2Capsule(box[i]->GetCollision()
+//			, cpu->GetCollision()) == true)
+//		{
+//			m_hitCpuFlag = true;
+//		}
+//	}
+//}

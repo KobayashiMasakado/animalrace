@@ -92,15 +92,15 @@ void ScenePlay::Update(float elapsedTime)
 			else if (m_hitPlayerFlag == true)
 			{
 				//プレイヤー操作
-				PlayerOperation(kb);
+				m_player->PlayerOperation(kb);
 			}
 			else if (m_hitPlayerFlag == false)
 			{
 				//プレイヤー操作(コース外)
-				PlayerOperationwOutSide(kb);
+				m_player->PlayerOperationwOutSide(kb);
 			}
 			//アイテム取得
-			PlayerItemGet();
+			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase);
 			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -119,7 +119,7 @@ void ScenePlay::Update(float elapsedTime)
 				m_cpu->EnemyChangeAngle(Enemy::BACK);
 			}
 			//CPUアイテム取得
-			CPUItemGet();
+			m_cpu->CPUItemGet(m_itemCPU,m_itemCPUErase);
 		}
 	}
 	//重力
@@ -384,56 +384,7 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	SetGame2();
 }
-//プレイヤー操作
-void ScenePlay::PlayerOperation(Keyboard::State &kb)
-{
-	//上キーが押されたら
-	if (kb.Up || kb.W)
-	{
-		if (m_itemPlayerCheck == true)
-		{
-			m_player->PlayerMove(Player::FRONT_ITEMGET);
-		}
-		else if (m_itemPlayerCheck == false)
-		{
-			m_player->PlayerMove(Player::FRONT);
-		}
-	}
-	//下キーが押されたら
-	if (kb.Down || kb.S)
-	{
-		//	m_player->PlayerMove(Player::UP_ANGLE);
-	}
-	//右キーが押されたら
-	if (kb.Right || kb.D)
-	{
-		m_player->PlayerMove(Player::RIGHT_TURN);
-	}
-	//左キーが押されたら
-	if (kb.Left || kb.A)
-	{
-		m_player->PlayerMove(Player::LEFT_TURN);
-	}
-}
-//プレイヤー操作(コース外)
-void ScenePlay::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
-{
-	//上キーが押されたら
-	if (kb.Up || kb.W)
-	{
-		m_player->PlayerMove(Player::FBONT_SPEEDDOWN);
-	}
-	//右キーが押されたら
-	if (kb.Right || kb.D)
-	{
-		m_player->PlayerMove(Player::RIGHT_TURN);
-	}
-	//左キーが押されたら
-	if (kb.Left || kb.A)
-	{
-		m_player->PlayerMove(Player::LEFT_TURN);
-	}
-}
+
 //コースとキャラの当たり判定
 void ScenePlay::HitCourseCheck()
 {
@@ -481,53 +432,25 @@ void ScenePlay::HitGoalCheck()
 	}
 
 }
-//アイテム取得(プレイヤー用)
-void ScenePlay::PlayerItemGet()
-{
-	//プレイヤーのアイテム取得
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		//プレイヤー用のアイテム取得
-		if (Collision::HitCheck_Capsule2Capsule(m_itemPlayer[i]->GetCollision(), m_player->GetCollision()))
-		{
-			m_itemPlayerCheck = true;
-		}
-		//プレイヤー用のアイテム効果切れ
-		else if (Collision::HitCheck_Capsule2Capsule(m_itemPlayerErase[i]->GetCollision(), m_player->GetCollision()))
-		{
-			m_itemPlayerCheck = false;
-		}
-		//CPU用のアイテム取得
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_player->GetCollision()))
-		{
-			m_itemPlayerBadCheck = true;
-		}
-		//CPU用のアイテム効果切れ
-		else if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[i]->GetCollision(), m_player->GetCollision()))
-		{
-			m_itemPlayerBadCheck = false;
-		}
-	}
 
-}
 //アイテム取得(CPU用)
-void ScenePlay::CPUItemGet()
-{
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		//CPUアイテム取得
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_cpu->GetCollision()))
-		{
-			m_itemCPUCheck = true;
-		}
-
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()))
-		{
-			m_itemCPUCheck = false;
-		}
-	
-	}
-}
+//void ScenePlay::CPUItemGet()
+//{
+//	for (int i = 0; i < ITEM_SET_NUM; i++)
+//	{
+//		//CPUアイテム取得
+//		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_cpu->GetCollision()))
+//		{
+//			m_itemCPUCheck = true;
+//		}
+//
+//		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()))
+//		{
+//			m_itemCPUCheck = false;
+//		}
+//	
+//	}
+//}
 //カウントダウン
 void ScenePlay::CountDownStart()
 {

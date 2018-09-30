@@ -10,6 +10,8 @@
 #include "DeviceResources.h"
 #include "CollisionCapsule.h"
 
+#include "Item.h"
+
 class Enemy : public CollisionCapsule
 {
 public:
@@ -49,4 +51,6 @@ public:
 	void EnemyChangeAngle(Direction dir);
 
 	void EnemyDirection();
+
+	void CPUItemGet(std::unique_ptr<Item> itemCPU[2], std::unique_ptr<Item> itemCPUErase[2]);
 };

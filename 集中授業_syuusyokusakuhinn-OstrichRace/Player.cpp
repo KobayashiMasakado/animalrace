@@ -14,6 +14,8 @@ Player::Player()
 	m_move = 0;
 	m_dir = 0.0f;
 	m_z = 0.0f;
+	m_itemPlayerCheck = false;
+	m_itemPlayerBadCheck = false;
 }
 /// <summary>
 /// デストラクタ
@@ -140,36 +142,88 @@ void Player::PlayerCreate()
 	SetCollision(capsulePlayer);
 }
 
-//void Player::PlayerOperation(DirectX::Keyboard::State &kb)
-//{
-//	//上キーが押されたら
-//	if (kb.Up || kb.W)
-//	{
-//		/*if (m_itemPlayerCheck == true)
-//		{
-//			PlayerMove(Player::FRONT_ITEMGET);
-//		}
-//		else if (m_itemPlayerCheck == false)
-//		{*/
-//			PlayerMove(Player::FRONT);
-//		//}
-//	}
-//	//下キーが押されたら
-//	if (kb.Down || kb.S)
-//	{
-//		//	m_player->PlayerMove(Player::UP_ANGLE);
-//	}
-//	//右キーが押されたら
-//	if (kb.Right || kb.D)
-//	{
-//		PlayerMove(Player::RIGHT_TURN);
-//	}
-//	//左キーが押されたら
-//	if (kb.Left || kb.A)
-//	{
-//		PlayerMove(Player::LEFT_TURN);
-//	}
-//}
+void Player::PlayerOperation(DirectX::Keyboard::State &kb)
+{
+	//上キーが押されたら
+	if (kb.Up || kb.W)
+	{
+		if (m_itemPlayerCheck == true)
+		{
+			PlayerMove(Player::FRONT_ITEMGET);
+		}
+		else if (m_itemPlayerCheck == false)
+		{
+			PlayerMove(Player::FRONT);
+		}
+	}
+	//下キーが押されたら
+	if (kb.Down || kb.S)
+	{
+		//	m_player->PlayerMove(Player::UP_ANGLE);
+	}
+	//右キーが押されたら
+	if (kb.Right || kb.D)
+	{
+		PlayerMove(Player::RIGHT_TURN);
+	}
+	//左キーが押されたら
+	if (kb.Left || kb.A)
+	{
+		PlayerMove(Player::LEFT_TURN);
+	}
+}
+
+//プレイヤー操作(コース外)
+void Player::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
+{
+	//上キーが押されたら
+	if (kb.Up || kb.W)
+	{
+		PlayerMove(Player::FBONT_SPEEDDOWN);
+	}
+	//右キーが押されたら
+	if (kb.Right || kb.D)
+	{
+		PlayerMove(Player::RIGHT_TURN);
+	}
+	//左キーが押されたら
+	if (kb.Left || kb.A)
+	{
+		PlayerMove(Player::LEFT_TURN);
+	}
+}
+
+void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
+                           std::unique_ptr<Item> itemPlayerErase[2],
+                           std::unique_ptr<Item> itemCPU[2],
+                           std::unique_ptr<Item> itemCPUErase[2])
+{
+	//プレイヤーのアイテム取得
+	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
+	{
+		//プレイヤー用のアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(itemPlayer[i]->GetCollision(), GetCollision()))
+		{
+			m_itemPlayerCheck = true;
+		}
+		//プレイヤー用のアイテム効果切れ
+		else if (Collision::HitCheck_Capsule2Capsule(itemPlayerErase[i]->GetCollision(), GetCollision()))
+		{
+			m_itemPlayerCheck = false;
+		}
+		//CPU用のアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(itemCPU[i]->GetCollision(), GetCollision()))
+		{
+			m_itemPlayerBadCheck = true;
+		}
+		//CPU用のアイテム効果切れ
+		else if (Collision::HitCheck_Capsule2Capsule(itemCPUErase[i]->GetCollision(), GetCollision()))
+		{
+			m_itemPlayerBadCheck = false;
+		}
+	}
+
+}
 
 void Player::SetUpEffect()
 {

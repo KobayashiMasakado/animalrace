@@ -11,6 +11,7 @@
 #include "DeviceResources.h"
 
 #include "CollisionCapsule.h"
+#include "Item.h"
 
 class Player : public CollisionCapsule
 {
@@ -40,6 +41,9 @@ private:
 	// 移動情報（ビット）
 	int m_move;
 
+	bool m_itemPlayerCheck;
+	bool m_itemPlayerBadCheck;
+
 public:
 	//コンストラクタ
 	Player();
@@ -58,7 +62,16 @@ public:
 	void PlayerMove(Direction dir);
 
 	void PlayerCreate();
-	
+
+	void PlayerOperation(DirectX::Keyboard::State &kb);
+
+	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
+
+	void PlayerItemGet(std::unique_ptr<Item> itemPlayer[2], 
+		               std::unique_ptr<Item> itemPlayerErase[2],
+		               std::unique_ptr<Item> itemCPU[2], 
+		               std::unique_ptr<Item> itemCPUErase[2]);
+
 	float GetDirection()
 	{
 		return m_dir;
