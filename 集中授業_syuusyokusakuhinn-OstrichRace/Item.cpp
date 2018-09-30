@@ -45,6 +45,6 @@ void Item::Render()
 			m_world, m_game->GetView(),
 			m_game->GetProjection());
 		//デバッグ用コリジョンモデルの描画
-		DrawCollision();
+	//	DrawCollision();
 	}
 }

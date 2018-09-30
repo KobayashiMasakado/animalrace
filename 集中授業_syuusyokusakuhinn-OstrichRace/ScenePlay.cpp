@@ -163,19 +163,19 @@ void ScenePlay::Render()
 //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-		m_floorMesh->DrawCollision(context, m_view, m_projection);
+//		m_floorMesh->DrawCollision(context, m_view, m_projection);
 	}
 	//ゴールの描画
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		m_goal[i]->Render();
-		m_goal[i]->DrawCollision();
+//		m_goal[i]->DrawCollision();
 	}
 	//当たり判定の描画
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i]->Render();
-		m_box[i]->DrawCollision();
+//		m_box[i]->DrawCollision();
 	}
 	////////////////////////////
 	//3Dスプライト 
@@ -296,14 +296,16 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
 
 	ModelDate* modelDate = ModelDate::GetInstance();
-	modelDate->Create(device);
+//	modelDate->Create(device);
+
+	
 
 	////プレイヤー作成
 	m_player->PlayerCreate();
 //	m_objCreate->PlayerCreate(m_player, modelDate->GetPlayer(),m_taskManager);
 	////CPU作成
 	//CPUCreate();
-	m_objCreate->CPUCreate(m_cpu, modelDate->GetCPU(), m_taskManager);
+//	m_objCreate->CPUCreate(m_cpu, modelDate->GetCPU(), m_taskManager);
 
 	//アイテム作成(プレイヤー)
 	ItemPlayerCreate();
@@ -369,7 +371,7 @@ void ScenePlay::CreateDeviceDependentResources()
 		}
 	});
 
-	
+	SetGame2();
 }
 //プレイヤー操作
 void ScenePlay::PlayerOperation(Keyboard::State &kb)
@@ -551,6 +553,34 @@ void ScenePlay::RaceEnd()
 	}
 	
 }
+
+void ScenePlay::SetGame2()
+{
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemPlayer[i]->SetGame(m_game);
+	
+		m_itemPlayerErase[i]->SetGame(m_game);
+	
+		m_itemCPU[i]->SetGame(m_game);
+	
+		m_itemCPUErase[i]->SetGame(m_game);
+
+	}
+	m_root->SetGame(m_game);
+
+	for (int i = 0; i < GOAL_SET_NUM; i++)
+	{
+		m_goal[i]->SetGame(m_game);
+	}
+
+	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	{
+		m_box[i]->SetGame(m_game);
+	}
+
+	m_player->SetGame(m_game);
+}
 //CPUの方向を変えて移動させる
 void ScenePlay::EnemyDirection()
 {
@@ -581,7 +611,7 @@ void ScenePlay::ItemPlayerCreate()
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayer[i] = std::make_unique<Item>();
-		m_itemPlayer[i]->SetGame(m_game);
+		//m_itemPlayer[i]->SetGame(m_game);
 		m_itemPlayer[i]->SetModel(m_itemPlayerModel.get());
 		// カプセル型のコリジョンをつける
 		capsuleItemPlayer[i].r = 1.5f;                                    //半径
@@ -609,7 +639,7 @@ void ScenePlay::ItemPlayerEraseCreate()
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayerErase[i] = std::make_unique<CollisionCapsule>();
-		m_itemPlayerErase[i]->SetGame(m_game);
+	//	m_itemPlayerErase[i]->SetGame(m_game);
 		m_itemPlayerErase[i]->SetModel(m_itemPlayerEraseModel.get());
 		capsuleItemPlayerErase[i].r = 1.5f;                                    //半径
 		switch (i)
@@ -636,7 +666,7 @@ void ScenePlay::ItemCPUCreate()
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemCPU[i] = std::make_unique<Item>();
-		m_itemCPU[i]->SetGame(m_game);
+	//	m_itemCPU[i]->SetGame(m_game);
 		m_itemCPU[i]->SetModel(m_itemCPUModel.get());
 		capsuleItemCPU[i].r = 1.5f;                                    //半径
 		switch (i)
@@ -663,7 +693,7 @@ void ScenePlay::ItemCPUEraseCreate()
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemCPUErase[i] = std::make_unique<CollisionCapsule>();
-		m_itemCPUErase[i]->SetGame(m_game);
+	//	m_itemCPUErase[i]->SetGame(m_game);
 		m_itemCPUErase[i]->SetModel(m_itemCPUEraseModel.get());
 		capsuleItemCPUErase[i].r = 1.5f;                                    //半径
 		switch (i)
@@ -687,7 +717,7 @@ void ScenePlay::CourseCreate()
 {
 	//道の作成												      
 	m_root = m_taskManager.AddTask<Obj3D>();
-	m_root->SetGame(m_game);
+//	m_root->SetGame(m_game);
 	m_root->SetModel(m_rootModel.get());
 
 }
@@ -700,7 +730,7 @@ void ScenePlay::GoalCreate()
 	{
 		m_goal[i] = std::make_unique<CollisionCapsule>();
 
-		m_goal[i]->SetGame(m_game);
+//		m_goal[i]->SetGame(m_game);
 		m_goal[i]->SetModel(m_goalModel.get());
 		capsuleGoal[i].r = 0.6f;
 		// カプセル型のコリジョンをつける
@@ -749,7 +779,7 @@ void ScenePlay::EnemyHitMoveCreate()
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i] = std::make_unique<CollisionCapsule>();
-		m_box[i]->SetGame(m_game);
+//		m_box[i]->SetGame(m_game);
 
 		capsulebox[i].r = 5.0f;
 		switch (i)
@@ -867,3 +897,4 @@ void ScenePlay::EnemyHitMoveCreate()
 		m_box[i]->SetCollision(capsulebox[i]);
 	}
 }
+

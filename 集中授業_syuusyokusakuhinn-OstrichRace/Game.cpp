@@ -220,7 +220,7 @@ void Game::CreateDeviceDependentResources()
 	ID3D11DeviceContext* context =  m_deviceResources->GetD3DDeviceContext();
 
 	ModelDate* modelData = ModelDate::GetInstance();
-	//modelData->Create(device);
+	modelData->Create(device);
 	/*auto context = m_deviceResources->GetD3DDeviceContext();
 	auto device = m_deviceResources->GetD3DDevice();*/
 

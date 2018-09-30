@@ -191,6 +191,9 @@ public:
 	//レース結果
 	void RaceEnd();
 
+	//ゲームをSet
+	void SetGame2();
+
 	//CPUの角度を変える
 	void EnemyDirection();;
 	//CPU作成

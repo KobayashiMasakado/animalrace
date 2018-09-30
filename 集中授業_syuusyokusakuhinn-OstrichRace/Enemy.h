@@ -42,7 +42,7 @@ public:
 	bool Update(float elapsedTime);
 	//•`‰æ
 	void Render();
-
+	void CPUCreate();
 	//CPU‚ª‘–‚é
 	void EnemyChangeAngle(Direction dir);
 
