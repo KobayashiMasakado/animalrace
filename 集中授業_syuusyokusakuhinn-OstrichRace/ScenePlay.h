@@ -77,7 +77,7 @@ private:
 	Enemy* m_cpu;
 //	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 
-	std::unique_ptr<CollisionCapsule> m_box[ENEMY_HITCHECK_NUM];
+	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
 
 	//Root* m_root;
