@@ -96,7 +96,7 @@ bool Player::Update(float elapsedTime)
 	//ƒ[ƒ‹ƒhs—ñ‚ğì¬‚·‚é
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
 
-	//PlayerOperation(kb);
+	PlayerCreate();
 
 	return true;
 }

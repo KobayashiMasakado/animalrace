@@ -300,7 +300,7 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	////ƒvƒŒƒCƒ„[ì¬
 	m_player->PlayerCreate();
-	m_objCreate->PlayerCreate(m_player, modelDate->GetPlayer(),m_taskManager);
+//	m_objCreate->PlayerCreate(m_player, modelDate->GetPlayer(),m_taskManager);
 	////CPUì¬
 	//CPUCreate();
 	m_objCreate->CPUCreate(m_cpu, modelDate->GetCPU(), m_taskManager);
