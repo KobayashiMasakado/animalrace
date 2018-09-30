@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Game.h"
 
+#include "ModelDate.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 /// <summary>
@@ -119,6 +121,23 @@ void Player::PlayerMove(Direction dir)
 {
 	//ビットフラグ
 	m_move |= (1 << dir);
+}
+
+void Player::PlayerCreate()
+{
+	Collision::Capsule capsulePlayer;
+
+	ModelDate* modelDate = ModelDate::GetInstance();
+
+	SetPosition(Vector3(-93.5f, 0, 1.5f));
+	SetGame(m_game);
+	SetModel(modelDate->GetPlayer());
+	SetUpEffect();
+	// カプセル型のコリジョンをつける
+	capsulePlayer.start = Vector3(0.3f, 0.0f, 0.2f); 		//境界球の中心
+	capsulePlayer.end = Vector3(0.3f, 3.0f, 0.2f); 		    //境界球の中心
+	capsulePlayer.r = 0.6f;							     	//半径
+	SetCollision(capsulePlayer);
 }
 
 //void Player::PlayerOperation(DirectX::Keyboard::State &kb)

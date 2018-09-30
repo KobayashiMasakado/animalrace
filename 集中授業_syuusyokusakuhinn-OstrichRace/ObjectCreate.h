@@ -10,7 +10,7 @@ private:
 	TaskManager m_taskManager;
 
 public:
-	void ObjectCreate::PlayerCreate(Player* player, DirectX::Model* playerModel, TaskManager& taskManager);
+	void PlayerCreate(Player* player, DirectX::Model* playerModel, TaskManager& taskManager);
 
-	void ObjectCreate::CPUCreate(Enemy* cpu, DirectX::Model* cpuModel, TaskManager& taskManager);
+	void CPUCreate(Enemy* cpu, DirectX::Model* cpuModel, TaskManager& taskManager);
 };

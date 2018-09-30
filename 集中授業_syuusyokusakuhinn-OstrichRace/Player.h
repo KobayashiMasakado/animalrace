@@ -57,6 +57,7 @@ public:
 	//ƒvƒŒƒCƒ„[‚ª‘–‚é
 	void PlayerMove(Direction dir);
 
+	void PlayerCreate(/*Player* player, DirectX::Model* playerModel, TaskManager& taskManager*/);
 	
 	float GetDirection()
 	{
