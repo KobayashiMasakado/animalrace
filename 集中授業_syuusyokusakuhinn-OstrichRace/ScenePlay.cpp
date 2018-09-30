@@ -48,6 +48,7 @@ void ScenePlay::Update(float elapsedTime)
 	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
+	m_root->Update(elapsedTime);
 	//アイテムの更新
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -160,6 +161,8 @@ void ScenePlay::Render()
 		m_itemCPUErase[i]->Render();
 //		m_itemCPUErase[i]->DrawCollision();
 	}
+	//コースの作成
+	m_root->Render();
 //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -285,7 +288,10 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_objCreate = new ObjectCreate();
 	m_player = new Player();
 	m_cpu = new Enemy();
-
+	/*for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemPlayer[i] = new Item[2];
+	}*/
 	// モデルを読み込み
 	// エフェクトファクトリー 
 	EffectFactory fx(device);
@@ -293,18 +299,24 @@ void ScenePlay::CreateDeviceDependentResources()
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
 	/*m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
 	m_itemCPUModel = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);*/
-	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
+//	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
 
 	ModelDate* modelDate = ModelDate::GetInstance();
 
 	//アイテム作成(プレイヤー)
-	ItemPlayerCreate();
-
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemPlayer[i] = std::make_unique<Item>();
+		m_itemPlayer[i]->ItemPlayerCreate(i);
+	}
+	//アイテム作成(CPU)
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		m_itemCPU[i] = std::make_unique<Item>();
+		m_itemCPU[i]->ItemCPUCreate(i);
+	}
 	//アイテム効果切れ(プレイヤー)
 	ItemPlayerEraseCreate();
-
-	//アイテム作成(CPU)
-	ItemCPUCreate();
 
 	//アイテム効果切れ(CPU)
 	ItemCPUEraseCreate();
@@ -602,33 +614,15 @@ void ScenePlay::EnemyDirection()
 	}
 }
 
-//アイテム作成(プレイヤー)
-void ScenePlay::ItemPlayerCreate()
-{
-	Collision::Capsule capsuleItemPlayer[ITEM_SET_NUM];
-
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		m_itemPlayer[i] = std::make_unique<Item>();
-		m_itemPlayer[i]->SetModel(m_itemPlayerModel.get());
-		// カプセル型のコリジョンをつける
-		capsuleItemPlayer[i].r = 1.5f;                                    //半径
-		switch (i)
-		{
-		case 0:
-			m_itemPlayer[0]->SetPosition(Vector3(-93.5f, 0, 40.0f));
-			capsuleItemPlayer[0].start = Vector3(0.5f, 0.5f, 0.5f);       //境界球の中心
-			capsuleItemPlayer[0].end = Vector3(0.5f, 0.5f, 0.5f);		    //境界球の中心
-			break;
-		case 1:
-			m_itemPlayer[1]->SetPosition(Vector3(94.0f, 0, 10.0f));
-			capsuleItemPlayer[1].start = Vector3(1.0f, 1.0f, 1.0f);           //境界球の中心
-			capsuleItemPlayer[1].end = Vector3(1.0f, 1.0f, 1.0f);		    //境界球の中心
-			break;
-		}
-		m_itemPlayer[i]->SetCollision(capsuleItemPlayer[i]);
-	}
-}
+////アイテム作成(プレイヤー)
+//void ScenePlay::ItemPlayerCreate()
+//{
+//	for (int i = 0; i < ITEM_SET_NUM; i++)
+//	{
+//		m_itemPlayer[i] = std::make_unique<Item>();
+//		m_itemPlayer[i]->ItemPlayerCreate(i);
+//	}
+//}
 //アイテム効果切れ(プレイヤー)
 void ScenePlay::ItemPlayerEraseCreate()
 {
@@ -637,8 +631,8 @@ void ScenePlay::ItemPlayerEraseCreate()
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayerErase[i] = std::make_unique<CollisionCapsule>();
-	//	m_itemPlayerErase[i]->SetGame(m_game);
-	//	m_itemPlayerErase[i]->SetModel(m_itemPlayerEraseModel.get());
+		//m_itemPlayerErase[i]->SetGame(m_game);
+		m_itemPlayerErase[i]->SetModel(m_itemPlayerEraseModel.get());
 		capsuleItemPlayerErase[i].r = 1.5f;                                    //半径
 		switch (i)
 		{
@@ -657,32 +651,14 @@ void ScenePlay::ItemPlayerEraseCreate()
 	}
 }
 //アイテム作成(CPU)
-void ScenePlay::ItemCPUCreate()
-{
-	Collision::Capsule capsuleItemCPU[ITEM_SET_NUM];
-
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-		m_itemCPU[i] = std::make_unique<Item>();
-	//	m_itemCPU[i]->SetGame(m_game);
-		m_itemCPU[i]->SetModel(m_itemCPUModel.get());
-		capsuleItemCPU[i].r = 1.5f;                                    //半径
-		switch (i)
-		{
-		case 0:
-			m_itemCPU[0]->SetPosition(Vector3(-98.5f, 0, 40.0f));
-			capsuleItemCPU[0].start = Vector3(0.5f, 0.5f, 0.5f);       //境界球の中心
-			capsuleItemCPU[0].end = Vector3(0.5f, 0.5f, 0.5f);		    //境界球の中心
-			break;
-		case 1:
-			m_itemCPU[1]->SetPosition(Vector3(88.0f, 0, 10.0f));
-			capsuleItemCPU[1].start = Vector3(1.0f, 1.0f, 1.0f);           //境界球の中心
-			capsuleItemCPU[1].end = Vector3(1.0f, 1.0f, 1.0f);		    //境界球の中心
-			break;
-		}
-		m_itemCPU[i]->SetCollision(capsuleItemCPU[i]);
-	}
-}
+//void ScenePlay::ItemCPUCreate()
+//{
+//	for (int i = 0; i < ITEM_SET_NUM; i++)
+//	{
+//		m_itemCPU[i] = std::make_unique<Item>();
+//		m_itemCPU[i]->ItemCPUCreate(i);
+//	}
+//}
 //アイテム効果切れ(CPU)
 void ScenePlay::ItemCPUEraseCreate()
 {

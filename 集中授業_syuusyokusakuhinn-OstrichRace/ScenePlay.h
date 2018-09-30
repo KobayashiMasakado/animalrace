@@ -198,8 +198,6 @@ public:
 	//CPUの角度を変える
 	void EnemyDirection();;
 
-	//アイテム作成(プレイヤー)
-	void ItemPlayerCreate();
 	//アイテム効果切れ(プレイヤー)
 	void ItemPlayerEraseCreate();
 	//アイテム作成(CPU)

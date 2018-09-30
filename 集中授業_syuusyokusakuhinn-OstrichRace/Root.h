@@ -27,4 +27,6 @@ public:
 	void Render();
 	//エフェクトの設定関数
 	void SetUpEffect();
+
+	void CourseCreate();
 };

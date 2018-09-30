@@ -25,12 +25,15 @@ public:
 	bool Update(float elapsedTIme);
 	//描画
 	void Render();
+	//エフェクトの設定関数
+	void SetUpEffect();
+
 	//アイテム作成(プレイヤー)
-	void ItemPlayerCreate();
+	void ItemPlayerCreate(int item);
 	////アイテム効果切れ(プレイヤー)
 	//void ItemPlayerEraseCreate();
 	//アイテム作成(CPU)
-	void ItemCPUCreate();
+	void ItemCPUCreate(int item);
 	////アイテム効果切れ(CPU)
 	//void ItemCPUEraseCreate();
 };

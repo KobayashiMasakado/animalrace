@@ -25,4 +25,5 @@ void ModelDate::Create(ID3D11Device* device)
 	m_cpuModel        = Model::CreateFromCMO(device, L"Resources\\Models\\Tiger.cmo", fx);
 	m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
 	m_itemCPUModel    = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);
+	m_rootModel       = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
 }

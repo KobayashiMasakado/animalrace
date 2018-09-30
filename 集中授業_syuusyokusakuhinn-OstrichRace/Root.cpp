@@ -6,6 +6,8 @@
 #include <SimpleMath.h>
 #include "Game.h"
 
+#include "ModelDate.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 /// <summary>
@@ -37,6 +39,7 @@ bool Root::Update(float elapsedTIme)
 /// </summary>
 void Root::Render()
 {
+	CourseCreate();
 	if (m_game && m_model)
 	{
 		//ƒ‚ƒfƒ‹‚Ì•`‰æ
@@ -59,4 +62,13 @@ void Root::SetUpEffect()
 			lights->SetPerPixelLighting(true);
 		}
 	});
+}
+
+void Root::CourseCreate()
+{
+	ModelDate* modelDate = ModelDate::GetInstance();
+
+	//“¹‚Ìì¬												      
+	SetGame(m_game);
+	SetModel(modelDate->GetRoot());
 }
