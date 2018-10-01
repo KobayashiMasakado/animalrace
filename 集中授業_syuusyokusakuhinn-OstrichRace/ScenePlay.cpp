@@ -27,15 +27,15 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-//	m_gameCamera = std::make_unique<GameCamera>();
+//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+	m_gameCamera = std::make_unique<GameCamera>();
 
 }
 
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-	m_debugCamera->Update();
+//	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -171,17 +171,17 @@ void ScenePlay::Render()
 
 	//追従カメラ
 	// ビュー行列の作成
-	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	//Vector3 target;
+	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	Vector3 target;
 
-	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	//cameraPos = Vector3::Transform(cameraPos, rotY);
-	//target = m_player->GetPlayer();
-	//m_gameCamera->SetTarget(target);
-	//m_gameCamera->SetEye(target + cameraPos);
-	//m_view = m_gameCamera->GetViewMatrix();
+	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	cameraPos = Vector3::Transform(cameraPos, rotY);
+	target = m_player->GetPlayer();
+	m_gameCamera->SetTarget(target);
+	m_gameCamera->SetEye(target + cameraPos);
+	m_view = m_gameCamera->GetViewMatrix();
 
-	m_view = m_debugCamera->GetCameraMatrix();
+//	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	//プレイヤーの描画
 	m_player->Render();
@@ -353,6 +353,11 @@ void ScenePlay::CreateDeviceDependentResources()
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
 	ModelDate* modelDate = ModelDate::GetInstance();
+
+	//プレイヤー作成
+	m_player->PlayerCreate();
+	//CPU作成
+	m_cpu->CPUCreate();
 
 	//アイテム作成(プレイヤー)
 	for (int i = 0; i < ITEM_SET_NUM; i++)

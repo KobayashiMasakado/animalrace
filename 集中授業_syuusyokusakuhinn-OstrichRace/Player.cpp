@@ -88,15 +88,15 @@ bool Player::Update(float elapsedTime)
 	m_move = 0;
 
 	//オブジェクトを移動する
-	m_rotation = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), m_dir);/*
-	m_rotationZ = Quaternion::CreateFromAxisAngle(Vector3(1.0f, 0.0f, 0.0f), m_z);*/
-	m_vec = Vector3::Transform(m_vec, m_rotation);/*
-	m_vecZ = Vector3::Transform(m_vec, m_rotationZ);*/
+	m_rotation = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), m_dir);
+	m_vec = Vector3::Transform(m_vec, m_rotation);
 	
 	m_position += (m_vec);
 
 	//ワールド行列を作成する
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
+
+//	PlayerCreate();
 
 	return true;
 }
@@ -105,7 +105,7 @@ bool Player::Update(float elapsedTime)
 /// </summary>
 void Player::Render()
 {
-	PlayerCreate();
+	
 	if (m_game && m_model)
 	{
 		//モデルの描画
@@ -147,19 +147,19 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 	//上キーが押されたら
 	if (kb.Up || kb.W)
 	{
-		if (m_itemPlayerCheck == true)
+	/*	if (m_itemPlayerCheck == true)
 		{
 			PlayerMove(Player::FRONT_ITEMGET);
 		}
 		else if (m_itemPlayerCheck == false)
-		{
+		{*/
 			PlayerMove(Player::FRONT);
-		}
+	//	}
 	}
 	//下キーが押されたら
 	if (kb.Down || kb.S)
 	{
-		//	m_player->PlayerMove(Player::UP_ANGLE);
+		PlayerMove(Player::FRONT);
 	}
 	//右キーが押されたら
 	if (kb.Right || kb.D)
