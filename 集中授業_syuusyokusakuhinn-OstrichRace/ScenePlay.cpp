@@ -192,10 +192,10 @@ void ScenePlay::Render()
 	{
 		m_itemPlayer[i]->Render();
 		m_itemPlayerErase[i]->Render();
-//		m_itemPlayerErase[i]->DrawCollision();
+	//	m_itemPlayerErase[i]->DrawCollision();
 		m_itemCPU[i]->Render();
 		m_itemCPUErase[i]->Render();
-//		m_itemCPUErase[i]->DrawCollision();
+	//	m_itemCPUErase[i]->DrawCollision();
 	}
 	//コースの作成
 //	m_root->Render();
@@ -359,9 +359,9 @@ void ScenePlay::CreateDeviceDependentResources()
 	//CPU作成
 	m_cpu->CPUCreate();
 
-	//アイテム作成(プレイヤー)
+	
 	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
+	{//アイテム作成(プレイヤー)
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->ItemPlayerCreate(i);
 	

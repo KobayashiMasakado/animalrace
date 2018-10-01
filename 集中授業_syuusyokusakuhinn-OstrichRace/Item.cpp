@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "Item.h"
+
 #include <Effects.h> 
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h> 
 #include <SimpleMath.h>
 #include "Game.h"
+
 #include "ModelDate.h"
 
 using namespace DirectX;
@@ -93,18 +95,17 @@ void Item::ItemPlayerEraseCreate(int item)
 {
 	Collision::Capsule capsule;
 	ModelDate* modelDate = ModelDate::GetInstance();
-
+	capsule.r = 1.5f;                                    //”¼Œa
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
 	{
 		SetModel(modelDate->GetItemErasePlayer());
-//        SetUpEffect();
-		capsule.r = 1.5f;                                    //”¼Œa
-		switch (i)
+   
+		switch (item)
 		{
 		case 0:
 			SetPosition(Vector3(0.0f, 14, 95.0f));
-			capsule.start = Vector3(0.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(0.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
+			capsule.start = Vector3(0.5f, 0.5f, 7.0f);           //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(-0.5f, 0.5f, -7.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
 			SetPosition(Vector3(30.0f, 0, -75.0f));
@@ -146,17 +147,18 @@ void Item::ItemCPUEraseCreate(int item)
 	Collision::Capsule capsule;
 	ModelDate* modelDate = ModelDate::GetInstance();
 	SetModel(modelDate->GetItemEraseCPU());
-//	SetUpEffect();
+
+	capsule.r = 1.5f;                  //”¼Œa
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
 	{
 		
-		capsule.r = 1.5f;                                    //”¼Œa
+		                                   
 		switch (item)
 		{
 		case 0:
 			SetPosition(Vector3(0.0f, 14, 95.0f));
-			capsule.start = Vector3(0.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(0.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
+			capsule.start = Vector3(0.5f, 0.5f, 15.0f);           //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(0.5f, 0.5f, -15.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
 			SetPosition(Vector3(30.0f, 0, -75.0f));
