@@ -147,14 +147,14 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 	//上キーが押されたら
 	if (kb.Up || kb.W)
 	{
-	/*	if (m_itemPlayerCheck == true)
+		if (m_itemPlayerCheck == true)
 		{
 			PlayerMove(Player::FRONT_ITEMGET);
 		}
 		else if (m_itemPlayerCheck == false)
-		{*/
+		{
 			PlayerMove(Player::FRONT);
-	//	}
+		}
 	}
 	//下キーが押されたら
 	if (kb.Down || kb.S)

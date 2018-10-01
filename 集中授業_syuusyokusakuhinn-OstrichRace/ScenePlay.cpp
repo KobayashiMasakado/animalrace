@@ -202,7 +202,7 @@ void ScenePlay::Render()
 //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-//		m_floorMesh->DrawCollision(context, m_view, m_projection);
+		m_floorMesh->DrawCollision(context, m_view, m_projection);
 	}
 	//ゴールの描画
 	for (int i = 0; i < GOAL_SET_NUM; i++)
@@ -364,22 +364,16 @@ void ScenePlay::CreateDeviceDependentResources()
 	{
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->ItemPlayerCreate(i);
-	}
+	
 	//アイテム作成(CPU)
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
 		m_itemCPU[i] = std::make_unique<Item>();
 		m_itemCPU[i]->ItemCPUCreate(i);
-	}
+	
 	//アイテム効果切れ(プレイヤー)
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
 		m_itemPlayerErase[i] = std::make_unique<Item>();
 		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
-	}
+	
 	//アイテム効果切れ(CPU)
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
 		m_itemCPUErase[i] = std::make_unique<Item>();
 		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
 	}
