@@ -27,15 +27,15 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-//	m_gameCamera = std::make_unique<GameCamera>();
+//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+	m_gameCamera = std::make_unique<GameCamera>();
 
 }
 
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-	m_debugCamera->Update();
+//	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -171,17 +171,17 @@ void ScenePlay::Render()
 
 	//追従カメラ
 	// ビュー行列の作成
-	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	//Vector3 target;
+	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	Vector3 target;
 
-	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	//cameraPos = Vector3::Transform(cameraPos, rotY);
-	//target = m_player->GetPlayer();
-	//m_gameCamera->SetTarget(target);
-	//m_gameCamera->SetEye(target + cameraPos);
-	//m_view = m_gameCamera->GetViewMatrix();
+	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	cameraPos = Vector3::Transform(cameraPos, rotY);
+	target = m_player->GetPlayer();
+	m_gameCamera->SetTarget(target);
+	m_gameCamera->SetEye(target + cameraPos);
+	m_view = m_gameCamera->GetViewMatrix();
 
-	m_view = m_debugCamera->GetCameraMatrix();
+	//m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	//プレイヤーの描画
 	m_player->Render();
@@ -395,6 +395,8 @@ void ScenePlay::CreateDeviceDependentResources()
 	//	m_box[i]->EnemyHitMoveCreate(i);
 	//}
 	EnemyHitMoveCreate();
+
+//	GoalCreate();
 	// モデルをロードしてモデルハンドルを取得する 
 	//空
 	m_skydome = Model::CreateFromCMO(device, L"Resources\\Models\\savanna.cmo", fx);
@@ -588,3 +590,52 @@ void ScenePlay::EnemyHitMoveCreate()
 		m_box[i]->SetCollision(capsule[i]);
 	}
 }
+////ゴール作成
+//void ScenePlay::GoalCreate()
+//{
+//	Collision::Capsule capsule[GOAL_SET_NUM];
+//	ModelDate* modelDate = ModelDate::GetInstance();
+//	
+//	for (int i = 0; i < GOAL_SET_NUM; i++)
+//	{
+//		m_goal[i] = std::make_unique<Goal>();
+//		m_goal[i]->SetGame(m_game);
+//		capsule[i].r = 0.6f;
+//		// カプセル型のコリジョンをつける
+//		switch (i)
+//		{
+//		case 0:
+//			m_goal[0]->SetPosition(Vector3(-96.0f, 0, 5.0f));
+//			capsule[0].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
+//			capsule[0].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
+//			break;
+//		case 1:
+//			m_goal[1]->SetPosition(Vector3(0, 10, 95.0f));
+//			capsule[1].start = Vector3(0.0f, 0.0f, 5.5f);           //境界球の中心
+//			capsule[1].end = Vector3(0.0f, 0.0f, -5.5f);		    //境界球の中心
+//			break;
+//		case 2:
+//			m_goal[2]->SetPosition(Vector3(93.0f, 0, 0.0f));
+//			capsule[2].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
+//			capsule[2].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
+//			break;
+//		case 3:
+//			m_goal[3]->SetPosition(Vector3(10.0f, 0, 0));
+//			capsule[3].start = Vector3(6.0f, 0.0f, 0.0f);           //境界球の中心
+//			capsule[3].end = Vector3(-6.0f, 0.0f, 0.0f);		    //境界球の中心
+//			break;
+//		case 4:
+//			m_goal[4]->SetPosition(Vector3(-40.0f, 10, -10));
+//			capsule[4].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
+//			capsule[4].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
+//			break;
+//		case 5:
+//			m_goal[5]->SetPosition(Vector3(-96.0f, 0, -3.0f));
+//			capsule[5].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
+//			capsule[5].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
+//			break;
+//		}
+//
+//		m_goal[i]->SetCollision(capsule[i]);
+//	}
+//}

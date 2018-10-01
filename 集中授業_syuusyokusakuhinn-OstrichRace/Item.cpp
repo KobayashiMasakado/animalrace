@@ -109,8 +109,8 @@ void Item::ItemPlayerEraseCreate(int item)
 			break;
 		case 1:
 			SetPosition(Vector3(30.0f, 0, -75.0f));
-			capsule.start = Vector3(3.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(-3.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
+			capsule.start = Vector3(3.5f, 0.5f, 6.0f);           //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(-3.5f, 0.5f, -6.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		}
 		SetCollision(capsule);

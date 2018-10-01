@@ -229,9 +229,6 @@
     <MeshContentTask Include="FBX\Ostrich&amp;Human.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
-    <MeshContentTask Include="FBX\Root.FBX">
-      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
-    </MeshContentTask>
     <MeshContentTask Include="FBX\savanna.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
     </MeshContentTask>

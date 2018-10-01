@@ -101,9 +101,6 @@
     <MeshContentTask Include="FBX\esaC.FBX">
       <Filter>Models</Filter>
     </MeshContentTask>
-    <MeshContentTask Include="FBX\Root.FBX">
-      <Filter>Models</Filter>
-    </MeshContentTask>
   </ItemGroup>
   <ItemGroup>
     <None Include="PixelShader.inc" />

@@ -173,7 +173,7 @@ public:
 	void GameSeter();
 	//CPUの移動用の当たり判定
 	void EnemyHitMoveCreate();
-
+//	void GoalCreate();
 	//ゲッター関数
 	//デバイスを取得する関数
 	ID3D11Device* GetDevice()
