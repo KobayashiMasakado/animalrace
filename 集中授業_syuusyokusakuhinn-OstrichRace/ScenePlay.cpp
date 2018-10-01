@@ -74,9 +74,44 @@ void ScenePlay::Update(float elapsedTime)
 	m_hitCpuFlag = false;
 	///当たり判定////////////
 	//プレイヤーとコースの当たり判定
-	HitCourseCheck();
-	//ゴールとキャラの当たり判定////
-	HitGoalCheck();
+	static int id;
+	Vector3 s;
+	Vector3 playerPos = m_player->GetPlayer();
+	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
+	{
+		m_hitPlayerFlag = true;
+		s.y -= 0.1f;
+		m_player->SetPosition(s);
+	}
+	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_hitCpuFlag = true;
+		}
+	}
+
+	for (int i = 0; i < GOAL_SET_NUM; i++)
+	{
+		//ゴールとプレイヤーの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_player->GetCollision()) == true)
+		{
+			if (m_checkPoint == i)
+			{
+				m_goalPlayerFlag[i] = true;
+				m_checkPoint = i + 1;
+			}
+		}
+		//ゴールとCPUの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_goalCPUFlag[i] = true;
+		}
+	}
 	//カウントダウンが終わったら
 	if (m_count > GAME_START_TIME)
 	{
@@ -127,6 +162,7 @@ void ScenePlay::Update(float elapsedTime)
 	{
 		m_player->PlayerMove(Player::GRAVITY);
 	}
+
 }
 
 void ScenePlay::Render()
@@ -201,8 +237,22 @@ void ScenePlay::Render()
 	m_sprites->Draw(m_tLap.Get(), Vector2(550, 1));
 	m_sprites->Draw(m_tHO.Get(), Vector2(15, 250));
 	m_sprites->Draw(m_tKm.Get(), Vector2(10, 500));
-	//カウントダウンの描画-----------------------
-	CountDownStart();
+	//ゲーム結果
+	//プレイヤーがゴールしたら
+	if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
+		m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
+	{
+		//YOU WIN!画像表示
+		m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
+	}
+
+	//CPUがゴールしたら
+	else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
+		m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
+	{
+		//YOU LOSE...画像表示
+		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
+	}
 	//タイム--------------------------------------
 	//ミリ秒
 	float miri = m_time;
@@ -235,11 +285,7 @@ void ScenePlay::Render()
 	{
 		m_timeS = 0;
 	}
-	
 	/////////////////////////////////////
-	//ゲーム結果
-	RaceEnd();
-
 	m_sprites->End();
 }
 
@@ -262,16 +308,16 @@ void ScenePlay::CreateDeviceDependentResources()
 	CreateWICTextureFromFile(device, L"Textures\\km.png",           nullptr, m_tKm.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\YouWin.png",       nullptr, m_tPlayerGoal.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\YouLose.png",      nullptr, m_tCPUGoal.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\0_red.png", nullptr, m_tCNum[0].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\1_red.png", nullptr, m_tCNum[1].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\2_red.png", nullptr, m_tCNum[2].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\3_red.png", nullptr, m_tCNum[3].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\4_red.png", nullptr, m_tCNum[4].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\5_red.png", nullptr, m_tCNum[5].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\6_red.png", nullptr, m_tCNum[6].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\7_red.png", nullptr, m_tCNum[7].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\8_red.png", nullptr, m_tCNum[8].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\9_red.png", nullptr, m_tCNum[9].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\0_red.png",        nullptr, m_tCNum[0].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\1_red.png",        nullptr, m_tCNum[1].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\2_red.png",        nullptr, m_tCNum[2].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\3_red.png",        nullptr, m_tCNum[3].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\4_red.png",        nullptr, m_tCNum[4].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\5_red.png",        nullptr, m_tCNum[5].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\6_red.png",        nullptr, m_tCNum[6].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\7_red.png",        nullptr, m_tCNum[7].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\8_red.png",        nullptr, m_tCNum[8].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\9_red.png",        nullptr, m_tCNum[9].GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\GO.png",           nullptr, m_tCGo.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\Waening.png",      nullptr, m_tFlipGoal.GetAddressOf());
 	
@@ -283,8 +329,20 @@ void ScenePlay::CreateDeviceDependentResources()
 			m_number[i].SetTexture(j, m_tCNum[j].Get());
 		}
 	}
-	//-------------------------------------------
 
+	//カウントダウン
+	for (int i = 3; i > 0; i--)
+	{
+		if (m_count > ((i * TIME_MINUTE) - GAME_START_TIME) * -1 && m_count < (((i * TIME_MINUTE) - GAME_START_TIME) * -1) + (TIME_MINUTE - 1))
+		{
+			m_sprites->Draw(m_tCNum[i].Get(), Vector2(380, 220));
+		}
+	}
+	if (m_count > GAME_START_TIME && m_count < 200)
+	{
+		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
+	}
+	//-------------------------------------------
 	m_objCreate = new ObjectCreate();
 	m_player = new Player();
 	m_cpu = new Enemy();
@@ -294,10 +352,6 @@ void ScenePlay::CreateDeviceDependentResources()
 	EffectFactory fx(device);
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
-	/*m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
-	m_itemCPUModel = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);*/
-//	m_rootModel = Model::CreateFromCMO(device, L"Resources\\Models\\Root.cmo", fx);
-
 	ModelDate* modelDate = ModelDate::GetInstance();
 
 	//アイテム作成(プレイヤー)
@@ -382,128 +436,20 @@ void ScenePlay::CreateDeviceDependentResources()
 		}
 	});
 
-	SetGame2();
+	GameSeter();
 }
 
-//コースとキャラの当たり判定
-void ScenePlay::HitCourseCheck()
-{
-	//プレイヤーとコースの当たり判定
-	static int id;
-	Vector3 s;
-	Vector3 playerPos = m_player->GetPlayer();
-	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
-	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
-	{
-		m_hitPlayerFlag = true;
-		s.y -= 0.1f;
-		m_player->SetPosition(s);
-	}
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
-		{
-			m_hitCpuFlag = true;
-		}
-	}
-}
-//ゴールとキャラの当たり判定
-void ScenePlay::HitGoalCheck()
-{
-	for (int i = 0; i < GOAL_SET_NUM; i++)
-	{
-		//ゴールとプレイヤーの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_player->GetCollision()) == true)
-		{
-			if (m_checkPoint == i)
-			{
-				m_goalPlayerFlag[i] = true;
-				m_checkPoint = i + 1;
-			}
-		}
-		//ゴールとCPUの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
-		{
-			m_goalCPUFlag[i] = true;
-		}
-	}
-
-}
-
-//アイテム取得(CPU用)
-//void ScenePlay::CPUItemGet()
-//{
-//	for (int i = 0; i < ITEM_SET_NUM; i++)
-//	{
-//		//CPUアイテム取得
-//		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), m_cpu->GetCollision()))
-//		{
-//			m_itemCPUCheck = true;
-//		}
-//
-//		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), m_cpu->GetCollision()))
-//		{
-//			m_itemCPUCheck = false;
-//		}
-//	
-//	}
-//}
-//カウントダウン
-void ScenePlay::CountDownStart()
-{
-	for (int i = 3; i > 0; i--)
-	{
-		if (m_count > ((i * TIME_MINUTE) - GAME_START_TIME) * -1 && m_count < (((i * TIME_MINUTE) - GAME_START_TIME) * -1) + (TIME_MINUTE - 1))
-		{
-			m_sprites->Draw(m_tCNum[i].Get(), Vector2(380, 220));
-		}
-	}
-	if (m_count > GAME_START_TIME && m_count < 200)
-	{
-		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
-	}
-
-}
-//ゲーム結果
-void ScenePlay::RaceEnd()
-{
-	//プレイヤーがゴールしたら
-	if (m_goalPlayerFlag[0] == true && m_goalPlayerFlag[1] == true && m_goalPlayerFlag[2] == true &&
-		m_goalPlayerFlag[3] == true && m_goalPlayerFlag[4] == true && m_goalPlayerFlag[5] == true)
-	{
-		//YOU WIN!画像表示
-		m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
-	}
-
-	//CPUがゴールしたら
-	else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
-		m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
-	{
-		//YOU LOSE...画像表示
-		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
-	}
-	
-}
-
-void ScenePlay::SetGame2()
+void ScenePlay::GameSeter()
 {
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayer[i]->SetGame(m_game);
-	
 		m_itemCPU[i]->SetGame(m_game);
-
 		m_itemPlayerErase[i]->SetGame(m_game);
-	
 		m_itemCPUErase[i]->SetGame(m_game);
-
 	}
 
 	m_floorMesh->SetGame(m_game);
-
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		m_goal[i]->SetGame(m_game);
@@ -518,6 +464,3 @@ void ScenePlay::SetGame2()
 
 	m_cpu->SetGame(m_game);
 }
-
-
-

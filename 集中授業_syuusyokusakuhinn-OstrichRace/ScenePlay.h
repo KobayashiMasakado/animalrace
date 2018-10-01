@@ -80,7 +80,7 @@ private:
 	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
 
-	//Root* m_root;
+	Root* m_root;
 	//道のモデル
 	std::unique_ptr<DirectX::Model> m_rootModel;
 	//ゴール
@@ -169,47 +169,8 @@ public:
 	void Finalize() override { delete m_objCreate; }
 	void CreateDeviceDependentResources();
 
-	//プレイヤー操作
-	void PlayerOperation(DirectX::Keyboard::State &kb);
-
-	//プレイヤー操作(コース外)
-	void PlayerOperationwOutSide(DirectX::Keyboard::State &kb);
-
-	//コースとキャラの当たり判定
-	void HitCourseCheck();
-
-	//ゴールとキャラの当たり判定
-	void HitGoalCheck();
-
-	//アイテム取得
-	//プレイヤー用
-	void PlayerItemGet();
-	//CPU用
-	void CPUItemGet();
-
-	//カウントダウン
-	void CountDownStart();
-
-	//レース結果
-	void RaceEnd();
-
 	//ゲームをSet
-	void SetGame2();
-
-	//CPUの角度を変える
-	void EnemyDirection();;
-
-	
-	//アイテム作成(CPU)
-	void ItemCPUCreate();
-	//アイテム効果切れ(CPU)
-	void ItemCPUEraseCreate();
-	//コース作成
-	void CourseCreate();
-	//ゴール作成
-	void GoalCreate();
-	//CPUの移動用の当たり判定
-	void EnemyHitMoveCreate();
+	void GameSeter();
 
 	//ゲッター関数
 	//デバイスを取得する関数

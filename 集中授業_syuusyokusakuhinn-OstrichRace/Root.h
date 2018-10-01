@@ -11,11 +11,13 @@
 #include "DeviceResources.h"
 
 #include "CollisionCapsule.h"
+#include "Player.h"
+#include "Enemy.h"
 
 class Root : public CollisionCapsule
 {
 private:
-
+	bool m_hitPlayerFlag;
 public:
 	//コンストラクタ
 	Root();
@@ -29,5 +31,4 @@ public:
 	void SetUpEffect();
 	void EnemyHitMoveCreate(int course);
 
-	void HitCourseCheck();
 };
