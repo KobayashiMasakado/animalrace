@@ -106,7 +106,7 @@ bool Enemy::Update(float elapsedTime)
 /// </summary>
 void Enemy::Render()
 {
-	CPUCreate();
+	
 	if (m_game && m_model)
 	{
 		//ƒ‚ƒfƒ‹‚Ì•`‰æ
