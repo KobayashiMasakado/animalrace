@@ -28,21 +28,21 @@ Enemy::~Enemy()
 /// <returns></returns>
 bool Enemy::Update(float elapsedTime)
 {
-	Vector3 vec(0, 0, 0);
+	m_vec  = Vector3(0, 0, 0);
+	m_vecZ = Vector3(0, 0, 0);
 	if (m_move & (1 << NONE))
 	{
-		vec.z = 0.0f;
+		m_vec.z = 0.0f;
 	}
 	//前進
 	if (m_move & (1 << FRONT))
 	{
-		vec.z = 0.48f;
-		//vec.z = 0.8f;
+		m_vec.z = 0.48f;
 	}
 	//前進(アイテム獲得で速度は速い)
 	else if (m_move & (1 << FRONT_ITEMGET))
 	{
-		vec.z = 0.65f;
+		m_vec.z = 0.65f;
 	}
 	//後進
 	if (m_move & (1 << BACK))
@@ -88,13 +88,22 @@ bool Enemy::Update(float elapsedTime)
 	{
 		m_dir = XMConvertToRadians(0.0f);
 	}
+
+	if (m_move & (1 << UP_ANGLE))
+	{
+		m_vec.y = 0.48f;
+	}
+	
 	//ビットフラグをリセット
 	m_move = 0;
 
 	//オブジェクトを移動する
 	m_rotation = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), m_dir);
-	vec = Vector3::Transform(vec, m_rotation);
-	m_position += vec;
+	m_rotationZ = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 0.0f, 1.0f), m_z);
+
+	m_vec = Vector3::Transform(m_vec, m_rotation);
+	m_vecZ = Vector3::Transform(m_vecZ, m_rotationZ);
+	m_position += (m_vec + m_vecZ);
 
 	//ワールド行列を作成する
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
@@ -132,7 +141,7 @@ void Enemy::CPUCreate()
 	// カプセル型のコリジョンをつける
 	capsuleCPU.start = Vector3(0.3f, 0.0f, 0.2f);           //境界球の中心
 	capsuleCPU.end = Vector3(0.3f, 3.0f, 0.2f);		        //境界球の中心
-	capsuleCPU.r = 0.6f;                                    //半径
+	capsuleCPU.r = 0.3f;                                    //半径
 	SetCollision(capsuleCPU);
 }
 /// <summary>
@@ -145,7 +154,7 @@ void Enemy::EnemyChangeAngle(Direction dir)
 	m_move |= (1 << dir);
 }
 
-void Enemy::EnemyDirection()
+void Enemy::EnemyDirection(std::unique_ptr<Root> box[19])
 {
 	//アイテム取得時の移動速度
 	if (m_itemCPUCheck == true)
@@ -156,17 +165,94 @@ void Enemy::EnemyDirection()
 	{
 		EnemyChangeAngle(Enemy::FRONT);
 	}
-	//当たった場所によってCPUの方向を変える
-	for (int i = 0; i < ScenePlay::ENEMY_HITCHECK_NUM; i++)
+	
+	if (Collision::HitCheck_Capsule2Capsule(box[2]->GetCollision(), GetCollision()) == true)
 	{
-		if (Collision::HitCheck_Capsule2Capsule(GetCollision(), GetCollision()))
-		{
-			EnemyChangeAngle(static_cast<Enemy::Direction>(i));
-		}
+		EnemyChangeAngle(Enemy::RIGHT_SIDE);
 	}
+	else	if (Collision::HitCheck_Capsule2Capsule(box[1]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::RIGHT_OBLF);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[3]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::RIGHT_OBLB);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[4]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::FRONT);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[5]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLB);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[6]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_SIDE);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[7]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLF);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[8]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::FRONT_SECOND);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[9]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::RIGHT_OBLF);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[10]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::RIGHT_OBLF);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[11]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::FRONT_SECOND);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[12]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLF);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[13]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_SIDE);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[14]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLB);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[16]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLB);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[15]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::BACK);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[17]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_SIDE);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[0]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::FRONT_SECOND);
+	}
+	else if (Collision::HitCheck_Capsule2Capsule(box[18]->GetCollision(), GetCollision()) == true)
+	{
+		EnemyChangeAngle(Enemy::LEFT_OBLF);
+	}
+	////当たった場所によってCPUの方向を変える
+	//for (int i = 0; i < ScenePlay::ENEMY_HITCHECK_NUM; i++)
+	//{
+	//	if (Collision::HitCheck_Capsule2Capsule(GetCollision(), GetCollision()))
+	//	{
+	//		EnemyChangeAngle(static_cast<Enemy::Direction>(i));
+	//	}
+	//}
 }
 
-void Enemy::CPUItemGet(std::unique_ptr<Item> m_itemCPU[2], std::unique_ptr<Item> m_itemCPUErase[2])
+void Enemy::CPUItemGet(std::unique_ptr<Item> m_itemCPU[ITEM_SET_NUM], std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM])
 {
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
 	{

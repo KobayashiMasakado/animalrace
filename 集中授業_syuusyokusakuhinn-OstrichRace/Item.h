@@ -14,8 +14,8 @@
 
 class Item : public CollisionCapsule
 {
-private:
-
+	public:
+	static const int ITEM_SET_NUM = 2;
 public:
 	//コンストラクタ
 	Item();
