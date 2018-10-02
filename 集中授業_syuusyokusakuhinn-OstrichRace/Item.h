@@ -37,5 +37,5 @@ public:
 	//アイテム効果切れ(CPU)
 	void ItemCPUEraseCreate(int item);
 	//アイテム作成(フン)
-	void ItemFunCreate();
+	void ItemFunCreate(int item);
 };

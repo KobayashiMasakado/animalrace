@@ -72,10 +72,8 @@ private:
 
 	//プレイヤー
 	Player* m_player;
-	//std::unique_ptr<DirectX::Model> m_itemPlayerModel;
 	//CPU
 	Enemy* m_cpu;
-//	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 
 	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
 	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
@@ -95,7 +93,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 
 	//フン用
-	std::unique_ptr<Item> m_itemFun;
+	std::unique_ptr<Item> m_itemFun[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemFunModel;
 	//アイテム解除
 	//プレイヤー用

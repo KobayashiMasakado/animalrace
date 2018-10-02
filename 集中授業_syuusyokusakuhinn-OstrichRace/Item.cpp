@@ -150,9 +150,7 @@ void Item::ItemCPUEraseCreate(int item)
 
 	capsule.r = 1.5f;                  //半径
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
-	{
-		
-		                                   
+	{                                  
 		switch (item)
 		{
 		case 0:
@@ -169,18 +167,32 @@ void Item::ItemCPUEraseCreate(int item)
 		SetCollision(capsule);
 	}
 }
-
-void Item::ItemFunCreate()
+//アイテム効果切れ(フン)
+void Item::ItemFunCreate(int item)
 {
 	Collision::Capsule capsule;
-	capsule.r = 1.5f;
+	
 	ModelDate* modelDate = ModelDate::GetInstance();
 	SetModel(modelDate->GetItemFun());
 	SetUpEffect();
-	
-	SetPosition(Vector3(-0, 0, 0));
-	capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //境界球の中心
-	capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //境界球の中心
+	capsule.r = 1.5f;
+	for (int i = 0; i < ITEM_SET_NUM; i++)
+	{
+		switch (item)
+		{
+		case 0:
 
+			SetPosition(Vector3(0, 0, -8));
+			capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //境界球の中心
+			capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //境界球の中心
+			break;
+		case 1:
+
+			SetPosition(Vector3(0, 0, 67));
+			capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //境界球の中心
+			capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //境界球の中心
+			break;
+		}
+	}
 	SetCollision(capsule);
 }

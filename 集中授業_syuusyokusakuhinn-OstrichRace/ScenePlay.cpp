@@ -56,8 +56,10 @@ void ScenePlay::Update(float elapsedTime)
 		m_itemPlayerErase[i]->Update(elapsedTime);
 		m_itemCPU[i]->Update(elapsedTime);
 		m_itemCPUErase[i]->Update(elapsedTime);
+
+		m_itemFun[i]->Update(elapsedTime);
 	}
-//	m_itemFun->Update(elapsedTime);
+	
 	//ゴールの更新
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -302,7 +304,7 @@ void ScenePlay::Render()
 		m_itemCPU[i]->Render();
 		m_itemCPUErase[i]->Render();
 	//	m_itemCPUErase[i]->DrawCollision();
-	//	m_itemFun->Render();
+		m_itemFun[i]->Render();
 	}
 	//コースの作成
 //	m_root->Render();
@@ -485,11 +487,10 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
 
 		//アイテム作成(フン)
-		m_itemCPUErase[i] = std::make_unique<Item>();
-		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
+		m_itemFun[i] = std::make_unique<Item>();
+		m_itemFun[i]->ItemFunCreate(i);
 	}
-	/*m_itemFun = std::make_unique<Item>();
-	m_itemFun->ItemFunCreate();*/
+	
 	//ゴール作成
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -560,8 +561,9 @@ void ScenePlay::GameSeter()
 		m_itemCPU[i]->SetGame(m_game);
 		m_itemPlayerErase[i]->SetGame(m_game);
 		m_itemCPUErase[i]->SetGame(m_game);
+		m_itemFun[i]->SetGame(m_game);
 	}
-	//m_itemFun->SetGame(m_game);
+	
 
 	m_floorMesh->SetGame(m_game);
 	for (int i = 0; i < GOAL_SET_NUM; i++)

@@ -16,7 +16,7 @@ ModelDate::~ModelDate()
 	m_itemPlayerModel.reset();
 	m_itemCPUModel.reset();
 	m_boxModel.reset();
-//	m_itemFunModel.reset();
+	m_itemFunModel.reset();
 }
 
 void ModelDate::Create(ID3D11Device* device)
@@ -28,8 +28,9 @@ void ModelDate::Create(ID3D11Device* device)
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
 	m_playerModel     = Model::CreateFromCMO(device, L"Resources\\Models\\Ostrich&Human.cmo", fx);
 	m_cpuModel        = Model::CreateFromCMO(device, L"Resources\\Models\\Tiger.cmo", fx);
+	m_itemFunModel    = Model::CreateFromCMO(device, L"Resources\\Models\\Fun.cmo", fx);
 	m_itemPlayerModel = Model::CreateFromCMO(device, L"Resources\\Models\\Item.cmo", fx);
 	m_itemCPUModel    = Model::CreateFromCMO(device, L"Resources\\Models\\esaC.cmo", fx);
-//	m_itemFunModel    = Model::CreateFromCMO(device, L"Resources\\Models\\Fun.cmo", fx);
+	
 	
 }
