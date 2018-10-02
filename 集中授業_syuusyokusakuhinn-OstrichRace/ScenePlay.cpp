@@ -36,6 +36,7 @@ void ScenePlay::Initialize()
 	m_itemCPUCheck = false;
 	m_itemPlayerBadCheck = false;
 	m_itemCPUBadCheck = false;
+	m_itemFunCheck = false;
 	//カウントダウンの初期化
 	m_count = 0;
 
@@ -82,7 +83,7 @@ void ScenePlay::Initialize()
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-	//m_debugCamera->Update();
+//	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -108,6 +109,7 @@ void ScenePlay::Update(float elapsedTime)
 		m_itemCPUErase[i]->Update(elapsedTime);
 
 		m_itemFun[i]->Update(elapsedTime);
+		m_itemFunErase[i]->Update(elapsedTime);
 	}
 	
 	//ゴールの更新
@@ -188,7 +190,7 @@ void ScenePlay::Update(float elapsedTime)
 				m_player->PlayerOperationwOutSide(kb);
 			}
 			//アイテム取得
-			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase);
+			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase,m_itemFun,m_itemFunErase);
 			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -314,6 +316,9 @@ void ScenePlay::Update(float elapsedTime)
 			//CPUアイテム取得
 			m_cpu->CPUItemGet(m_itemCPU,m_itemCPUErase);
 		}
+
+
+
 	}
 	//重力
 	if (m_player->GetPlayer().y >= GROUND_POSY)
@@ -356,6 +361,7 @@ void ScenePlay::Render()
 	//アイテムの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
+		
 		m_itemPlayer[i]->Render();
 		m_itemPlayerErase[i]->Render();
 	//	m_itemPlayerErase[i]->DrawCollision();
@@ -363,6 +369,10 @@ void ScenePlay::Render()
 		m_itemCPUErase[i]->Render();
 	//	m_itemCPUErase[i]->DrawCollision();
 		m_itemFun[i]->Render();
+	//	m_itemFun[i]->DrawCollision();
+		m_itemFunErase[i]->Render();
+	//	m_itemFunErase[i]->DrawCollision();
+		
 	}
 	//コースの作成
 //	m_root->Render();
@@ -552,22 +562,27 @@ void ScenePlay::CreateDeviceDependentResources()
 	{   //アイテム作成(プレイヤー)
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->ItemPlayerCreate(i);
-	
-	    //アイテム作成(CPU)
-	  	m_itemCPU[i] = std::make_unique<Item>();
+
+		//アイテム作成(CPU)
+		m_itemCPU[i] = std::make_unique<Item>();
 		m_itemCPU[i]->ItemCPUCreate(i);
-	
-	    //アイテム効果切れ(プレイヤー)
-	 	m_itemPlayerErase[i] = std::make_unique<Item>();
+
+		//アイテム効果切れ(フン)
+		m_itemFun[i] = std::make_unique<Item>();
+		m_itemFun[i]->ItemFunCreate(i);
+
+		//アイテム効果切れ(プレイヤー)
+		m_itemPlayerErase[i] = std::make_unique<Item>();
 		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
-	
-	    //アイテム効果切れ(CPU)
+
+		//アイテム効果切れ(CPU)
 		m_itemCPUErase[i] = std::make_unique<Item>();
 		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
 
-		//アイテム作成(フン)
-		m_itemFun[i] = std::make_unique<Item>();
-		m_itemFun[i]->ItemFunCreate(i);
+		
+		//アイテム効果切れ(CPU)
+		m_itemFunErase[i] = std::make_unique<Item>();
+		m_itemFunErase[i]->ItemFunEraseCreate(i);
 	}
 	
 	//ゴール作成
@@ -587,7 +602,6 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_box[i]->EnemyHitMoveCreate(i);
 	}
 
-//	GoalCreate();
 	// モデルをロードしてモデルハンドルを取得する 
 	//空
 	m_skydome = Model::CreateFromCMO(device, L"Resources\\Models\\savanna.cmo", fx);
@@ -640,6 +654,7 @@ void ScenePlay::GameSeter()
 		m_itemPlayerErase[i]->SetGame(m_game);
 		m_itemCPUErase[i]->SetGame(m_game);
 		m_itemFun[i]->SetGame(m_game);
+		m_itemFunErase[i]->SetGame(m_game);
 	}
 	
 

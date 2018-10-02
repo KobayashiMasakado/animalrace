@@ -38,4 +38,6 @@ public:
 	void ItemCPUEraseCreate(int item);
 	//アイテム作成(フン)
 	void ItemFunCreate(int item);
+	//アイテム効果切れ(CPU)
+	void ItemFunEraseCreate(int item);
 };

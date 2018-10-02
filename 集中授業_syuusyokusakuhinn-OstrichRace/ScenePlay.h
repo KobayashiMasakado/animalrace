@@ -96,7 +96,6 @@ private:
 	//CPU用
 	std::unique_ptr<Item> m_itemCPU[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemCPUModel;
-
 	//フン用
 	std::unique_ptr<Item> m_itemFun[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemFunModel;
@@ -107,6 +106,9 @@ private:
 	//CPU用
 	std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
+	//CPU用
+	std::unique_ptr<Item> m_itemFunErase[ITEM_SET_NUM];
+	std::unique_ptr<DirectX::Model> m_itemFunEraseModel;
 
 	
 	//2Dスプライト/////////////////////////////

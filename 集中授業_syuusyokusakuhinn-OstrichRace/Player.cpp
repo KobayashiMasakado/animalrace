@@ -16,6 +16,7 @@ Player::Player()
 	m_z = 0.0f;
 	m_itemPlayerCheck = false;
 	m_itemPlayerBadCheck = false;
+	m_itemFunCheck = false;
 }
 /// <summary>
 /// デストラクタ
@@ -48,9 +49,14 @@ bool Player::Update(float elapsedTime)
 		m_vec.z = 0.8f;
 	}
 	//前進(通常より速度は遅い)
-	else if (m_move & (1 << FBONT_SPEEDDOWN))
+	else if (m_move & (1 << FRONT_OUTCOURSE))
 	{
 		m_vec.z = 0.05f;
+	}
+	//前進(通常より速度は遅い)
+	else if (m_move & (1 << FRONT_FUNGET))
+	{
+		m_vec.z = 0.1f;
 	}
 	//後進
 	else if (m_move & (1 << BACK))
@@ -147,7 +153,11 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 	//上キーが押されたら
 	if (kb.Up || kb.W)
 	{
-		if (m_itemPlayerCheck == true)
+		if (m_itemFunCheck == true)
+		{
+			PlayerMove(Player::FRONT_FUNGET);
+		}
+		else if (m_itemPlayerCheck == true)
 		{
 			PlayerMove(Player::FRONT_ITEMGET);
 		}
@@ -179,7 +189,7 @@ void Player::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 	//上キーが押されたら
 	if (kb.Up || kb.W)
 	{
-		PlayerMove(Player::FBONT_SPEEDDOWN);
+		PlayerMove(Player::FRONT_OUTCOURSE);
 	}
 	//右キーが押されたら
 	if (kb.Right || kb.D)
@@ -196,7 +206,9 @@ void Player::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
                            std::unique_ptr<Item> itemPlayerErase[2],
                            std::unique_ptr<Item> itemCPU[2],
-                           std::unique_ptr<Item> itemCPUErase[2])
+                           std::unique_ptr<Item> itemCPUErase[2],
+						   std::unique_ptr<Item> itemFun[2],
+						   std::unique_ptr<Item> itemFunErase[2])
 {
 	//プレイヤーのアイテム取得
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
@@ -220,6 +232,16 @@ void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
 		else if (Collision::HitCheck_Capsule2Capsule(itemCPUErase[i]->GetCollision(), GetCollision()))
 		{
 			m_itemPlayerBadCheck = false;
+		}
+		//フンアイテム取得
+		if (Collision::HitCheck_Capsule2Capsule(itemFun[i]->GetCollision(), GetCollision()))
+		{
+			m_itemFunCheck = true;
+		}
+		//フンアイテム効果切れ
+		else if (Collision::HitCheck_Capsule2Capsule(itemFunErase[i]->GetCollision(), GetCollision()))
+		{
+			m_itemFunCheck = false;
 		}
 	}
 

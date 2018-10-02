@@ -27,7 +27,8 @@ public:
 		UP_ANGLE,   // 上向きに角度を変える
 		DOWN_ANGLE,  // 下向きに角度を変える
 		FRONT_ITEMGET,//前進(通常より速い)
-		FBONT_SPEEDDOWN,//前進(通常より遅い)
+		FRONT_OUTCOURSE,//前進(通常より遅い)
+		FRONT_FUNGET,//前進(通常より遅い)
 		GRAVITY,       //重力
 	};
 private:
@@ -43,6 +44,7 @@ private:
 
 	bool m_itemPlayerCheck;
 	bool m_itemPlayerBadCheck;
+	bool m_itemFunCheck;
 
 public:
 	//コンストラクタ
@@ -70,7 +72,9 @@ public:
 	void PlayerItemGet(std::unique_ptr<Item> itemPlayer[2], 
 		               std::unique_ptr<Item> itemPlayerErase[2],
 		               std::unique_ptr<Item> itemCPU[2], 
-		               std::unique_ptr<Item> itemCPUErase[2]);
+		               std::unique_ptr<Item> itemCPUErase[2],
+	                   std::unique_ptr<Item> itemFun[2],
+	                   std::unique_ptr<Item> itemFunErase[2]);
 
 	float GetDirection()
 	{
