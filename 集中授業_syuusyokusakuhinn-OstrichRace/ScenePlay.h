@@ -21,7 +21,7 @@
 #include "MyEffect.h"
 #include "EffectManager.h"
 
-class ScenePlay : public SceneBase
+class ScenePlay : public SceneBase /*, DX::IDeviceNotify*/
 {
 
 public:
@@ -39,6 +39,7 @@ private:
 	DX::StepTimer                           m_timer;
 
 	// Device resources.
+	
 	DX::DeviceResources* m_deviceResources;
 
 	// ビュー行列
@@ -173,15 +174,19 @@ public:
 	~ScenePlay();
 	//初期化
 	void Initialize() override;
+	// Basic game loop
+	//void Tick();
+	// IDeviceNotify
+/*	virtual void OnDeviceLost() override;
+	virtual void OnDeviceRestored() override*/;
 	//更新
-	void Update(DX::StepTimer const& timer) override;
+	void Update(float elapsedTime) override;
 	//描画
 	void Render() override;
 
 	void Finalize() override { delete m_objCreate; }
 	void CreateDeviceDependentResources();
-	// Basic game loop
-	void Tick();
+	
 
 	void OnResuming();
 	//ゲームをSet

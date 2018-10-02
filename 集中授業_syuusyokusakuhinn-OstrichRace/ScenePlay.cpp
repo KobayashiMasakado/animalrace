@@ -14,8 +14,9 @@ using namespace DirectX::SimpleMath;
 
 ScenePlay::ScenePlay()
 {
-	/*m_deviceResources = std::make_unique<DX::DeviceResources>();
-	m_deviceResources->RegisterDeviceNotify(m_game);*/
+	/*m_deviceResources = new DX::DeviceResources();
+	m_deviceResources->RegisterDeviceNotify(this);*/
+	m_effectManager = nullptr;
 }
 
 ScenePlay::~ScenePlay()
@@ -43,27 +44,45 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-//	m_effectManager = nullptr;
-
-	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-//	m_gameCamera = std::make_unique<GameCamera>();
+//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+	m_gameCamera = std::make_unique<GameCamera>();
 
 }
-void ScenePlay::Tick()
-{
-	m_timer.Tick([&]()
-	{
-		float elapsedTime = float(m_timer.GetElapsedSeconds());
-
-		Update(m_timer);
-	});
-
-	Render();
-}
-void ScenePlay::Update(DX::StepTimer const& timer)
+//void ScenePlay::Tick()
+//{
+//	m_timer.Tick([&]()
+//	{
+//		float elapsedTime = float(m_timer.GetElapsedSeconds());
+//
+//		Update(m_timer);
+//	});
+//
+//	Render();
+//}
+//void ScenePlay::OnDeviceLost()
+//{
+//	// TODO: Add Direct3D resource cleanup here.
+//
+//	//// コモンステートの解放
+//	//m_states.reset();
+//
+//	//// スプライトバッチの解放
+//	//m_sprites.reset();
+//
+//	///*if (m_effectManager != nullptr) {
+//	//	m_effectManager->Lost();
+//	//	delete m_effectManager;
+//	//	m_effectManager = nullptr;
+//	//}*/
+//
+//}
+//void ScenePlay::OnDeviceRestored()
+//{
+//}
+void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-	m_debugCamera->Update();
+	//m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -73,11 +92,10 @@ void ScenePlay::Update(DX::StepTimer const& timer)
 	
 	///更新/////////////////////
 	
-	float elapsedTime = timer.GetTotalSeconds();
-
-//	m_effectManager->Update(m_timer);
+	/*float elapsedTime = timer.GetTotalSeconds();
+	m_effectManager->Update(m_timer);*/
 	//プレイヤーの更新
-//	m_player->Update(elapsedTime);
+	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
 //	m_root->Update(elapsedTime);
@@ -308,28 +326,28 @@ void ScenePlay::Update(DX::StepTimer const& timer)
 void ScenePlay::Render()
 {
 	// Don't try to render anything before the first Update.
-	if (m_timer.GetFrameCount() == 0)
+	/*if (m_timer.GetFrameCount() == 0)
 	{
 		return;
-	}
+	}*/
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	//追従カメラ
 	// ビュー行列の作成
-	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	//Vector3 target;
+	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	Vector3 target;
 
-	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	//cameraPos = Vector3::Transform(cameraPos, rotY);
-	//target = m_player->GetPlayer();
-	//m_gameCamera->SetTarget(target);
-	//m_gameCamera->SetEye(target + cameraPos);
-	//m_view = m_gameCamera->GetViewMatrix();
+	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	cameraPos = Vector3::Transform(cameraPos, rotY);
+	target = m_player->GetPlayer();
+	m_gameCamera->SetTarget(target);
+	m_gameCamera->SetEye(target + cameraPos);
+	m_view = m_gameCamera->GetViewMatrix();
 
-	m_view = m_debugCamera->GetCameraMatrix();
+//	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	
-//	m_effectManager->Render();
+	//m_effectManager->Render();
 
 	//プレイヤーの描画
 	m_player->Render();
@@ -437,12 +455,12 @@ void ScenePlay::Render()
 	/////////////////////////////////////
 	m_sprites->End();
 }
-void ScenePlay::OnResuming()
-{
-	m_timer.ResetElapsedTime();
-
-	// TODO: Game is being power-resumed (or returning from minimize).
-}
+//void ScenePlay::OnResuming()
+//{
+//	m_timer.ResetElapsedTime();
+//
+//	// TODO: Game is being power-resumed (or returning from minimize).
+//}
 void ScenePlay::CreateDeviceDependentResources()
 {
 	//スプライトバッチの作成
@@ -509,13 +527,11 @@ void ScenePlay::CreateDeviceDependentResources()
 	//	Vector3::Zero, Vector3::UnitY);
 	//Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
 	//	float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
-
 	//m_effectManager = new EffectManager();
 	//m_effectManager->Create(m_deviceResources, L"Textures\\Waening.png", 1);
 	////m_effectManager->Initialize(1,Vector3(0,0,0));
 	////m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
 	//m_effectManager->InitializeCorn(5, Vector3(-2, -2, 0), Vector3(1, 1, 0));
-
 	//m_effectManager->SetRenderState(camera, view, proj);
 
 
@@ -570,7 +586,6 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_box[i] = std::make_unique<Root>();
 		m_box[i]->EnemyHitMoveCreate(i);
 	}
-	//EnemyHitMoveCreate();
 
 //	GoalCreate();
 	// モデルをロードしてモデルハンドルを取得する 

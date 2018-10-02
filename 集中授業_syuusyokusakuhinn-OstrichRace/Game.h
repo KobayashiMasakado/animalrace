@@ -21,6 +21,8 @@
 
 #include "TaskManager.h"
 
+#include "EffectManager.h"
+
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.

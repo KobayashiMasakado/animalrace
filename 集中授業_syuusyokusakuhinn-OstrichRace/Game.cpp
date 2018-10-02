@@ -91,7 +91,7 @@ void Game::Update(DX::StepTimer const& timer)
 
 	//タスクの更新処理
 	m_taskManager.Update(elapsedTime);
-	m_effectManager->Update(timer);
+//	m_effectManager->Update(timer);
 	//キーボードでシーン切り替え
 	//タイトルシーンへ
 	if (kb.T)
@@ -106,7 +106,7 @@ void Game::Update(DX::StepTimer const& timer)
 	//シーン切り替え
 	if (m_currentScene != nullptr)
 	{
-		m_currentScene->Update(timer);
+		m_currentScene->Update(elapsedTime);
 	}
 }
 #pragma endregion
@@ -144,7 +144,7 @@ void Game::Render()
 
 	m_deviceResources->PIXEndEvent();
 
-	m_effectManager->Render();
+	//m_effectManager->Render();
 	// ここまで
 
     m_deviceResources->PIXEndEvent();
@@ -249,22 +249,22 @@ void Game::CreateDeviceDependentResources()
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
 
-	RECT outputSize = m_deviceResources->GetOutputSize();
-	UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
-	UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
-	Vector3 camera = Vector3(0, 0, -5);
-	Matrix view = Matrix::CreateLookAt(camera,
-		Vector3::Zero, Vector3::UnitY);
-	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
+	//RECT outputSize = m_deviceResources->GetOutputSize();
+	//UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
+	//UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
+	//Vector3 camera = Vector3(0, 0, -5);
+	//Matrix view = Matrix::CreateLookAt(camera,
+	//	Vector3::Zero, Vector3::UnitY);
+	//Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
+	//	float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
 
-	m_effectManager = new EffectManager();
-	m_effectManager->Create(m_deviceResources.get(), L"Textures\\Waening.png", 1);
-	//m_effectManager->Initialize(1,Vector3(0,0,0));
-	//m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
-	m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(0, 0, 0));
+	//m_effectManager = new EffectManager();
+	//m_effectManager->Create(m_deviceResources.get(), L"Textures\\Waening.png", 1);
+	////m_effectManager->Initialize(1,Vector3(0,0,0));
+	////m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
+	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(0, 0, 0));
 
-	m_effectManager->SetRenderState(camera, view, proj);
+	//m_effectManager->SetRenderState(camera, view, proj);
 
 
 	// コモンステートの作成
