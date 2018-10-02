@@ -93,6 +93,10 @@ private:
 	//CPU用
 	std::unique_ptr<Item> m_itemCPU[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemCPUModel;
+
+	//フン用
+	std::unique_ptr<Item> m_itemFun;
+	std::unique_ptr<DirectX::Model> m_itemFunModel;
 	//アイテム解除
 	//プレイヤー用
 	std::unique_ptr<Item> m_itemPlayerErase[ITEM_SET_NUM];
@@ -100,6 +104,8 @@ private:
 	//CPU用
 	std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM];
 	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
+
+	
 	//2Dスプライト/////////////////////////////
 	//テクスチャハンドル
 	//制限時間
@@ -143,6 +149,8 @@ private:
 
 	bool m_itemPlayerBadCheck;
 	bool m_itemCPUBadCheck;
+
+	bool m_itemFunCheck;
 
 	//カウントダウン
 	int m_count;

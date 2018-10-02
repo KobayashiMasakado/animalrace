@@ -169,3 +169,18 @@ void Item::ItemCPUEraseCreate(int item)
 		SetCollision(capsule);
 	}
 }
+
+void Item::ItemFunCreate()
+{
+	Collision::Capsule capsule;
+	capsule.r = 1.5f;
+	ModelDate* modelDate = ModelDate::GetInstance();
+	SetModel(modelDate->GetItemFun());
+	SetUpEffect();
+	
+	SetPosition(Vector3(-0, 0, 0));
+	capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
+	capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
+
+	SetCollision(capsule);
+}

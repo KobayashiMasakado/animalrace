@@ -16,6 +16,9 @@ private:
 	std::unique_ptr<DirectX::Model> m_itemPlayerEraseModel;
 	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
 
+	//std::unique_ptr<DirectX::Model> m_itemFunModel;
+	//std::unique_ptr<DirectX::Model> m_itemFunEraseModel;
+
 	std::unique_ptr<DirectX::Model> m_boxModel;
 
 	std::unique_ptr<DirectX::Model> m_goalModel;
@@ -29,8 +32,11 @@ public:
 	DirectX::Model* GetCPU() { return m_cpuModel.get(); }
 	DirectX::Model* GetItemPlayer() { return m_itemPlayerModel.get(); }
 	DirectX::Model* GetItemCPU() { return m_itemCPUModel.get(); }
+//	DirectX::Model* GetItemFun() { return m_itemFunModel.get(); }
 	DirectX::Model* GetItemErasePlayer() { return m_itemPlayerEraseModel.get(); }
 	DirectX::Model* GetItemEraseCPU() { return m_itemCPUEraseModel.get(); }
+//	DirectX::Model* GetItemEraseFun() { return m_itemFunEraseModel.get(); }
+
 	DirectX::Model* GetGoal() { return m_goalModel.get(); }
 	DirectX::Model* GetBox() { return m_boxModel.get(); }
 };

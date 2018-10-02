@@ -220,6 +220,9 @@
     <MeshContentTask Include="FBX\esaC.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
     </MeshContentTask>
+    <MeshContentTask Include="FBX\Fun.FBX">
+      <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
+    </MeshContentTask>
     <MeshContentTask Include="FBX\Item.FBX">
       <ContentOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Resources\Models\%(Filename).cmo</ContentOutput>
     </MeshContentTask>

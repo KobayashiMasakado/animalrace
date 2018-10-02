@@ -57,6 +57,7 @@ void ScenePlay::Update(float elapsedTime)
 		m_itemCPU[i]->Update(elapsedTime);
 		m_itemCPUErase[i]->Update(elapsedTime);
 	}
+//	m_itemFun->Update(elapsedTime);
 	//ゴールの更新
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -301,6 +302,7 @@ void ScenePlay::Render()
 		m_itemCPU[i]->Render();
 		m_itemCPUErase[i]->Render();
 	//	m_itemCPUErase[i]->DrawCollision();
+	//	m_itemFun->Render();
 	}
 	//コースの作成
 //	m_root->Render();
@@ -319,7 +321,7 @@ void ScenePlay::Render()
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i]->Render();
-		m_box[i]->DrawCollision();
+	//	m_box[i]->DrawCollision();
 	}
 	////////////////////////////
 	//3Dスプライト 
@@ -466,23 +468,28 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	
 	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{//アイテム作成(プレイヤー)
+	{   //アイテム作成(プレイヤー)
 		m_itemPlayer[i] = std::make_unique<Item>();
 		m_itemPlayer[i]->ItemPlayerCreate(i);
 	
-	//アイテム作成(CPU)
-		m_itemCPU[i] = std::make_unique<Item>();
+	    //アイテム作成(CPU)
+	  	m_itemCPU[i] = std::make_unique<Item>();
 		m_itemCPU[i]->ItemCPUCreate(i);
 	
-	//アイテム効果切れ(プレイヤー)
-		m_itemPlayerErase[i] = std::make_unique<Item>();
+	    //アイテム効果切れ(プレイヤー)
+	 	m_itemPlayerErase[i] = std::make_unique<Item>();
 		m_itemPlayerErase[i]->ItemPlayerEraseCreate(i);
 	
-	//アイテム効果切れ(CPU)
+	    //アイテム効果切れ(CPU)
+		m_itemCPUErase[i] = std::make_unique<Item>();
+		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
+
+		//アイテム作成(フン)
 		m_itemCPUErase[i] = std::make_unique<Item>();
 		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
 	}
-	
+	/*m_itemFun = std::make_unique<Item>();
+	m_itemFun->ItemFunCreate();*/
 	//ゴール作成
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -497,9 +504,9 @@ void ScenePlay::CreateDeviceDependentResources()
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i] = std::make_unique<Root>();
-	//	m_box[i]->EnemyHitMoveCreate(i);
+		m_box[i]->EnemyHitMoveCreate(i);
 	}
-	EnemyHitMoveCreate();
+	//EnemyHitMoveCreate();
 
 //	GoalCreate();
 	// モデルをロードしてモデルハンドルを取得する 
@@ -554,6 +561,7 @@ void ScenePlay::GameSeter()
 		m_itemPlayerErase[i]->SetGame(m_game);
 		m_itemCPUErase[i]->SetGame(m_game);
 	}
+	//m_itemFun->SetGame(m_game);
 
 	m_floorMesh->SetGame(m_game);
 	for (int i = 0; i < GOAL_SET_NUM; i++)
@@ -570,192 +578,3 @@ void ScenePlay::GameSeter()
 
 	m_cpu->SetGame(m_game);
 }
-//CPUの移動用の当たり判定
-void ScenePlay::EnemyHitMoveCreate()
-{
-	Collision::Capsule capsule[ENEMY_HITCHECK_NUM];
-	ModelDate* modelDate = ModelDate::GetInstance();
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		m_box[i] = std::make_unique<Root>();
-		m_box[i]->SetGame(m_game);
-		capsule[i].r = 5.0f;
-		switch (i)
-		{
-		case 0:
-			m_box[0]->SetPosition(Vector3(-96.0f, 0.0f, 0.0f));
-			capsule[0].start = Vector3(0.0f, 0.0f, 80.0f);
-			capsule[0].end = Vector3(0.0f, 0.0f, -80.0f);
-			break;
-		case 1:
-			m_box[1]->SetPosition(Vector3(-84.0f, 0.0f, 87.0f));
-			capsule[1].start = Vector3(7.0f, 0.0f, 5.0f);
-			capsule[1].end = Vector3(-10.0f, 0.0f, -10.0f);
-			capsule[1].r = 5.5f;
-			break;
-		case 2:
-			m_box[2]->SetPosition(Vector3(-12.0f, 8.0f, 95.0f));
-			capsule[2].start = Vector3(0.0f, 0.0f, 0.0f);
-			capsule[2].end = Vector3(-60.0f, -8.0f, 0.0f);
-			break;
-		case 3:
-			m_box[3]->SetPosition(Vector3(0.0f, 10.0f, 95.0f));
-			capsule[3].start = Vector3(6.0f, 0.0f, 0.0f);
-			capsule[3].end = Vector3(-6.0f, 0.0f, 0.0f);
-			break;
-		case 4:
-			m_box[4]->SetPosition(Vector3(10.0f, 8.0f, 95.0f));
-			capsule[4].start = Vector3(0.0f, 0.0f, 0.0f);
-			capsule[4].end = Vector3(60.0f, -8.0f, 0.0f);
-			break;
-
-		case 5:
-			m_box[5]->SetPosition(Vector3(84.0f, 0.0f, 85.0f));
-			capsule[5].start = Vector3(5.0f, 0.0f, -5.0f);
-			capsule[5].end = Vector3(-8.0f, 0.0f, 8.0f);
-			capsule[5].r = 5.5f;
-			break;
-		case 6:
-			m_box[6]->SetPosition(Vector3(92.0f, 0.0f, 0.0f));
-			capsule[6].start = Vector3(0.0f, 0.0f, 75.0f);
-			capsule[6].end = Vector3(0.0f, 0.0f, -80.0f);
-			break;
-		case 7:
-			m_box[7]->SetPosition(Vector3(86.0f, 0.0f, -90.0f));
-			capsule[7].start = Vector3(10.0f, 0.0f, 10.0f);
-			capsule[7].end = Vector3(-8.0f, 0.0f, -8.0f);
-			break;
-		case 8:
-			m_box[8]->SetPosition(Vector3(70.0f, 0.0f, -100.0f));
-			capsule[8].start = Vector3(10.0f, 0.0f, 0.0f);
-			capsule[8].end = Vector3(-13.0f, 0.0f, 0.0f);
-			break;
-		case 9:
-			m_box[9]->SetPosition(Vector3(25.0f, 0.0f, -70.0f));
-			capsule[9].start = Vector3(30.0f, 0.0f, -30.0f);
-			capsule[9].end = Vector3(-25.0f, 0.0f, 25.0f);
-			break;
-		case 10:
-			m_box[10]->SetPosition(Vector3(-5.0f, 0.0f, -25.0f));
-			capsule[10].start = Vector3(-0.0f, 0.0f, 3.0f);
-			capsule[10].end = Vector3(0.0f, 0.0f, -15.0f);
-			capsule[10].r = 5.5f;
-			break;
-		case 11:
-			m_box[11]->SetPosition(Vector3(17.0f, 0.0f, 7.0f));
-			capsule[11].start = Vector3(18.0f, 0.0f, 18.0f);
-			capsule[11].end = Vector3(-25.0f, 0.0f, -25.0f);
-			break;
-		case 12:
-			m_box[12]->SetPosition(Vector3(40.0f, 0.0f, 33.0f));
-			capsule[12].start = Vector3(0.0f, 0.0f, 5.0f);
-			capsule[12].end = Vector3(-4.0f, 0.0f, -7.0f);
-			break;
-		case 13:
-			m_box[13]->SetPosition(Vector3(40.0f, 0.0f, 43.0f));
-			capsule[13].start = Vector3(0.0f, 0.0f, 7.0f);
-			capsule[13].end = Vector3(1.0f, 0.0f, -5.0f);
-			break;
-		case 14:
-			m_box[14]->SetPosition(Vector3(33.0f, 0.0f, 60.0f));
-			capsule[14].start = Vector3(7.0f, 0.0f, -7.0f);
-			capsule[14].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsule[14].r = 5.5f;
-			break;
-		case 15:
-			m_box[15]->SetPosition(Vector3(0.0f, 0.0f, 70.0f));
-			capsule[15].start = Vector3(20.0f, 0.0f, 0.0f);
-			capsule[15].end = Vector3(-20.0f, 0.0f, 0.0f);
-			break;
-		case 16:
-			m_box[16]->SetPosition(Vector3(-30.0f, 0.0f, 65.0f));
-			capsule[16].start = Vector3(5.0f, 0.0f, 5.0f);
-			capsule[16].end = Vector3(-7.0f, 0.0f, -8.0f);
-			break;
-		case 17:
-			m_box[17]->SetPosition(Vector3(-40.0f, 0.0f,55.0f));
-			capsule[17].start = Vector3(0.0f, 0.0f, 0.0f);
-			capsule[17].end = Vector3(0.0f, 10.0f, -60.0f);
-			break;
-		case 18:
-			m_box[18]->SetPosition(Vector3(-40.0f, 10.0f, -20.0f));
-			capsule[18].end = Vector3(0.0f, 0.0f, 7.0f);
-			capsule[18].start = Vector3(0.0f, 0.0f, -7.0f);
-			break;
-		case 19:
-			m_box[19]->SetPosition(Vector3(-40.0f, 0.0f, -78.0f));
-			capsule[19].start = Vector3(0.0f, 0.0f, 0.0f);
-			capsule[19].end = Vector3(0.0f, 10.0f, 50.0f);
-			break;
-		case 20:
-			m_box[20]->SetPosition(Vector3(-50.0f, 0.0f, -95.0f));
-			capsule[20].start = Vector3(7.0f, 0.0f, 10.0f);
-			capsule[20].end = Vector3(-10.0f, 1.0f, -5.0f);
-			capsule[16].r = 5.5f;
-			break;
-		case 21:
-			m_box[21]->SetPosition(Vector3(-70.0f, 0.0f, -100.0f));
-			capsule[21].start = Vector3(3.0f, 0.0f, 0.0f);
-			capsule[21].end = Vector3(-3.0f, 0.0f, 0.0f);
-			capsule[21].r = 6.5f;
-			break;
-		case 22:
-			m_box[22]->SetPosition(Vector3(-88.0f, 0.0f, -90.0f));
-			capsule[22].start = Vector3(10.0f, 0.0f, -10.0f);
-			capsule[22].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsule[22].r = 5.5f;
-			break;
-		}
-
-		m_box[i]->SetCollision(capsule[i]);
-	}
-}
-////ゴール作成
-//void ScenePlay::GoalCreate()
-//{
-//	Collision::Capsule capsule[GOAL_SET_NUM];
-//	ModelDate* modelDate = ModelDate::GetInstance();
-//	
-//	for (int i = 0; i < GOAL_SET_NUM; i++)
-//	{
-//		m_goal[i] = std::make_unique<Goal>();
-//		m_goal[i]->SetGame(m_game);
-//		capsule[i].r = 0.6f;
-//		// カプセル型のコリジョンをつける
-//		switch (i)
-//		{
-//		case 0:
-//			m_goal[0]->SetPosition(Vector3(-96.0f, 0, 5.0f));
-//			capsule[0].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-//			capsule[0].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-//			break;
-//		case 1:
-//			m_goal[1]->SetPosition(Vector3(0, 10, 95.0f));
-//			capsule[1].start = Vector3(0.0f, 0.0f, 5.5f);           //境界球の中心
-//			capsule[1].end = Vector3(0.0f, 0.0f, -5.5f);		    //境界球の中心
-//			break;
-//		case 2:
-//			m_goal[2]->SetPosition(Vector3(93.0f, 0, 0.0f));
-//			capsule[2].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-//			capsule[2].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-//			break;
-//		case 3:
-//			m_goal[3]->SetPosition(Vector3(10.0f, 0, 0));
-//			capsule[3].start = Vector3(6.0f, 0.0f, 0.0f);           //境界球の中心
-//			capsule[3].end = Vector3(-6.0f, 0.0f, 0.0f);		    //境界球の中心
-//			break;
-//		case 4:
-//			m_goal[4]->SetPosition(Vector3(-40.0f, 10, -10));
-//			capsule[4].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-//			capsule[4].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-//			break;
-//		case 5:
-//			m_goal[5]->SetPosition(Vector3(-96.0f, 0, -3.0f));
-//			capsule[5].start = Vector3(5.0f, 0.0f, 0.0f);           //境界球の中心
-//			capsule[5].end = Vector3(-5.0f, 0.0f, 0.0f);		    //境界球の中心
-//			break;
-//		}
-//
-//		m_goal[i]->SetCollision(capsule[i]);
-//	}
-//}

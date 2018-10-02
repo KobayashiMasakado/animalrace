@@ -36,4 +36,6 @@ public:
 	void ItemCPUCreate(int item);
 	//アイテム効果切れ(CPU)
 	void ItemCPUEraseCreate(int item);
+	//アイテム作成(フン)
+	void ItemFunCreate();
 };
