@@ -62,7 +62,7 @@ public:
 	//CPU‚ª‘–‚é
 	void EnemyChangeAngle(Direction dir);
 
-	void EnemyDirection(std::unique_ptr<Root> box[ENEMY_HITCHECK_NUM]);
+	//void EnemyDirection(std::unique_ptr<Root> box[ENEMY_HITCHECK_NUM]);
 
 	void CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM], std::unique_ptr<Item> itemCPUErase[ITEM_SET_NUM]);
 };

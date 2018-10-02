@@ -27,15 +27,15 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-	m_gameCamera = std::make_unique<GameCamera>();
+	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+//	m_gameCamera = std::make_unique<GameCamera>();
 
 }
 
 void ScenePlay::Update(float elapsedTime)
 {
 	// デバッグカメラの更新
-//	m_debugCamera->Update();
+	m_debugCamera->Update();
 
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
@@ -146,7 +146,112 @@ void ScenePlay::Update(float elapsedTime)
 			else if (m_hitCpuFlag == true)
 			{
 				//CPUの方向を変えて移動させる
-				m_cpu->EnemyDirection();
+				//アイテム取得時の移動速度
+				if (m_itemCPUCheck == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
+				}//通常の移動速度
+				else if (m_itemCPUCheck == false)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::FRONT);
+				}
+
+				if (Collision::HitCheck_Capsule2Capsule(m_box[2]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::UP_ANGLE);
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
+				}
+				else	if (Collision::HitCheck_Capsule2Capsule(m_box[1]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[3]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[4]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::DOWN_ANGLE);
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[5]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLB);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[6]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::BACK);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[7]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[8]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[9]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[10]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[11]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[12]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[13]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[14]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[15]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[16]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[17]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::UP_ANGLE); 
+					m_cpu->EnemyChangeAngle(Enemy::BACK);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[18]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::BACK);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[19]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::DOWN_ANGLE);
+					m_cpu->EnemyChangeAngle(Enemy::BACK);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[20]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[21]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[0]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
+				}
+				else if (Collision::HitCheck_Capsule2Capsule(m_box[22]->GetCollision(), m_cpu->GetCollision()) == true)
+				{
+					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
+				}
 			}
 			//下がる
 			else if (m_hitCpuFlag == false)
@@ -171,17 +276,17 @@ void ScenePlay::Render()
 
 	//追従カメラ
 	// ビュー行列の作成
-	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
-	Vector3 target;
+	//Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
+	//Vector3 target;
 
-	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
-	cameraPos = Vector3::Transform(cameraPos, rotY);
-	target = m_player->GetPlayer();
-	m_gameCamera->SetTarget(target);
-	m_gameCamera->SetEye(target + cameraPos);
-	m_view = m_gameCamera->GetViewMatrix();
+	//Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
+	//cameraPos = Vector3::Transform(cameraPos, rotY);
+	//target = m_player->GetPlayer();
+	//m_gameCamera->SetTarget(target);
+	//m_gameCamera->SetEye(target + cameraPos);
+	//m_view = m_gameCamera->GetViewMatrix();
 
-	//m_view = m_debugCamera->GetCameraMatrix();
+	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	//プレイヤーの描画
 	m_player->Render();
@@ -388,12 +493,12 @@ void ScenePlay::CreateDeviceDependentResources()
 	//床のコリジョンメッシュを作成
 	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Root.obj");
 
-	////CPUの移動用の当たり判定
-	//for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	//{
-	//	m_box[i] = std::make_unique<Root>();
+	//CPUの移動用の当たり判定
+	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	{
+		m_box[i] = std::make_unique<Root>();
 	//	m_box[i]->EnemyHitMoveCreate(i);
-	//}
+	}
 	EnemyHitMoveCreate();
 
 //	GoalCreate();
@@ -483,107 +588,122 @@ void ScenePlay::EnemyHitMoveCreate()
 			capsule[0].end = Vector3(0.0f, 0.0f, -80.0f);
 			break;
 		case 1:
-			m_box[1]->SetPosition(Vector3(-85.0f, 0.0f, 87.0f));
-			capsule[1].start = Vector3(7.0f, 0.0f, 7.0f);
+			m_box[1]->SetPosition(Vector3(-84.0f, 0.0f, 87.0f));
+			capsule[1].start = Vector3(7.0f, 0.0f, 5.0f);
 			capsule[1].end = Vector3(-10.0f, 0.0f, -10.0f);
 			capsule[1].r = 5.5f;
 			break;
 		case 2:
-			m_box[2]->SetPosition(Vector3(0.0f, 0.0f, 95.0f));
-			capsule[2].start = Vector3(70.0f, 0.0f, 0.0f);
-			capsule[2].end = Vector3(-75.0f, 0.0f, 0.0f);
+			m_box[2]->SetPosition(Vector3(-12.0f, 8.0f, 95.0f));
+			capsule[2].start = Vector3(0.0f, 0.0f, 0.0f);
+			capsule[2].end = Vector3(-60.0f, -8.0f, 0.0f);
 			break;
 		case 3:
-			m_box[3]->SetPosition(Vector3(84.0f, 0.0f, 85.0f));
-			capsule[3].start = Vector3(5.0f, 0.0f, -5.0f);
-			capsule[3].end = Vector3(-8.0f, 0.0f, 8.0f);
-			capsule[3].r = 5.5f;
+			m_box[3]->SetPosition(Vector3(0.0f, 10.0f, 95.0f));
+			capsule[3].start = Vector3(6.0f, 0.0f, 0.0f);
+			capsule[3].end = Vector3(-6.0f, 0.0f, 0.0f);
 			break;
 		case 4:
-			m_box[4]->SetPosition(Vector3(92.0f, 0.0f, 0.0f));
-			capsule[4].start = Vector3(0.0f, 0.0f, 75.0f);
-			capsule[4].end = Vector3(0.0f, 0.0f, -80.0f);
+			m_box[4]->SetPosition(Vector3(10.0f, 8.0f, 95.0f));
+			capsule[4].start = Vector3(0.0f, 0.0f, 0.0f);
+			capsule[4].end = Vector3(60.0f, -8.0f, 0.0f);
 			break;
+
 		case 5:
-			m_box[5]->SetPosition(Vector3(86.0f, 0.0f, -90.0f));
-			capsule[5].start = Vector3(10.0f, 0.0f, 10.0f);
-			capsule[5].end = Vector3(-8.0f, 0.0f, -8.0f);
+			m_box[5]->SetPosition(Vector3(84.0f, 0.0f, 85.0f));
+			capsule[5].start = Vector3(5.0f, 0.0f, -5.0f);
+			capsule[5].end = Vector3(-8.0f, 0.0f, 8.0f);
+			capsule[5].r = 5.5f;
 			break;
 		case 6:
-			m_box[6]->SetPosition(Vector3(70.0f, 0.0f, -100.0f));
-			capsule[6].start = Vector3(10.0f, 0.0f, 0.0f);
-			capsule[6].end = Vector3(-13.0f, 0.0f, 0.0f);
+			m_box[6]->SetPosition(Vector3(92.0f, 0.0f, 0.0f));
+			capsule[6].start = Vector3(0.0f, 0.0f, 75.0f);
+			capsule[6].end = Vector3(0.0f, 0.0f, -80.0f);
 			break;
 		case 7:
-			m_box[7]->SetPosition(Vector3(25.0f, 0.0f, -70.0f));
-			capsule[7].start = Vector3(30.0f, 0.0f, -30.0f);
-			capsule[7].end = Vector3(-25.0f, 0.0f, 25.0f);
+			m_box[7]->SetPosition(Vector3(86.0f, 0.0f, -90.0f));
+			capsule[7].start = Vector3(10.0f, 0.0f, 10.0f);
+			capsule[7].end = Vector3(-8.0f, 0.0f, -8.0f);
 			break;
 		case 8:
-			m_box[8]->SetPosition(Vector3(-5.0f, 0.0f, -25.0f));
-			capsule[8].start = Vector3(-0.0f, 0.0f, 3.0f);
-			capsule[8].end = Vector3(0.0f, 0.0f, -15.0f);
-			capsule[8].r = 5.5f;
+			m_box[8]->SetPosition(Vector3(70.0f, 0.0f, -100.0f));
+			capsule[8].start = Vector3(10.0f, 0.0f, 0.0f);
+			capsule[8].end = Vector3(-13.0f, 0.0f, 0.0f);
 			break;
 		case 9:
-			m_box[9]->SetPosition(Vector3(17.0f, 0.0f, 7.0f));
-			capsule[9].start = Vector3(18.0f, 0.0f, 18.0f);
-			capsule[9].end = Vector3(-25.0f, 0.0f, -25.0f);
+			m_box[9]->SetPosition(Vector3(25.0f, 0.0f, -70.0f));
+			capsule[9].start = Vector3(30.0f, 0.0f, -30.0f);
+			capsule[9].end = Vector3(-25.0f, 0.0f, 25.0f);
 			break;
 		case 10:
-			m_box[10]->SetPosition(Vector3(40.0f, 0.0f, 33.0f));
-			capsule[10].start = Vector3(0.0f, 0.0f, 5.0f);
-			capsule[10].end = Vector3(-4.0f, 0.0f, -7.0f);
+			m_box[10]->SetPosition(Vector3(-5.0f, 0.0f, -25.0f));
+			capsule[10].start = Vector3(-0.0f, 0.0f, 3.0f);
+			capsule[10].end = Vector3(0.0f, 0.0f, -15.0f);
+			capsule[10].r = 5.5f;
 			break;
 		case 11:
-			m_box[11]->SetPosition(Vector3(40.0f, 0.0f, 43.0f));
-			capsule[11].start = Vector3(0.0f, 0.0f, 7.0f);
-			capsule[11].end = Vector3(1.0f, 0.0f, -5.0f);
+			m_box[11]->SetPosition(Vector3(17.0f, 0.0f, 7.0f));
+			capsule[11].start = Vector3(18.0f, 0.0f, 18.0f);
+			capsule[11].end = Vector3(-25.0f, 0.0f, -25.0f);
 			break;
 		case 12:
-			m_box[12]->SetPosition(Vector3(33.0f, 0.0f, 60.0f));
-			capsule[12].start = Vector3(7.0f, 0.0f, -7.0f);
-			capsule[12].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsule[12].r = 5.5f;
+			m_box[12]->SetPosition(Vector3(40.0f, 0.0f, 33.0f));
+			capsule[12].start = Vector3(0.0f, 0.0f, 5.0f);
+			capsule[12].end = Vector3(-4.0f, 0.0f, -7.0f);
 			break;
 		case 13:
-			m_box[13]->SetPosition(Vector3(0.0f, 0.0f, 70.0f));
-			capsule[13].start = Vector3(20.0f, 0.0f, 0.0f);
-			capsule[13].end = Vector3(-20.0f, 0.0f, 0.0f);
+			m_box[13]->SetPosition(Vector3(40.0f, 0.0f, 43.0f));
+			capsule[13].start = Vector3(0.0f, 0.0f, 7.0f);
+			capsule[13].end = Vector3(1.0f, 0.0f, -5.0f);
 			break;
 		case 14:
-			m_box[14]->SetPosition(Vector3(-30.0f, 0.0f, 65.0f));
-			capsule[14].start = Vector3(5.0f, 0.0f, 5.0f);
-			capsule[14].end = Vector3(-8.0f, 0.0f, -8.0f);
+			m_box[14]->SetPosition(Vector3(33.0f, 0.0f, 60.0f));
+			capsule[14].start = Vector3(7.0f, 0.0f, -7.0f);
+			capsule[14].end = Vector3(-7.0f, 0.0f, 7.0f);
+			capsule[14].r = 5.5f;
 			break;
 		case 15:
-			m_box[15]->SetPosition(Vector3(-40.0f, 0.0f, -10.0f));
-			capsule[15].start = Vector3(0.0f, 0.0f, 70.0f);
-			capsule[15].end = Vector3(0.0f, 0.0f, -68.0f);
+			m_box[15]->SetPosition(Vector3(0.0f, 0.0f, 70.0f));
+			capsule[15].start = Vector3(20.0f, 0.0f, 0.0f);
+			capsule[15].end = Vector3(-20.0f, 0.0f, 0.0f);
 			break;
 		case 16:
-			m_box[16]->SetPosition(Vector3(-50.0f, 0.0f, -95.0f));
-			capsule[16].start = Vector3(7.0f, 0.0f, 10.0f);
-			capsule[16].end = Vector3(-10.0f, 1.0f, -5.0f);
-			capsule[16].r = 5.5f;
+			m_box[16]->SetPosition(Vector3(-30.0f, 0.0f, 65.0f));
+			capsule[16].start = Vector3(5.0f, 0.0f, 5.0f);
+			capsule[16].end = Vector3(-7.0f, 0.0f, -8.0f);
 			break;
 		case 17:
-			m_box[17]->SetPosition(Vector3(-70.0f, 0.0f, -100.0f));
-			capsule[17].start = Vector3(3.0f, 0.0f, 0.0f);
-			capsule[17].end = Vector3(-3.0f, 0.0f, 0.0f);
-			capsule[17].r = 6.5f;
+			m_box[17]->SetPosition(Vector3(-40.0f, 0.0f,55.0f));
+			capsule[17].start = Vector3(0.0f, 0.0f, 0.0f);
+			capsule[17].end = Vector3(0.0f, 10.0f, -60.0f);
 			break;
 		case 18:
-			m_box[18]->SetPosition(Vector3(-88.0f, 0.0f, -90.0f));
-			capsule[18].start = Vector3(10.0f, 0.0f, -10.0f);
-			capsule[18].end = Vector3(-7.0f, 0.0f, 7.0f);
-			capsule[18].r = 5.5f;
+			m_box[18]->SetPosition(Vector3(-40.0f, 10.0f, -20.0f));
+			capsule[18].end = Vector3(0.0f, 0.0f, 7.0f);
+			capsule[18].start = Vector3(0.0f, 0.0f, -7.0f);
 			break;
 		case 19:
-			m_box[19]->SetPosition(Vector3(-93.5f, 0, 9.0f));
-			capsule[19].start = Vector3(0.5f, 0.5f, 0.5f);
-			capsule[19].end = Vector3(0.5f, 0.5f, 0.5f);
-			capsule[19].r = 3.5f;
+			m_box[19]->SetPosition(Vector3(-40.0f, 0.0f, -78.0f));
+			capsule[19].start = Vector3(0.0f, 0.0f, 0.0f);
+			capsule[19].end = Vector3(0.0f, 10.0f, 50.0f);
+			break;
+		case 20:
+			m_box[20]->SetPosition(Vector3(-50.0f, 0.0f, -95.0f));
+			capsule[20].start = Vector3(7.0f, 0.0f, 10.0f);
+			capsule[20].end = Vector3(-10.0f, 1.0f, -5.0f);
+			capsule[16].r = 5.5f;
+			break;
+		case 21:
+			m_box[21]->SetPosition(Vector3(-70.0f, 0.0f, -100.0f));
+			capsule[21].start = Vector3(3.0f, 0.0f, 0.0f);
+			capsule[21].end = Vector3(-3.0f, 0.0f, 0.0f);
+			capsule[21].r = 6.5f;
+			break;
+		case 22:
+			m_box[22]->SetPosition(Vector3(-88.0f, 0.0f, -90.0f));
+			capsule[22].start = Vector3(10.0f, 0.0f, -10.0f);
+			capsule[22].end = Vector3(-7.0f, 0.0f, 7.0f);
+			capsule[22].r = 5.5f;
 			break;
 		}
 

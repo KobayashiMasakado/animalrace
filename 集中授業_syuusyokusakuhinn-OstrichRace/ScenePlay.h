@@ -23,7 +23,7 @@ class ScenePlay : public SceneBase
 {
 
 public:
-	static const int ENEMY_HITCHECK_NUM = 19;
+	static const int ENEMY_HITCHECK_NUM = 23;
 	static const int GOAL_SET_NUM = 6;
 	static const int ITEM_SET_NUM = 2;
 	static const int TIME_SET_NUM = 3;
@@ -173,7 +173,6 @@ public:
 	void GameSeter();
 	//CPUの移動用の当たり判定
 	void EnemyHitMoveCreate();
-//	void GoalCreate();
 	//ゲッター関数
 	//デバイスを取得する関数
 	ID3D11Device* GetDevice()
