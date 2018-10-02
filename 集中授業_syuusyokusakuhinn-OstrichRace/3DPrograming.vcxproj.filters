@@ -11,6 +11,9 @@
     <Filter Include="Models">
       <UniqueIdentifier>{2b766a06-04b8-48a0-9997-90bca1c8c26a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{5011a7d0-db01-46dc-98ac-1056bceaed8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -43,6 +46,9 @@
     <ClInclude Include="Utility.h" />
     <ClInclude Include="ObjectCreate.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="BinaryFile.h" />
+    <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="Myeffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -68,6 +74,9 @@
     <ClCompile Include="ModelDate.cpp" />
     <ClCompile Include="ObjectCreate.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="BinaryFile.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="MyEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -109,5 +118,11 @@
     <None Include="PixelShader.inc" />
     <None Include="VertexShader.inc" />
     <None Include="DebugCapsule.inc" />
+    <None Include="Particle.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="ParticleGS.hlsl" />
+    <FxCompile Include="ParticlePS.hlsl" />
+    <FxCompile Include="ParticleVS.hlsl" />
   </ItemGroup>
 </Project>

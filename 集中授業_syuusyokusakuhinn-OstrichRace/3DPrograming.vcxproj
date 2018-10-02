@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryFile.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionCapsule.h" />
     <ClInclude Include="CollisionField.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="DebugCapsule.h" />
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="GridFloor.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ModelDate.h" />
+    <ClInclude Include="Myeffect.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="ObjectCreate.h" />
@@ -180,11 +183,13 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BinaryFile.cpp" />
     <ClCompile Include="CollisionCapsule.cpp" />
     <ClCompile Include="CollisionMesh.cpp" />
     <ClCompile Include="DebugCamera.cpp" />
     <ClCompile Include="DebugCapsule.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
@@ -193,6 +198,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModelDate.cpp" />
+    <ClCompile Include="MyEffect.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Obj3d.cpp" />
     <ClCompile Include="ObjectCreate.cpp" />
@@ -241,8 +247,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DebugCapsule.inc" />
+    <None Include="Particle.hlsli" />
     <None Include="PixelShader.inc" />
     <None Include="VertexShader.inc" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="ParticleGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="ParticlePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="ParticleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

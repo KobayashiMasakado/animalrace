@@ -18,6 +18,8 @@
 
 #include "Number.h"
 
+#include "MyEffect.h"
+#include "EffectManager.h"
 
 class ScenePlay : public SceneBase
 {
@@ -33,6 +35,8 @@ public:
 	static const int TIME_MIRI = 100;
 	static const int GROUND_POSY = -0.3f;
 private:
+
+	DX::StepTimer                           m_timer;
 
 	// Device resources.
 	DX::DeviceResources* m_deviceResources;
@@ -163,7 +167,7 @@ private:
 
 	std::unique_ptr<CollisionMesh> m_floorMesh;
 
-	
+	EffectManager*							m_effectManager;
 public:
 	//‰Šú‰»
 	void Initialize() override;
@@ -174,7 +178,10 @@ public:
 
 	void Finalize() override { delete m_objCreate; }
 	void CreateDeviceDependentResources();
+	// Basic game loop
+	void Tick();
 
+	void OnResuming();
 	//ƒQ[ƒ€‚ğSet
 	void GameSeter();
 	//CPU‚ÌˆÚ“®—p‚Ì“–‚½‚è”»’è

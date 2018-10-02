@@ -6,7 +6,7 @@
 #pragma once
 
 #include <WinSDKVer.h>
-#define _WIN32_WINNT 0x0600
+#define _WIN32_WINNT 0x0601
 #include <SDKDDKVer.h>
 
 // Use the C++ standard templated min/max
@@ -32,6 +32,13 @@
 #include <wrl/client.h>
 
 #include <d3d11_1.h>
+
+#if defined(NTDDI_WIN10_RS2)
+#include <dxgi1_6.h>
+#else
+//#include <dxgi1_5.h>
+#endif
+
 #include <DirectXMath.h>
 #include <DirectXColors.h>
 
@@ -55,6 +62,10 @@
 
 #include <Model.h> 
 #include "StepTimer.h"
+
+#ifdef _DEBUG
+#include <dxgidebug.h>
+#endif
 
 #if _DEBUG
 #define _CRTDBG_MAP_ALLOC

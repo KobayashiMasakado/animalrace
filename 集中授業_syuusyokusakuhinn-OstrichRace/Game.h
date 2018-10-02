@@ -21,6 +21,7 @@
 
 #include "TaskManager.h"
 
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game : public DX::IDeviceNotify
@@ -151,4 +152,5 @@ private:
 	//タスク
 	TaskManager m_taskManager;
 
+	EffectManager*							m_effectManager;
 };
