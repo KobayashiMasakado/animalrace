@@ -12,7 +12,7 @@ public:
 	//‰Šú‰»
 	virtual void Initialize() = 0;
 	//XV
-	virtual void Update(float elapsedTime) = 0;
+	virtual void Update(DX::StepTimer const& timer) = 0;
 	//•`‰æ
 	virtual void Render() = 0;
 	//I—¹ˆ—

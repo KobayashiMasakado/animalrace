@@ -11,7 +11,7 @@ public:
 	//‰Šú‰»
 	void Initialize() override {}
 	//XV
-	void Update(float elapsedTime) override {}
+	void Update(DX::StepTimer const& timer) override {}
 	//•`‰æ
 	void Render() override {}
 	//I—¹ˆ—

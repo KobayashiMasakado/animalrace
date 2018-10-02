@@ -12,6 +12,16 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
+ScenePlay::ScenePlay()
+{
+	/*m_deviceResources = std::make_unique<DX::DeviceResources>();
+	m_deviceResources->RegisterDeviceNotify(m_game);*/
+}
+
+ScenePlay::~ScenePlay()
+{
+}
+
 void ScenePlay::Initialize()
 {
 	//ゴールフラグの初期化
@@ -33,7 +43,7 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-	m_effectManager = nullptr;
+//	m_effectManager = nullptr;
 
 	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
 //	m_gameCamera = std::make_unique<GameCamera>();
@@ -45,12 +55,12 @@ void ScenePlay::Tick()
 	{
 		float elapsedTime = float(m_timer.GetElapsedSeconds());
 
-		Update(elapsedTime);
+		Update(m_timer);
 	});
 
 	Render();
 }
-void ScenePlay::Update(float elapsedTime)
+void ScenePlay::Update(DX::StepTimer const& timer)
 {
 	// デバッグカメラの更新
 	m_debugCamera->Update();
@@ -62,13 +72,12 @@ void ScenePlay::Update(float elapsedTime)
 	m_count += 1;
 	
 	///更新/////////////////////
-	/*DX::StepTimer timer;
-	timer;
-	DX::StepTimer elapsedTime = timer.GetTotalSeconds();*/
+	
+	float elapsedTime = timer.GetTotalSeconds();
 
-	m_effectManager->Update(m_timer);
+//	m_effectManager->Update(m_timer);
 	//プレイヤーの更新
-	m_player->Update(elapsedTime);
+//	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
 //	m_root->Update(elapsedTime);
@@ -320,7 +329,7 @@ void ScenePlay::Render()
 	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	
-	m_effectManager->Render();
+//	m_effectManager->Render();
 
 	//プレイヤーの描画
 	m_player->Render();
@@ -492,22 +501,22 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_player = new Player();
 	m_cpu = new Enemy();
 	
-	RECT outputSize = m_deviceResources->GetOutputSize();
-	UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
-	UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
-	Vector3 camera = Vector3(0, 0, -5);
-	Matrix view = Matrix::CreateLookAt(camera,
-		Vector3::Zero, Vector3::UnitY);
-	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
+	//RECT outputSize = m_deviceResources->GetOutputSize();
+	//UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
+	//UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
+	//Vector3 camera = Vector3(0, 0, -5);
+	//Matrix view = Matrix::CreateLookAt(camera,
+	//	Vector3::Zero, Vector3::UnitY);
+	//Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
+	//	float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
 
-	m_effectManager = new EffectManager();
-	m_effectManager->Create(m_deviceResources, L"Resources\\Textures\\shadow.png", 1000);
-	//m_effectManager->Initialize(1,Vector3(0,0,0));
-	//m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
-	m_effectManager->InitializeCorn(5, Vector3(-2, -2, 0), Vector3(1, 1, 0));
+	//m_effectManager = new EffectManager();
+	//m_effectManager->Create(m_deviceResources, L"Textures\\Waening.png", 1);
+	////m_effectManager->Initialize(1,Vector3(0,0,0));
+	////m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
+	//m_effectManager->InitializeCorn(5, Vector3(-2, -2, 0), Vector3(1, 1, 0));
 
-	m_effectManager->SetRenderState(camera, view, proj);
+	//m_effectManager->SetRenderState(camera, view, proj);
 
 
 	// モデルを読み込み

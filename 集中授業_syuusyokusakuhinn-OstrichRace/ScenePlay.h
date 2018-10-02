@@ -169,10 +169,12 @@ private:
 
 	EffectManager*							m_effectManager;
 public:
+	ScenePlay();
+	~ScenePlay();
 	//‰Šú‰»
 	void Initialize() override;
 	//XV
-	void Update(float elapsedTime) override;
+	void Update(DX::StepTimer const& timer) override;
 	//•`‰æ
 	void Render() override;
 

@@ -6,7 +6,7 @@
 #pragma once
 
 #include <WinSDKVer.h>
-#define _WIN32_WINNT 0x0601
+#define _WIN32_WINNT 0x0600
 #include <SDKDDKVer.h>
 
 // Use the C++ standard templated min/max
@@ -35,7 +35,7 @@
 
 #if defined(NTDDI_WIN10_RS2)
 #include <dxgi1_6.h>
-#else
+//#else
 //#include <dxgi1_5.h>
 #endif
 
