@@ -221,3 +221,8 @@ void Item::ItemFunEraseCreate(int item)
 		SetCollision(capsule);
 	}
 }
+
+void Item::EffectCreate(EffectManager * m_effectManager)
+{
+
+}

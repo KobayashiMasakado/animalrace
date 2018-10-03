@@ -15,8 +15,6 @@ using namespace DirectX::SimpleMath;
 
 ScenePlay::ScenePlay()
 {
-	/*m_deviceResources = new DX::DeviceResources();
-	m_deviceResources->RegisterDeviceNotify(this);*/
 	m_effectLeafManager = nullptr;
 	m_effectMeatManager = nullptr;
 	m_effectFunManager = nullptr;
@@ -40,7 +38,7 @@ void ScenePlay::Initialize()
 	m_itemPlayerBadCheck = false;
 	m_itemCPUBadCheck = false;
 	m_itemFunCheck = false;
-	m_itemEffect = false;
+
 	//カウントダウンの初期化
 	m_count = 0;
 
@@ -50,39 +48,8 @@ void ScenePlay::Initialize()
 	m_timeS = 0;
 
 //	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-
 }
-//void ScenePlay::Tick()
-//{
-//	m_timer.Tick([&]()
-//	{
-//		float elapsedTime = float(m_timer.GetElapsedSeconds());
-//
-//		Update(m_timer);
-//	});
-//
-//	Render();
-//}
-//void ScenePlay::OnDeviceLost()
-//{
-//	// TODO: Add Direct3D resource cleanup here.
-//
-//	//// コモンステートの解放
-//	//m_states.reset();
-//
-//	//// スプライトバッチの解放
-//	//m_sprites.reset();
-//
-//	///*if (m_effectManager != nullptr) {
-//	//	m_effectManager->Lost();
-//	//	delete m_effectManager;
-//	//	m_effectManager = nullptr;
-//	//}*/
-//
-//}
-//void ScenePlay::OnDeviceRestored()
-//{
-//}
+
 void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 {
 	// デバッグカメラの更新
@@ -104,7 +71,6 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	m_player->Update(elapsedTime);
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
-//	m_root->Update(elapsedTime);
 	//アイテムの更新
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
@@ -112,7 +78,6 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 		m_itemPlayerErase[i]->Update(elapsedTime);
 		m_itemCPU[i]->Update(elapsedTime);
 		m_itemCPUErase[i]->Update(elapsedTime);
-
 		m_itemFun[i]->Update(elapsedTime);
 		m_itemFunErase[i]->Update(elapsedTime);
 	}
@@ -332,15 +297,9 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 
 void ScenePlay::Render()
 {
-	// Don't try to render anything before the first Update.
-	/*if (m_timer.GetFrameCount() == 0)
-	{
-		return;
-	}*/
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	GameCamera* ganeCamera = GameCamera::GetInstance();
-
 	//追従カメラ
 	// ビュー行列の作成
 	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
@@ -386,12 +345,10 @@ void ScenePlay::Render()
 		m_itemFunErase[i]->Render();
 	//	m_itemFunErase[i]->DrawCollision();
 	}
-	//コースの作成
-//	m_root->Render();
-//床のコリジョンメッシュの描画
+    //床のコリジョンメッシュの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-		m_floorMesh->DrawCollision(context, m_view, m_projection);
+	//	m_floorMesh->DrawCollision(context, m_view, m_projection);
 	}
 	//ゴールの描画
 	for (int i = 0; i < GOAL_SET_NUM; i++)
@@ -434,7 +391,6 @@ void ScenePlay::Render()
 		//YOU WIN!画像表示
 		m_sprites->Draw(m_tPlayerGoal.Get(), Vector2(200, 200));
 	}
-
 	//CPUがゴールしたら
 	else if (m_goalCPUFlag[0] == true && m_goalCPUFlag[1] == true && m_goalCPUFlag[2] == true &&
 		m_goalCPUFlag[3] == true && m_goalCPUFlag[4] == true && m_goalCPUFlag[5] == true)
@@ -443,14 +399,26 @@ void ScenePlay::Render()
 		m_sprites->Draw(m_tCPUGoal.Get(), Vector2(200, 200));
 	}
 	//タイム--------------------------------------
+	//カウントダウン
+	for (int i = 3; i > 0; i--)
+	{
+		if (m_count > ((i * TIME_MINUTE) - GAME_START_TIME) * -1 && m_count < 
+			(((i * TIME_MINUTE) - GAME_START_TIME) * -1) + (TIME_MINUTE - 1))
+		{
+			m_sprites->Draw(m_tCNum[i].Get(), Vector2(380, 220));
+		}
+	}
+	if (m_count > GAME_START_TIME && m_count < 200)
+	{
+		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
+	}
 	//ミリ秒
-	float miri = m_time;
-	
+	int miri = m_time;
 	//秒
-	float sec = (int)(miri) / TIME_MIRI;
+	int sec = miri / TIME_MIRI;
 
 	//分
-	float min = (int)(sec) / TIME_MINUTE;
+	int min = sec / TIME_MINUTE;
 
 	if (sec >= TIME_MINUTE - 1)
 	{
@@ -477,12 +445,6 @@ void ScenePlay::Render()
 	/////////////////////////////////////
 	m_sprites->End();
 }
-//void ScenePlay::OnResuming()
-//{
-//	m_timer.ResetElapsedTime();
-//
-//	// TODO: Game is being power-resumed (or returning from minimize).
-//}
 void ScenePlay::CreateDeviceDependentResources()
 {
 	//スプライトバッチの作成
@@ -497,24 +459,23 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	//2Dスプライトの描画素材
 	CreateWICTextureFromFile(device, L"Textures\\savanna_time.png", nullptr, m_tTime.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\Lap.png",          nullptr, m_tLap.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\Lap.png", nullptr, m_tLap.GetAddressOf());
 	CreateWICTextureFromFile(device, L"Textures\\Human&Datyou.png", nullptr, m_tHO.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\km.png",           nullptr, m_tKm.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\YouWin.png",       nullptr, m_tPlayerGoal.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\YouLose.png",      nullptr, m_tCPUGoal.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\0_red.png",        nullptr, m_tCNum[0].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\1_red.png",        nullptr, m_tCNum[1].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\2_red.png",        nullptr, m_tCNum[2].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\3_red.png",        nullptr, m_tCNum[3].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\4_red.png",        nullptr, m_tCNum[4].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\5_red.png",        nullptr, m_tCNum[5].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\6_red.png",        nullptr, m_tCNum[6].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\7_red.png",        nullptr, m_tCNum[7].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\8_red.png",        nullptr, m_tCNum[8].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\9_red.png",        nullptr, m_tCNum[9].GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\GO.png",           nullptr, m_tCGo.GetAddressOf());
-	CreateWICTextureFromFile(device, L"Textures\\Waening.png",      nullptr, m_tFlipGoal.GetAddressOf());
-	
+	CreateWICTextureFromFile(device, L"Textures\\km.png", nullptr, m_tKm.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\YouWin.png", nullptr, m_tPlayerGoal.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\YouLose.png", nullptr, m_tCPUGoal.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\0_red.png", nullptr, m_tCNum[0].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\1_red.png", nullptr, m_tCNum[1].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\2_red.png", nullptr, m_tCNum[2].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\3_red.png", nullptr, m_tCNum[3].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\4_red.png", nullptr, m_tCNum[4].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\5_red.png", nullptr, m_tCNum[5].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\6_red.png", nullptr, m_tCNum[6].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\7_red.png", nullptr, m_tCNum[7].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\8_red.png", nullptr, m_tCNum[8].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\9_red.png", nullptr, m_tCNum[9].GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\GO.png", nullptr, m_tCGo.GetAddressOf());
+	CreateWICTextureFromFile(device, L"Textures\\Waening.png", nullptr, m_tFlipGoal.GetAddressOf());
 	//数字の描画--------------------------------
 	for (int i = 0; i < TIME_SET_NUM; i++)
 	{
@@ -524,24 +485,10 @@ void ScenePlay::CreateDeviceDependentResources()
 		}
 	}
 
-	//カウントダウン
-	for (int i = 3; i > 0; i--)
-	{
-		if (m_count > ((i * TIME_MINUTE) - GAME_START_TIME) * -1 && m_count < (((i * TIME_MINUTE) - GAME_START_TIME) * -1) + (TIME_MINUTE - 1))
-		{
-			m_sprites->Draw(m_tCNum[i].Get(), Vector2(380, 220));
-		}
-	}
-	if (m_count > GAME_START_TIME && m_count < 200)
-	{
-		m_sprites->Draw(m_tCGo.Get(), Vector2(320, 200));
-	}
 	//-------------------------------------------
 	m_objCreate = new ObjectCreate();
 	m_player = new Player();
 	m_cpu = new Enemy();
-	
-	GameCamera* gameCamera = GameCamera::GetInstance();
 
 	RECT outputSize = m_deviceResources->GetOutputSize();
 	UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
@@ -551,19 +498,23 @@ void ScenePlay::CreateDeviceDependentResources()
 		Vector3::Zero, Vector3::UnitY);
 	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
 		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
+	//Player用アイテム
 	m_effectLeafManager = new EffectManager();
 	m_effectLeafManager->Create(m_deviceResources, L"Textures\\gameE.png", 10);
 	//m_effectManager->Initialize(1,Vector3(0,0,0));
-	m_effectLeafManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
-	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(1, 1, 1));
-	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(-1, -1, -1));
+	//m_effectLeafManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	m_effectLeafManager->InitializeCorn(0.05f, Vector3(0, 0, 0), Vector3(0, 1, 0));
 	m_effectLeafManager->SetRenderState(camera, view, proj);
-
+	//CPU用アイテム
 	m_effectMeatManager = new EffectManager();
 	m_effectMeatManager->Create(m_deviceResources, L"Textures\\gameB.png", 10);
-	m_effectMeatManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	//m_effectMeatManager->Initialize(1,Vector3(0,0,0));
+	
+	 m_effectMeatManager->InitializeCorn(0.01f, Vector3(0, 0.3f, 0), Vector3(0, -1, 0));
+  
+	//m_effectMeatManager->InitializeCorn2(10, Vector3(0, 1.2f, 0), Vector3(1, 1, 0));
 	m_effectMeatManager->SetRenderState(camera, view, proj);
-
+	//フンアイテム
 	m_effectFunManager = new EffectManager();
 	m_effectFunManager->Create(m_deviceResources, L"Textures\\gameF.png", 10);
 	m_effectFunManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
@@ -574,14 +525,11 @@ void ScenePlay::CreateDeviceDependentResources()
 	EffectFactory fx(device);
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
-	//ModelDate* modelDate = ModelDate::GetInstance();
 
 	//プレイヤー作成
 	m_player->PlayerCreate();
 	//CPU作成
 	m_cpu->CPUCreate();
-
-	
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{   //アイテム作成(プレイヤー)
 		m_itemPlayer[i] = std::make_unique<Item>();
@@ -667,7 +615,6 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	GameSeter();
 }
-
 void ScenePlay::GameSeter()
 {
 	for (int i = 0; i < ITEM_SET_NUM; i++)
@@ -680,7 +627,6 @@ void ScenePlay::GameSeter()
 		m_itemFunErase[i]->SetGame(m_game);
 	}
 	
-
 	m_floorMesh->SetGame(m_game);
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{

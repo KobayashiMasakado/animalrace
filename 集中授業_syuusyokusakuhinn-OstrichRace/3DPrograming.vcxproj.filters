@@ -50,6 +50,7 @@
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Myeffect.h" />
     <ClInclude Include="CameraDate.h" />
+    <ClInclude Include="EffectCreate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

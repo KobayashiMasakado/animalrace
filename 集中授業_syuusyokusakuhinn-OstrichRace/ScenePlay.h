@@ -21,7 +21,7 @@
 #include "MyEffect.h"
 #include "EffectManager.h"
 
-class ScenePlay : public SceneBase /*, DX::IDeviceNotify*/
+class ScenePlay : public SceneBase
 {
 
 public:
@@ -39,7 +39,6 @@ private:
 	DX::StepTimer                           m_timer;
 
 	// Device resources.
-	
 	DX::DeviceResources* m_deviceResources;
 
 	// ビュー行列
@@ -56,9 +55,6 @@ private:
 
 	// デバッグカメラ
 	std::unique_ptr<DebugCamera> m_debugCamera;
-
-	// ゲームカメラ
-	//std::unique_ptr<GameCamera> m_gameCamera;
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
@@ -102,7 +98,6 @@ private:
 	//フン用
 	std::unique_ptr<Item> m_itemFunErase[ITEM_SET_NUM];
 
-	
 	//2Dスプライト/////////////////////////////
 	//テクスチャハンドル
 	//制限時間
@@ -149,8 +144,6 @@ private:
 
 	bool m_itemFunCheck;
 
-	bool m_itemEffect;
-
 	//カウントダウン
 	int m_count;
 	//アイテム
@@ -164,6 +157,7 @@ private:
 
 	std::unique_ptr<CollisionMesh> m_floorMesh;
 
+	//エフェクト
 	EffectManager* m_effectLeafManager;
 	EffectManager* m_effectMeatManager;
 	EffectManager* m_effectFunManager;
@@ -172,11 +166,7 @@ public:
 	~ScenePlay();
 	//初期化
 	void Initialize() override;
-	// Basic game loop
-	//void Tick();
-	// IDeviceNotify
-/*	virtual void OnDeviceLost() override;
-	virtual void OnDeviceRestored() override*/;
+	
 	//更新
 	void Update(DX::StepTimer timer) override;
 	//描画
@@ -185,12 +175,10 @@ public:
 	void Finalize() override { delete m_objCreate; }
 	void CreateDeviceDependentResources();
 	
-
-	void OnResuming();
 	//ゲームをSet
 	void GameSeter();
 	//CPUの移動用の当たり判定
-	void EnemyHitMoveCreate();
+	void EffectCreate();
 	//ゲッター関数
 	//デバイスを取得する関数
 	ID3D11Device* GetDevice()

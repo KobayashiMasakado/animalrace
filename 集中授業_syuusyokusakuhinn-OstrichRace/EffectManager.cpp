@@ -16,6 +16,7 @@ void EffectManager::Create(DX::DeviceResources * deviceResources, const wchar_t*
 		m_effectList.push_back(effect);
 	}
 }
+
 void EffectManager::Lost() {
 	for (std::list<MyEffect*>::iterator itr = m_effectList.begin(); itr != m_effectList.end(); itr++)
 	{
@@ -54,12 +55,40 @@ void EffectManager::InitializeCorn(float life, DirectX::SimpleMath::Vector3 pos,
 		vel.Normalize();
 
 		vel *= sin(rand()) + 1.0f;
+		Vector3 raff = Vector3(vel.y, vel.x, 0);
+		raff *= sin(rand())*0.5f;
+		vel = vel + raff;
+
+		vel *= 0.5f;
+
+		/*Vector3 vel2 = dir;
+		vel2.Normalize();
+
+		vel2 *= sin(rand()) + 1.0f;
+		Vector3 raff2 = Vector3(-vel2.y, vel2.x, 0);
+		raff2 *= sin(rand())*0.3f;
+		vel2 = vel + raff2;
+
+		vel2 *= 0.1f;*/
+		(*itr)->Initialize(life, pos, (vel/* + vel2*/));
+	}
+}
+
+void EffectManager::InitializeCorn2(float life, DirectX::SimpleMath::Vector3 pos, DirectX::SimpleMath::Vector3 dir)
+{
+	for (std::list<MyEffect*>::iterator itr = m_effectList.begin(); itr != m_effectList.end(); itr++)
+	{
+		Vector3 vel = dir;
+		vel.Normalize();
+
+		vel *= sin(rand()) + 1.0f;
 		Vector3 raff = Vector3(vel.y, -vel.x, 0);
 		raff *= sin(rand())*0.3f;
 		vel = vel + raff;
 
 		vel *= 0.1f;
-		(*itr)->Initialize(life, pos, vel);
+
+		(*itr)->Initialize(life, pos, (vel));
 	}
 }
 void EffectManager::Update(DX::StepTimer timer)
@@ -87,3 +116,52 @@ void EffectManager::SetRenderState(DirectX::SimpleMath::Vector3 camera, DirectX:
 		(*itr)->SetRenderState(camera, view, proj);
 	}
 }
+
+void EffectManager::Create2(DX::DeviceResources * deviceResources, const wchar_t* name, int count)
+{
+	//const wchar_t* name = L"Resources\\Textures\\image01.png";
+	DirectX::CreateWICTextureFromFile(deviceResources->GetD3DDevice(), name, nullptr, m_texture2.GetAddressOf());
+
+	for (int i = 0; i < count; i++) {
+		MyEffect* effect2 = new MyEffect();
+		effect2->Create2(deviceResources, m_texture2.Get());
+		//effect->Initialize(3, Vector3(0, 0, 0), Vector3((rand() % 20)*0.01f, (rand() % 20)*0.01f, 0));
+		m_effectList2.push_back(effect2);
+	}
+}
+
+void EffectManager::Lost2() {
+	for (std::list<MyEffect*>::iterator itr = m_effectList2.begin(); itr != m_effectList2.end(); itr++)
+	{
+		delete (*itr);
+	}
+}
+
+void EffectManager::Update2(DX::StepTimer timer)
+{
+	for (std::list<MyEffect*>::iterator itr = m_effectList2.begin(); itr != m_effectList2.end(); itr++)
+	{
+		(*itr)->Update2(timer);
+	}
+}
+
+void EffectManager::Render2()
+{
+
+	for (auto itr = m_effectList2.begin(); itr != m_effectList2.end(); itr++)
+	{
+		(*itr)->Render2();
+	}
+}
+
+
+
+void EffectManager::SetRenderState2(DirectX::SimpleMath::Vector3 camera, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj)
+{
+
+	for (auto itr = m_effectList2.begin(); itr != m_effectList2.end(); itr++)
+	{
+		(*itr)->SetRenderState2(camera, view, proj);
+	}
+}
+

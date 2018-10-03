@@ -11,6 +11,7 @@
 #include "DeviceResources.h"
 
 #include "CollisionCapsule.h"
+#include "EffectManager.h"
 
 class Item : public CollisionCapsule
 {
@@ -40,4 +41,6 @@ public:
 	void ItemFunCreate(int item);
 	//ƒAƒCƒeƒ€Œø‰ÊØ‚ê(CPU)
 	void ItemFunEraseCreate(int item);
+
+	void EffectCreate(EffectManager* m_effectManager);
 };
