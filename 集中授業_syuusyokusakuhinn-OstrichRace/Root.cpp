@@ -97,7 +97,7 @@ void Root::EnemyHitMoveCreate(int course)
 	case 4:
 		SetPosition(Vector3(10.0f, 8.0f, 95.0f));
 		capsule.start = Vector3(0.0f, 0.0f, 0.0f);
-		capsule.end = Vector3(60.0f, -8.0f, 0.0f);
+		capsule.end = Vector3(60.0f, -11.0f, 0.0f);
 		break;
 		
 	case 5:

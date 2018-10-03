@@ -18,7 +18,7 @@ private:
 	std::unique_ptr<DirectX::Model> m_itemFunEraseModel;
 
 	std::unique_ptr<DirectX::Model> m_boxModel;
-
+	
 	std::unique_ptr<DirectX::Model> m_goalModel;
 public:
 	ModelDate();
@@ -37,4 +37,5 @@ public:
 
 	DirectX::Model* GetGoal() { return m_goalModel.get(); }
 	DirectX::Model* GetBox() { return m_boxModel.get(); }
+
 };

@@ -47,7 +47,7 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+	//m_debugCamera = std::make_unique<DebugCamera>(800, 600);
 }
 
 void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
@@ -159,6 +159,7 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 				//プレイヤー操作(コース外)
 				m_player->PlayerOperationwOutSide(kb);
 			}
+			
 			//アイテム取得
 			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase,m_itemFun,m_itemFunErase);
 			//CPUの移動
@@ -312,7 +313,7 @@ void ScenePlay::Render()
 	ganeCamera->SetEye(target + cameraPos);
 	m_view = ganeCamera->GetViewMatrix();
 
-//	m_view = m_debugCamera->GetCameraMatrix();
+	//m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	if (m_player->GetItemPlayer() == true)
 	{
@@ -362,6 +363,7 @@ void ScenePlay::Render()
 		m_box[i]->Render();
 	//	m_box[i]->DrawCollision();
 	}
+
 	////////////////////////////
 	//3Dスプライト 
 	//草原
@@ -573,6 +575,7 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_box[i]->EnemyHitMoveCreate(i);
 	}
 
+	
 	// モデルをロードしてモデルハンドルを取得する 
 	//空
 	m_skydome = Model::CreateFromCMO(device, L"Resources\\Models\\savanna.cmo", fx);

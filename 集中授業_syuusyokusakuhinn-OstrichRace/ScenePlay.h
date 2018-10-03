@@ -78,6 +78,7 @@ private:
 
 	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
 
+
 	Root* m_root;
 	//道のモデル
 	std::unique_ptr<DirectX::Model> m_rootModel;
@@ -166,7 +167,6 @@ public:
 	~ScenePlay();
 	//初期化
 	void Initialize() override;
-	
 	//更新
 	void Update(DX::StepTimer timer) override;
 	//描画
@@ -177,8 +177,7 @@ public:
 	
 	//ゲームをSet
 	void GameSeter();
-	//CPUの移動用の当たり判定
-	void EffectCreate();
+
 	//ゲッター関数
 	//デバイスを取得する関数
 	ID3D11Device* GetDevice()

@@ -76,13 +76,13 @@ void Item::ItemPlayerCreate(int item)
 	switch (item)
 	{
 	case 0:
-		SetPosition(Vector3(-93.5f, 0, 40.0f));
+		SetPosition(Vector3(-80.0f, 0, 89.0f));
 		capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
 
 		break;
 	case 1:
-		SetPosition(Vector3(94.0f, 0, 10.0f));
+		SetPosition(Vector3(-36.0f, 0.0f, 50.0f));
 		capsule.start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
 
@@ -103,12 +103,12 @@ void Item::ItemPlayerEraseCreate(int item)
 		switch (item)
 		{
 		case 0:
-			SetPosition(Vector3(0.0f, 14, 95.0f));
+			SetPosition(Vector3(82.0f, 0, 89.0f));
 			capsule.start = Vector3(0.5f, 0.5f, 7.0f);           //‹«ŠE‹…‚Ì’†S
 			capsule.end = Vector3(-0.5f, 0.5f, -7.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
-			SetPosition(Vector3(30.0f, 0, -75.0f));
+			SetPosition(Vector3(-40.0f, 0.0f, -78.0f));
 			capsule.start = Vector3(3.5f, 0.5f, 6.0f);           //‹«ŠE‹…‚Ì’†S
 			capsule.end = Vector3(-3.5f, 0.5f, -6.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
@@ -128,12 +128,12 @@ void Item::ItemCPUCreate(int item)
 	switch (item)
 	{
 	case 0:
-		SetPosition(Vector3(-98.5f, 0, 40.0f));
+		SetPosition(Vector3(-80.0f, 0, 95.0f));
 		capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
 		break;
 	case 1:
-		SetPosition(Vector3(88.0f, 0, 10.0f));
+		SetPosition(Vector3(-42.0f, 0.0f, 50.0f));
 		capsule.start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
 		break;
@@ -154,14 +154,14 @@ void Item::ItemCPUEraseCreate(int item)
 		switch (item)
 		{
 		case 0:
-			SetPosition(Vector3(0.0f, 14, 95.0f));
-			capsule.start = Vector3(0.5f, 0.5f, 15.0f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(0.5f, 0.5f, -15.0f);		    //‹«ŠE‹…‚Ì’†S
+			SetPosition(Vector3(82.0f, 0, 89.0f));
+			capsule.start = Vector3(0.5f, 0.5f, 7.0f);           //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(-0.5f, 0.5f, -7.0f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
-			SetPosition(Vector3(30.0f, 0, -75.0f));
-			capsule.start = Vector3(3.5f, 0.5f, 5.0f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(-3.5f, 0.5f, -5.0f);		    //‹«ŠE‹…‚Ì’†S
+			SetPosition(Vector3(-40.0f, 0.0f, -78.0f));
+			capsule.start = Vector3(3.5f, 0.5f, 6.0f);           //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(-3.5f, 0.5f, -6.0f);		    //‹«ŠE‹…‚Ì’†S	    //‹«ŠE‹…‚Ì’†S
 			break;
 		}
 		SetCollision(capsule);
@@ -187,7 +187,7 @@ void Item::ItemFunCreate(int item)
 			capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
-			SetPosition(Vector3(0, 0, -8));
+			SetPosition(Vector3(-10, 0, 67));
 			capsule.start = Vector3(0.5f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
 			capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
 			break;
@@ -208,9 +208,9 @@ void Item::ItemFunEraseCreate(int item)
 		switch (item)
 		{
 		case 0:
-			SetPosition(Vector3(-38.0f, 10, -30.0f));
-			capsule.start = Vector3(5.0f, 0.5f, 0.5f);           //‹«ŠE‹…‚Ì’†S
-			capsule.end = Vector3(-5.0f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
+			SetPosition(Vector3(12, 0, 70));
+			capsule.start = Vector3(5.0f, 0.5f, 0.5f);       //‹«ŠE‹…‚Ì’†S
+			capsule.end = Vector3(-5.0f, 0.5f, 0.5f);	    //‹«ŠE‹…‚Ì’†S
 			break;
 		case 1:
 			SetPosition(Vector3(-38.0f, 10, -30.0f));

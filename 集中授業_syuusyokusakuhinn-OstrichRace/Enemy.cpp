@@ -95,7 +95,7 @@ bool Enemy::Update(float elapsedTime)
 	}
 	if (m_move & (1 << DOWN_ANGLE))
 	{
-		m_vec.y = -0.07f;
+		m_vec.y = -0.08f;
 	}
 	
 	//ビットフラグをリセット

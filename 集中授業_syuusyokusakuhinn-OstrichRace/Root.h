@@ -31,4 +31,5 @@ public:
 	void SetUpEffect();
 	void EnemyHitMoveCreate(int course);
 
+
 };

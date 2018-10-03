@@ -41,12 +41,12 @@ bool Player::Update(float elapsedTime)
 	//前進
 	if (m_move & (1 << FRONT))
 	{
-		m_vec.z = 0.4f;
+		m_vec.z = 0.45f;
 	}
 	//前進(通常より速度は速い)
 	else if (m_move & (1 << FRONT_ITEMGET))
 	{
-		m_vec.z = 0.8f;
+		m_vec.z = 0.9f;
 	}
 	//前進(通常より速度は遅い)
 	else if (m_move & (1 << FRONT_OUTCOURSE))
@@ -56,7 +56,7 @@ bool Player::Update(float elapsedTime)
 	//前進(通常より速度は遅い)
 	else if (m_move & (1 << FRONT_FUNGET))
 	{
-		m_vec.z = 0.1f;
+		m_vec.z = 0.2f;
 	}
 	//後進
 	else if (m_move & (1 << BACK))
