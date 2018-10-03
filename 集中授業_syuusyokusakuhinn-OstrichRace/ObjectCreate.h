@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Obj3D.h"
 #include "pch.h"
 #include "Player.h"

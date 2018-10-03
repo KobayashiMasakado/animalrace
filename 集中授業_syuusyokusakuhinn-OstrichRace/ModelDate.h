@@ -3,8 +3,6 @@
 #include <Model.h>
 #include "Utility.h"
 
-#include "CollisionMesh.h"
-
 class ModelDate : public SingletonBase<ModelDate>
 {
 private:

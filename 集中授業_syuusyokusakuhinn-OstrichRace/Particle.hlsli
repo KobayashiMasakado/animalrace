@@ -2,6 +2,7 @@
 struct VS_INPUT
 {
 	float3 Pos : POSITION;
+	float4 Color : COLOR;
 	float2 Tex : TEXCOORD;
 };
 

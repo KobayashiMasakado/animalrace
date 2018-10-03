@@ -76,10 +76,10 @@ public:
 	                   std::unique_ptr<Item> itemFun[2],
 	                   std::unique_ptr<Item> itemFunErase[2]);
 
-	float GetDirection()
-	{
-		return m_dir;
-	}
+	bool GetItemPlayer() { return m_itemPlayerCheck; }
+
+
+	float GetDirection(){ return m_dir;}
 
 	//ƒvƒŒƒCƒ„[‚ÌˆÚ“®‚ÌGetŠÖ”
 	DirectX::SimpleMath::Vector3 GetPlayer()

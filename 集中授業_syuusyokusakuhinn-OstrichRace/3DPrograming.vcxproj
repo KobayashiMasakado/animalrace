@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BinaryFile.h" />
+    <ClInclude Include="CameraDate.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionCapsule.h" />
     <ClInclude Include="CollisionField.h" />

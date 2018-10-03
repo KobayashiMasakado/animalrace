@@ -129,10 +129,10 @@ void MyEffect::Draw(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matr
 	// 頂点情報（ここは自分で設定してください。）
 	VertexPositionColorTexture vertex[4] =
 	{
-		VertexPositionColorTexture(Vector3(0.5f, 0.5f, 0.0f),Vector4::One, Vector2(0.0f, 0.0f)),
-		VertexPositionColorTexture(Vector3(-0.5f, 0.5f, 0.0f),Vector4::One, Vector2(1.0f, 0.0f)),
-		VertexPositionColorTexture(Vector3(-0.5f, -0.5f, 0.0f),Vector4::One, Vector2(1.0f, 1.0f)),
-		VertexPositionColorTexture(Vector3(0.5f,-0.5f, 0.0f),Vector4::One, Vector2(0.0f, 1.0f)),
+		VertexPositionColorTexture(Vector3(0.2f, 0.2f, 0.0f),Vector4::One, Vector2(0.0f, 0.0f)),
+		VertexPositionColorTexture(Vector3(-0.2f, 0.2f, 0.0f),Vector4::One, Vector2(1.0f, 0.0f)),
+		VertexPositionColorTexture(Vector3(-0.2f, -0.2f, 0.0f),Vector4::One, Vector2(1.0f, 1.0f)),
+		VertexPositionColorTexture(Vector3(0.2f,-0.2f, 0.0f),Vector4::One, Vector2(0.0f, 1.0f)),
 	};
 
 
@@ -180,7 +180,9 @@ void MyEffect::Draw(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matr
 	m_batch->End();
 
 
-
+	context->VSSetShader(nullptr, nullptr, 0);
+	context->GSSetShader(nullptr, nullptr, 0);
+	context->PSSetShader(nullptr, nullptr, 0);
 
 
 

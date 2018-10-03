@@ -8,6 +8,7 @@
 #include <WICTextureLoader.h>
 #include <CommonStates.h>
 #include "ModelDate.h"
+#include "GameCamera.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -37,6 +38,7 @@ void ScenePlay::Initialize()
 	m_itemPlayerBadCheck = false;
 	m_itemCPUBadCheck = false;
 	m_itemFunCheck = false;
+	m_itemEffect = false;
 	//カウントダウンの初期化
 	m_count = 0;
 
@@ -46,7 +48,6 @@ void ScenePlay::Initialize()
 	m_timeS = 0;
 
 //	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
-	m_gameCamera = std::make_unique<GameCamera>();
 
 }
 //void ScenePlay::Tick()
@@ -80,7 +81,7 @@ void ScenePlay::Initialize()
 //void ScenePlay::OnDeviceRestored()
 //{
 //}
-void ScenePlay::Update(float elapsedTime)
+void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 {
 	// デバッグカメラの更新
 //	m_debugCamera->Update();
@@ -92,9 +93,9 @@ void ScenePlay::Update(float elapsedTime)
 	m_count += 1;
 	
 	///更新/////////////////////
-	
-	/*float elapsedTime = timer.GetTotalSeconds();
-	m_effectManager->Update(m_timer);*/
+	float elapsedTime = timer.GetTotalSeconds();
+	m_effectManager->Update(timer);
+
 	//プレイヤーの更新
 	m_player->Update(elapsedTime);
 	//CPUの更新
@@ -316,9 +317,6 @@ void ScenePlay::Update(float elapsedTime)
 			//CPUアイテム取得
 			m_cpu->CPUItemGet(m_itemCPU,m_itemCPUErase);
 		}
-
-
-
 	}
 	//重力
 	if (m_player->GetPlayer().y >= GROUND_POSY)
@@ -337,6 +335,8 @@ void ScenePlay::Render()
 	}*/
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	GameCamera* ganeCamera = GameCamera::GetInstance();
+
 	//追従カメラ
 	// ビュー行列の作成
 	Vector3 cameraPos = Vector3(0.0f, 10.0f, -20.0f); //カメラの固定する位置
@@ -345,15 +345,18 @@ void ScenePlay::Render()
 	Matrix rotY = Matrix::CreateFromQuaternion(m_player->GetRot());
 	cameraPos = Vector3::Transform(cameraPos, rotY);
 	target = m_player->GetPlayer();
-	m_gameCamera->SetTarget(target);
-	m_gameCamera->SetEye(target + cameraPos);
-	m_view = m_gameCamera->GetViewMatrix();
+	ganeCamera->SetTarget(target);
+	ganeCamera->SetEye(target + cameraPos);
+	m_view = ganeCamera->GetViewMatrix();
 
 //	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
-	
-	//m_effectManager->Render();
+	if (m_player->GetItemPlayer() == true)
+	{
+		m_effectManager->Render();
+	}
 
+	
 	//プレイヤーの描画
 	m_player->Render();
 	//CPUの描画
@@ -361,7 +364,6 @@ void ScenePlay::Render()
 	//アイテムの描画
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
-		
 		m_itemPlayer[i]->Render();
 		m_itemPlayerErase[i]->Render();
 	//	m_itemPlayerErase[i]->DrawCollision();
@@ -372,7 +374,6 @@ void ScenePlay::Render()
 	//	m_itemFun[i]->DrawCollision();
 		m_itemFunErase[i]->Render();
 	//	m_itemFunErase[i]->DrawCollision();
-		
 	}
 	//コースの作成
 //	m_root->Render();
@@ -529,20 +530,26 @@ void ScenePlay::CreateDeviceDependentResources()
 	m_player = new Player();
 	m_cpu = new Enemy();
 	
-	//RECT outputSize = m_deviceResources->GetOutputSize();
-	//UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
-	//UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
-	//Vector3 camera = Vector3(0, 0, -5);
-	//Matrix view = Matrix::CreateLookAt(camera,
-	//	Vector3::Zero, Vector3::UnitY);
-	//Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-	//	float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
-	//m_effectManager = new EffectManager();
-	//m_effectManager->Create(m_deviceResources, L"Textures\\Waening.png", 1);
-	////m_effectManager->Initialize(1,Vector3(0,0,0));
-	////m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
-	//m_effectManager->InitializeCorn(5, Vector3(-2, -2, 0), Vector3(1, 1, 0));
-	//m_effectManager->SetRenderState(camera, view, proj);
+	GameCamera* gameCamera = GameCamera::GetInstance();
+
+	RECT outputSize = m_deviceResources->GetOutputSize();
+	UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
+	UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
+	Vector3 camera = Vector3(0, 0, -5);
+	Matrix view = Matrix::CreateLookAt(camera,
+		Vector3::Zero, Vector3::UnitY);
+	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
+		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
+	m_effectManager = new EffectManager();
+	m_effectManager->Create(m_deviceResources, L"Textures\\gameE.png", 10);
+	//m_effectManager->Initialize(1,Vector3(0,0,0));
+
+	
+	m_effectManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	
+	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(1, 1, 1));
+	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(-1, -1, -1));
+	m_effectManager->SetRenderState(camera, view, proj);
 
 
 	// モデルを読み込み
@@ -550,7 +557,7 @@ void ScenePlay::CreateDeviceDependentResources()
 	EffectFactory fx(device);
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
-	ModelDate* modelDate = ModelDate::GetInstance();
+	//ModelDate* modelDate = ModelDate::GetInstance();
 
 	//プレイヤー作成
 	m_player->PlayerCreate();
@@ -579,7 +586,6 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_itemCPUErase[i] = std::make_unique<Item>();
 		m_itemCPUErase[i]->ItemCPUEraseCreate(i);
 
-		
 		//アイテム効果切れ(CPU)
 		m_itemFunErase[i] = std::make_unique<Item>();
 		m_itemFunErase[i]->ItemFunEraseCreate(i);

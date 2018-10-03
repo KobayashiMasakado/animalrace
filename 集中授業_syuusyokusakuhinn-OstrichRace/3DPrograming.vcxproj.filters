@@ -49,6 +49,7 @@
     <ClInclude Include="BinaryFile.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Myeffect.h" />
+    <ClInclude Include="CameraDate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

@@ -58,7 +58,7 @@ private:
 	std::unique_ptr<DebugCamera> m_debugCamera;
 
 	// ゲームカメラ
-	std::unique_ptr<GameCamera> m_gameCamera;
+	//std::unique_ptr<GameCamera> m_gameCamera;
 
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
@@ -81,34 +81,26 @@ private:
 	Enemy* m_cpu;
 
 	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
-	std::unique_ptr<DirectX::Model> m_boxModel[ENEMY_HITCHECK_NUM];
 
 	Root* m_root;
 	//道のモデル
 	std::unique_ptr<DirectX::Model> m_rootModel;
 	//ゴール
 	std::unique_ptr<Goal> m_goal[GOAL_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_goalModel;
 	//アイテム
 	//プレイヤー用
 	std::unique_ptr<Item> m_itemPlayer[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemPlayerModel;
 	//CPU用
 	std::unique_ptr<Item> m_itemCPU[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemCPUModel;
 	//フン用
 	std::unique_ptr<Item> m_itemFun[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemFunModel;
 	//アイテム解除
 	//プレイヤー用
 	std::unique_ptr<Item> m_itemPlayerErase[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemPlayerEraseModel;
 	//CPU用
 	std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemCPUEraseModel;
-	//CPU用
+	//フン用
 	std::unique_ptr<Item> m_itemFunErase[ITEM_SET_NUM];
-	std::unique_ptr<DirectX::Model> m_itemFunEraseModel;
 
 	
 	//2Dスプライト/////////////////////////////
@@ -157,6 +149,8 @@ private:
 
 	bool m_itemFunCheck;
 
+	bool m_itemEffect;
+
 	//カウントダウン
 	int m_count;
 	//アイテム
@@ -182,7 +176,7 @@ public:
 /*	virtual void OnDeviceLost() override;
 	virtual void OnDeviceRestored() override*/;
 	//更新
-	void Update(float elapsedTime) override;
+	void Update(DX::StepTimer timer) override;
 	//描画
 	void Render() override;
 

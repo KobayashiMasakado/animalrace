@@ -157,6 +157,10 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 		{
 			PlayerMove(Player::FRONT_FUNGET);
 		}
+		else if (m_itemPlayerBadCheck == true)
+		{
+			PlayerMove(Player::FRONT_FUNGET);
+		}
 		else if (m_itemPlayerCheck == true)
 		{
 			PlayerMove(Player::FRONT_ITEMGET);
@@ -217,6 +221,7 @@ void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
 		if (Collision::HitCheck_Capsule2Capsule(itemPlayer[i]->GetCollision(), GetCollision()))
 		{
 			m_itemPlayerCheck = true;
+			m_itemPlayerBadCheck = false;
 		}
 		//プレイヤー用のアイテム効果切れ
 		else if (Collision::HitCheck_Capsule2Capsule(itemPlayerErase[i]->GetCollision(), GetCollision()))
@@ -227,6 +232,7 @@ void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
 		if (Collision::HitCheck_Capsule2Capsule(itemCPU[i]->GetCollision(), GetCollision()))
 		{
 			m_itemPlayerBadCheck = true;
+			m_itemPlayerCheck = false;
 		}
 		//CPU用のアイテム効果切れ
 		else if (Collision::HitCheck_Capsule2Capsule(itemCPUErase[i]->GetCollision(), GetCollision()))

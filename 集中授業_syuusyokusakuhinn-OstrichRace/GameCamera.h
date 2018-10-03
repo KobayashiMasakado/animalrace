@@ -1,7 +1,12 @@
 #pragma once
+
 #include "pch.h" 
 
-class GameCamera
+#include "GameCamera.h"
+#include "Utility.h"
+
+
+class GameCamera : public SingletonBase<GameCamera>
 {
 private:
 	//目
@@ -15,9 +20,9 @@ public:
 	DirectX::SimpleMath::Matrix GetViewMatrix()
 	{
 		//ビュー
-		DirectX::SimpleMath::Matrix view; 
-		view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3(0,1,0));
-		return view;
+		DirectX::SimpleMath::Matrix m_view; 
+		m_view = DirectX::SimpleMath::Matrix::CreateLookAt(m_eye, m_target, DirectX::SimpleMath::Vector3(0,1,0));
+		return m_view;
 	}
 	//セッター関数
 	void SetEye(DirectX::SimpleMath::Vector3 eye)
