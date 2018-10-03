@@ -164,7 +164,9 @@ private:
 
 	std::unique_ptr<CollisionMesh> m_floorMesh;
 
-	EffectManager*							m_effectManager;
+	EffectManager* m_effectLeafManager;
+	EffectManager* m_effectMeatManager;
+	EffectManager* m_effectFunManager;
 public:
 	ScenePlay();
 	~ScenePlay();

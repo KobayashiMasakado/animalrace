@@ -77,7 +77,8 @@ public:
 	                   std::unique_ptr<Item> itemFunErase[2]);
 
 	bool GetItemPlayer() { return m_itemPlayerCheck; }
-
+	bool GetItemPlayerBad() { return m_itemPlayerBadCheck; }
+	bool GetItemFun() { return m_itemFunCheck; }
 
 	float GetDirection(){ return m_dir;}
 

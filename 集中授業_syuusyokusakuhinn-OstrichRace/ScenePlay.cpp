@@ -17,7 +17,9 @@ ScenePlay::ScenePlay()
 {
 	/*m_deviceResources = new DX::DeviceResources();
 	m_deviceResources->RegisterDeviceNotify(this);*/
-	m_effectManager = nullptr;
+	m_effectLeafManager = nullptr;
+	m_effectMeatManager = nullptr;
+	m_effectFunManager = nullptr;
 }
 
 ScenePlay::~ScenePlay()
@@ -94,7 +96,9 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	
 	///更新/////////////////////
 	float elapsedTime = timer.GetTotalSeconds();
-	m_effectManager->Update(timer);
+	m_effectLeafManager->Update(timer);
+	m_effectMeatManager->Update(timer);
+	m_effectFunManager->Update(timer);
 
 	//プレイヤーの更新
 	m_player->Update(elapsedTime);
@@ -353,9 +357,16 @@ void ScenePlay::Render()
 	///描画///////////////////
 	if (m_player->GetItemPlayer() == true)
 	{
-		m_effectManager->Render();
+		m_effectLeafManager->Render();
 	}
-
+	if (m_player->GetItemPlayerBad() == true)
+	{
+		m_effectMeatManager->Render();
+	}
+	if (m_player->GetItemFun() == true)
+	{
+		m_effectFunManager->Render();
+	}
 	
 	//プレイヤーの描画
 	m_player->Render();
@@ -540,17 +551,23 @@ void ScenePlay::CreateDeviceDependentResources()
 		Vector3::Zero, Vector3::UnitY);
 	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
 		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
-	m_effectManager = new EffectManager();
-	m_effectManager->Create(m_deviceResources, L"Textures\\gameE.png", 10);
+	m_effectLeafManager = new EffectManager();
+	m_effectLeafManager->Create(m_deviceResources, L"Textures\\gameE.png", 10);
 	//m_effectManager->Initialize(1,Vector3(0,0,0));
-
-	
-	m_effectManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
-	
+	m_effectLeafManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
 	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(1, 1, 1));
 	//m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(-1, -1, -1));
-	m_effectManager->SetRenderState(camera, view, proj);
+	m_effectLeafManager->SetRenderState(camera, view, proj);
 
+	m_effectMeatManager = new EffectManager();
+	m_effectMeatManager->Create(m_deviceResources, L"Textures\\gameB.png", 10);
+	m_effectMeatManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	m_effectMeatManager->SetRenderState(camera, view, proj);
+
+	m_effectFunManager = new EffectManager();
+	m_effectFunManager->Create(m_deviceResources, L"Textures\\gameF.png", 10);
+	m_effectFunManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	m_effectFunManager->SetRenderState(camera, view, proj);
 
 	// モデルを読み込み
 	// エフェクトファクトリー 
