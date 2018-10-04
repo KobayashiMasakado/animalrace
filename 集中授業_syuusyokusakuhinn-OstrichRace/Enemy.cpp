@@ -37,7 +37,7 @@ bool Enemy::Update(float elapsedTime)
 	//前進
 	if (m_move & (1 << FRONT))
 	{
-		m_vec.z = 0.48f;
+		m_vec.z = 0.5f;
 	}
 	//前進(アイテム獲得で速度は速い)
 	else if (m_move & (1 << FRONT_ITEMGET))

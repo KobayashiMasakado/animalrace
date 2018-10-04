@@ -41,10 +41,6 @@ void Game::Initialize(HWND window, int width, int height)
 	m_mouse = std::make_unique<Mouse>();
 	m_mouse->SetWindow(window);
 
-	// デバッグカメラの作成
-//	m_debugCamera = std::make_unique<DebugCamera>(width, height);
-//	m_gameCamera = std::make_unique<GameCamera>();
-
     m_deviceResources->SetWindow(window, width, height);
 
     m_deviceResources->CreateDeviceResources();
@@ -59,7 +55,6 @@ void Game::Initialize(HWND window, int width, int height)
     m_timer.SetFixedTimeStep(true);
     m_timer.SetTargetElapsedSeconds(1.0 / 60);
     */
-	
 	
 }
 
@@ -92,7 +87,6 @@ void Game::Update(DX::StepTimer const& timer)
 	//タスクの更新処理
 	m_taskManager.Update(elapsedTime);
 
-	//m_effectManager->Update(timer);
 	//キーボードでシーン切り替え
 	//タイトルシーンへ
 	if (kb.T)
@@ -132,8 +126,6 @@ void Game::Render()
 		m_currentScene->Render();
 	}
 
-//	m_view = m_debugCamera->GetCameraMatrix();
-
 	// グリッドの床の描画
 	//m_gridFloor->Render(context, m_view, m_projection);
 
@@ -145,7 +137,6 @@ void Game::Render()
 
 	m_deviceResources->PIXEndEvent();
 
-//	m_effectManager->Render();
 	// ここまで
 
     m_deviceResources->PIXEndEvent();
@@ -249,24 +240,6 @@ void Game::CreateDeviceDependentResources()
 
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
-
-	RECT outputSize = m_deviceResources->GetOutputSize();
-	UINT backBufferWidth = std::max<UINT>(outputSize.right - outputSize.left, 1);
-	UINT backBufferHeight = std::max<UINT>(outputSize.bottom - outputSize.top, 1);
-	Vector3 camera = Vector3(0, 0, -5);
-	Matrix view = Matrix::CreateLookAt(camera,
-		Vector3::Zero, Vector3::UnitY);
-	Matrix proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-		float(backBufferWidth) / float(backBufferHeight), 0.1f, 1000.f);
-
-	m_effectManager = new EffectManager();
-	m_effectManager->Create(m_deviceResources.get(), L"Textures\\Waening.png", 1);
-	//m_effectManager->Initialize(1,Vector3(0,0,0));
-	//m_effectManager->InitializeNormal(1, Vector3(0, 0, 0));
-	m_effectManager->InitializeCorn(5, Vector3(0, 0, 0), Vector3(0, 0, 0));
-
-	m_effectManager->SetRenderState(camera, view, proj);
-
 
 	// コモンステートの作成
 	m_states = std::make_unique<CommonStates>(device);

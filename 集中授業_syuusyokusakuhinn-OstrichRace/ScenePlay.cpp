@@ -337,31 +337,21 @@ void ScenePlay::Render()
 	{
 		m_itemPlayer[i]->Render();
 		m_itemPlayerErase[i]->Render();
-	//	m_itemPlayerErase[i]->DrawCollision();
 		m_itemCPU[i]->Render();
 		m_itemCPUErase[i]->Render();
-	//	m_itemCPUErase[i]->DrawCollision();
 		m_itemFun[i]->Render();
-	//	m_itemFun[i]->DrawCollision();
 		m_itemFunErase[i]->Render();
-	//	m_itemFunErase[i]->DrawCollision();
 	}
-    //床のコリジョンメッシュの描画
-	for (int i = 0; i < ITEM_SET_NUM; i++)
-	{
-	//	m_floorMesh->DrawCollision(context, m_view, m_projection);
-	}
+    
 	//ゴールの描画
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		m_goal[i]->Render();
-//		m_goal[i]->DrawCollision();
 	}
 	//当たり判定の描画
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i]->Render();
-	//	m_box[i]->DrawCollision();
 	}
 
 	////////////////////////////
@@ -503,23 +493,17 @@ void ScenePlay::CreateDeviceDependentResources()
 	//Player用アイテム
 	m_effectLeafManager = new EffectManager();
 	m_effectLeafManager->Create(m_deviceResources, L"Textures\\gameE.png", 10);
-	//m_effectManager->Initialize(1,Vector3(0,0,0));
-	//m_effectLeafManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
 	m_effectLeafManager->InitializeCorn(0.05f, Vector3(0, 0, 0), Vector3(0, 1, 0));
 	m_effectLeafManager->SetRenderState(camera, view, proj);
 	//CPU用アイテム
 	m_effectMeatManager = new EffectManager();
 	m_effectMeatManager->Create(m_deviceResources, L"Textures\\gameB.png", 10);
-	//m_effectMeatManager->Initialize(1,Vector3(0,0,0));
-	
-	 m_effectMeatManager->InitializeCorn(0.01f, Vector3(0, 0.3f, 0), Vector3(0, -1, 0));
-  
-	//m_effectMeatManager->InitializeCorn2(10, Vector3(0, 1.2f, 0), Vector3(1, 1, 0));
+	m_effectMeatManager->InitializeCorn(0.01f, Vector3(0, 0.9f, 0), Vector3(0, -1, 0));
 	m_effectMeatManager->SetRenderState(camera, view, proj);
 	//フンアイテム
 	m_effectFunManager = new EffectManager();
-	m_effectFunManager->Create(m_deviceResources, L"Textures\\gameF.png", 10);
-	m_effectFunManager->InitializeNormal(5, Vector3(0, 0.1f, 0));
+	m_effectFunManager->Create(m_deviceResources, L"Textures\\gameB.png", 10);
+	m_effectFunManager->InitializeCorn(0.01f, Vector3(0, 0.9f, 0), Vector3(0, -1, 0));
 	m_effectFunManager->SetRenderState(camera, view, proj);
 
 	// モデルを読み込み

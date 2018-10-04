@@ -42,5 +42,4 @@ public:
 	//ƒAƒCƒeƒ€Œø‰ÊØ‚ê(CPU)
 	void ItemFunEraseCreate(int item);
 
-	void EffectCreate(EffectManager* m_effectManager);
 };

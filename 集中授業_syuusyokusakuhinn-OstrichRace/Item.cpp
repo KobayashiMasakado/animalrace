@@ -47,10 +47,7 @@ void Item::Render()
 			*m_game->GetState(),
 			m_world, m_game->GetView(),
 			m_game->GetProjection());
-		//デバッグ用コリジョンモデルの描画
-	//	DrawCollision();
 	}
-	
 }
 
 void Item::SetUpEffect()
@@ -222,7 +219,3 @@ void Item::ItemFunEraseCreate(int item)
 	}
 }
 
-void Item::EffectCreate(EffectManager * m_effectManager)
-{
-
-}

@@ -25,28 +25,16 @@ public:
 	};
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
 	void Create(DX::DeviceResources* deviceResources, ID3D11ShaderResourceView* texture);
-	void Create2(DX::DeviceResources* deviceResources, ID3D11ShaderResourceView* texture);
-
 	
 	void Initialize(float life, DirectX::SimpleMath::Vector3 pos, DirectX::SimpleMath::Vector3 velocity);
 	void Update(DX::StepTimer timer);
 	void Render();
 
-	void Update2(DX::StepTimer timer);
-	void Render2();
-
 	void SetRenderState(DirectX::SimpleMath::Vector3 camera, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
-	void SetRenderState2(DirectX::SimpleMath::Vector3 camera, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
-
-
+	
 private:
 
-
 	void Draw(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
-	void Draw2(DirectX::SimpleMath::Matrix world, DirectX::SimpleMath::Matrix view, DirectX::SimpleMath::Matrix proj);
-
-
-
 
 	DX::StepTimer                           m_timer;
 	DX::DeviceResources*			m_deviceResources;
@@ -63,8 +51,6 @@ private:
 	std::unique_ptr<DirectX::CommonStates> m_states;
 	// テクスチャハンドル
 	ID3D11ShaderResourceView* m_texture;
-	// テクスチャハンドル
-	ID3D11ShaderResourceView* m_texture2;
 
 	DirectX::SimpleMath::Vector3		m_camera;
 
@@ -86,6 +72,5 @@ private:
 
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer>	m_CBuffer;
-
 
 };

@@ -28,13 +28,6 @@
 // provides a game loop.
 class Game : public DX::IDeviceNotify
 {
-/*	enum Scene
-	{
-		SCENE_NONE,
-		SCENE_TITLE,
-		SCENE_PLAY,
-	};*/
-
 public:
 
     Game();

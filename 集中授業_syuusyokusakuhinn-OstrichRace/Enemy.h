@@ -23,7 +23,6 @@ public:
 	{
 		NONE,         //移動しない
 		FRONT,        //　前進　
-		
 		LEFT_OBLF,    //　左ナナメ前
 		RIGHT_OBLF,   //　右ナナメ前
 		BACK,	      //　後進
@@ -61,8 +60,6 @@ public:
 	void CPUCreate();
 	//CPUが走る
 	void EnemyChangeAngle(Direction dir);
-
-	//void EnemyDirection(std::unique_ptr<Root> box[ENEMY_HITCHECK_NUM]);
 
 	void CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM], std::unique_ptr<Item> itemCPUErase[ITEM_SET_NUM]);
 };
