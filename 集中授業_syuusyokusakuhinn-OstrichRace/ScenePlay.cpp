@@ -550,7 +550,7 @@ void ScenePlay::CreateDeviceDependentResources()
 	}
 	
 	//床のコリジョンメッシュを作成
-	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Root.obj");
+	m_floorMesh = std::make_unique<CollisionMesh>(device, L"Resources\\Models\\Root.obj");
 
 	//CPUの移動用の当たり判定
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
