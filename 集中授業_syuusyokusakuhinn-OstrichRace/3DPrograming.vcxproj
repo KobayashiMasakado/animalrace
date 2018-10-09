@@ -179,6 +179,8 @@
     <ClInclude Include="Root.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="ScenePlay.h" />
+    <ClInclude Include="SceneResult.h" />
+    <ClInclude Include="SceneSelect.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="StepTimer.h" />
     <ClInclude Include="TaskManager.h" />
@@ -213,6 +215,9 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
+    <ClCompile Include="SceneResult.cpp" />
+    <ClCompile Include="SceneSelect.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="TaskManager.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,8 @@
     <ClInclude Include="Myeffect.h" />
     <ClInclude Include="CameraDate.h" />
     <ClInclude Include="EffectCreate.h" />
+    <ClInclude Include="SceneSelect.h" />
+    <ClInclude Include="SceneResult.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -79,6 +81,9 @@
     <ClCompile Include="BinaryFile.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="MyEffect.cpp" />
+    <ClCompile Include="SceneResult.cpp" />
+    <ClCompile Include="SceneSelect.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

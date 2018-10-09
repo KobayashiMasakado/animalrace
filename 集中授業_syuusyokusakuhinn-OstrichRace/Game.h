@@ -17,7 +17,9 @@
 #include "Root.h" 
 
 #include "SceneTitle.h"
+#include "SceneSelect.h"
 #include "ScenePlay.h"
+#include "SceneResult.h"
 
 #include "TaskManager.h"
 
@@ -78,6 +80,17 @@ public:
 	const DirectX::SimpleMath::Matrix& GetProjection()
 	{
 		return m_sPlay->GetProjection();
+	}
+
+	//ビュー行列を取得する関数
+	const DirectX::SimpleMath::Matrix& GetSView()
+	{
+		return m_sSelect->GetView();
+	}
+	//射影行列を取得する関数
+	const DirectX::SimpleMath::Matrix& GetSProjection()
+	{
+		return m_sSelect->GetProjection();
 	}
 private:
 
@@ -142,7 +155,9 @@ private:
 
 	//シーン
 	std::unique_ptr<SceneTitle> m_sTitle;
+	std::unique_ptr<SceneSelect> m_sSelect;
 	std::unique_ptr<ScenePlay> m_sPlay;
+	std::unique_ptr<SceneResult> m_sResult;
 
 	//タスク
 	TaskManager m_taskManager;

@@ -93,11 +93,22 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		m_currentScene = m_sTitle.get();
 	}
+	//セレクトシーン
+	if (kb.S)
+	{
+		m_currentScene = m_sSelect.get();
+	}
 	//プレイシーンへ
 	if (kb.P)
 	{
 		m_currentScene = m_sPlay.get();
 	}
+	//リザルトシーンへ
+	if (kb.R)
+	{
+		m_currentScene = m_sResult.get();
+	}
+
 	//シーン切り替え
 	if (m_currentScene != nullptr)
 	{
@@ -229,14 +240,25 @@ void Game::CreateDeviceDependentResources()
 //	m_sTitle->SetDeviceResources(m_deviceResources.get());
 //	m_sTitle->CreateDeviceDependentResources();
 	m_sTitle->Initialize();
+	//セレクトシーン
+	m_sSelect = std::make_unique<SceneSelect>();
+	m_sSelect->SetGame(this);
+	m_sSelect->SetDeviceResources(m_deviceResources.get());
+	m_sSelect->CreateDeviceDependentResources();
+	m_sSelect->Initialize();
 	//プレイシーン
 	m_sPlay = std::make_unique<ScenePlay>();
 	m_sPlay->SetGame(this);
 	m_sPlay->SetDeviceResources(m_deviceResources.get());
 	m_sPlay->CreateDeviceDependentResources();
 	m_sPlay->Initialize();
+	//リザルトシーン
+	m_sResult = std::make_unique<SceneResult>();
+	m_sResult->SetGame(this);
+	m_sResult->Initialize();
+	//
 	//シーン切り替えの初期化
-	m_currentScene = m_sPlay.get();
+	m_currentScene = m_sSelect.get();
 
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
@@ -275,6 +297,10 @@ void Game::CreateWindowSizeDependentResources()
 		1000.0f
 	);
 	
+	if (m_sSelect != nullptr)
+	{
+		m_sSelect->SetProjection(m_projection);
+	}
 	if (m_sPlay != nullptr)
 	{
 		m_sPlay->SetProjection(m_projection);

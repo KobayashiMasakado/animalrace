@@ -7,13 +7,15 @@ class SceneTitle : public SceneBase
 private:
 
 public:
+	SceneTitle();
+	~SceneTitle();
 
 	//‰Šú‰»
-	void Initialize() override {}
+	void Initialize() override;
 	//XV
-	void Update(DX::StepTimer timer) override {}
+	void Update(DX::StepTimer timer) override;
 	//•`‰æ
-	void Render() override {}
+	void Render() override;
 	//I—¹ˆ—
-	void Finalize() override {}
+	void Finalize() override;
 };
