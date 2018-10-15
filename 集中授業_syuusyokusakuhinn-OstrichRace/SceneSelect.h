@@ -4,10 +4,14 @@
 
 #include "DeviceResources.h"
 #include "DebugCamera.h"
-#include "Player.h"
 
+class Player;
 class SceneSelect : public SceneBase
 {
+private:
+	static const int CURSOR_MOVE = 300;
+	static const int CURSOR_MAX = 300;
+	static const int CURSOR_MIX = 50;
 private:
 	DX::StepTimer                           m_timer;
 
@@ -32,10 +36,12 @@ private:
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> m_keyboard;
 
+	//カーソル移動
 	int m_x;
 	int m_y;
 
-	int m_flag;
+	//
+	int m_charaSerect;
 
 	//テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tSelect1;
@@ -59,6 +65,7 @@ public:
 	//終了処理
 	void Finalize() override;
 
+	int GetCharaSelect(){ return m_charaSerect;}
 
 	//Set関数
 	//ゲッター関数

@@ -10,6 +10,8 @@
 #include "ModelDate.h"
 #include "GameCamera.h"
 
+#include "Game.h"
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -511,11 +513,7 @@ void ScenePlay::CreateDeviceDependentResources()
 	EffectFactory fx(device);
 	// モデルのテクスチャの入っているフォルダを指定する 
 	fx.SetDirectory(L"Resources\\Models");      //テクスチャ付きのcmoがある場合上に持ってくる
-
-	//プレイヤー作成
-	m_player->PlayerCreate();
-	//CPU作成
-	m_cpu->CPUCreate();
+	
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{   //アイテム作成(プレイヤー)
 		m_itemPlayer[i] = std::make_unique<Item>();
@@ -558,7 +556,11 @@ void ScenePlay::CreateDeviceDependentResources()
 		m_box[i] = std::make_unique<Root>();
 		m_box[i]->EnemyHitMoveCreate(i);
 	}
-
+	GameSeter();
+	//プレイヤー作成
+	m_player->PlayerCreate();
+	//CPU作成
+	m_cpu->CPUCreate();
 	
 	// モデルをロードしてモデルハンドルを取得する 
 	//空
@@ -600,7 +602,7 @@ void ScenePlay::CreateDeviceDependentResources()
 		}
 	});
 
-	GameSeter();
+	
 }
 void ScenePlay::GameSeter()
 {

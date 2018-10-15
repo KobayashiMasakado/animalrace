@@ -178,6 +178,11 @@ public:
 	//ゲームをSet
 	void GameSeter();
 
+	Player* GetPlayer()
+	{
+		return m_player;
+	}
+
 	//ゲッター関数
 	//デバイスを取得する関数
 	ID3D11Device* GetDevice()

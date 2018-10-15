@@ -134,8 +134,17 @@ void Player::PlayerCreate()
 	ModelDate* modelDate = ModelDate::GetInstance();
 
 	SetPosition(Vector3(-93.5f, 0, 1.5f));
-	SetGame(m_game);
-	SetModel(modelDate->GetPlayer());
+	SceneSelect* sceneSelect = m_game->GetSceneSelect();
+	if (sceneSelect->GetCharaSelect() == 1)
+	{
+		SetModel(modelDate->GetPlayer());
+	}
+
+	if (sceneSelect->GetCharaSelect() == 2)
+	{
+		SetModel(modelDate->GetCPU());
+	}
+//	SetModel(modelDate->GetPlayer());
 	SetUpEffect();
 	// カプセル型のコリジョンをつける
 	capsulePlayer.start = Vector3(0.3f, 0.0f, 0.2f); 		//境界球の中心

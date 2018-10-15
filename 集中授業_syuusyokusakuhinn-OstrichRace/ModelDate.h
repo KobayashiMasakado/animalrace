@@ -3,6 +3,8 @@
 #include <Model.h>
 #include "Utility.h"
 
+#include "SceneSelect.h"
+
 class ModelDate : public SingletonBase<ModelDate>
 {
 private:

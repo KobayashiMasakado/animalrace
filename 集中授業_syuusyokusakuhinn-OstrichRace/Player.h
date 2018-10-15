@@ -10,26 +10,28 @@
 
 #include "DeviceResources.h"
 
+#include "SceneSelect.h"
+
 #include "CollisionCapsule.h"
 #include "Item.h"
 
 class Player : public CollisionCapsule
 {
 public:
-	//
+	// 移動
 	enum Direction
 	{
-		NONE,       // 移動しない
-		FRONT,      // 前進　
-		BACK,	    // 後進
-		LEFT_TURN,  // 右旋回
-		RIGHT_TURN, // 左旋回
-		UP_ANGLE,   // 上向きに角度を変える
-		DOWN_ANGLE,  // 下向きに角度を変える
-		FRONT_ITEMGET,//前進(通常より速い)
-		FRONT_OUTCOURSE,//前進(通常より遅い)
-		FRONT_FUNGET,//前進(通常より遅い)
-		GRAVITY,       //重力
+		NONE,            // 移動しない
+		FRONT,           // 前進　
+		BACK,	         // 後進
+		LEFT_TURN,       // 右旋回
+		RIGHT_TURN,      // 左旋回
+		UP_ANGLE,        // 上向きに角度を変える
+		DOWN_ANGLE,      // 下向きに角度を変える
+		FRONT_ITEMGET,   // 前進(通常より速い)
+		FRONT_OUTCOURSE, // 前進(通常より遅い)
+		FRONT_FUNGET,    // 前進(通常より遅い)
+		GRAVITY,         // 重力
 	};
 private:
 	//速度
@@ -45,6 +47,7 @@ private:
 	bool m_itemPlayerCheck;
 	bool m_itemPlayerBadCheck;
 	bool m_itemFunCheck;
+
 
 public:
 	//コンストラクタ

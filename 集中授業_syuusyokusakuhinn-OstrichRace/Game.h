@@ -92,6 +92,18 @@ public:
 	{
 		return m_sSelect->GetProjection();
 	}
+	
+	ScenePlay* GetScenePlay()
+	{
+		return m_sPlay.get();
+	}
+
+	SceneSelect* GetSceneSelect()
+	{
+		return m_sSelect.get();
+	}
+
+
 private:
 
     void Update(DX::StepTimer const& timer);

@@ -225,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="directx.ico" />
+    <Image Include="Textures\Datyou.png" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest" />
