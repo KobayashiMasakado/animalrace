@@ -61,7 +61,12 @@ bool Player::Update(float elapsedTime)
 	//後進
 	else if (m_move & (1 << BACK))
 	{
-		m_vec.z = -0.5f;
+		m_vec.z = -0.15f;
+	}
+	//後進(通常より速度は遅い)
+	else if (m_move & (1 << BACK))
+	{
+		m_vec.z = -0.05f;
 	}
 	//右旋回
 	if (m_move & (1 << RIGHT_TURN))
@@ -84,7 +89,7 @@ bool Player::Update(float elapsedTime)
 	{
 		m_z = XMConvertToRadians(1.0f);
 	}
-
+	//重力
 	if (m_move & (1 << GRAVITY))
 	{
 		m_vec.y -= 0.1f;
@@ -158,7 +163,11 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 	//上キーが押されたら
 	if (kb.Up || kb.W)
 	{
-		if (m_itemFunCheck == true)
+		if (m_itemPlayerCheck == true)
+		{
+			PlayerMove(Player::FRONT_ITEMGET);
+		}
+		else if (m_itemFunCheck == true)
 		{
 			PlayerMove(Player::FRONT_FUNGET);
 		}
@@ -166,11 +175,7 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 		{
 			PlayerMove(Player::FRONT_FUNGET);
 		}
-		else if (m_itemPlayerCheck == true)
-		{
-			PlayerMove(Player::FRONT_ITEMGET);
-		}
-		else if (m_itemPlayerCheck == false)
+		else  if (m_itemPlayerCheck == false)
 		{
 			PlayerMove(Player::FRONT);
 		}
@@ -178,7 +183,7 @@ void Player::PlayerOperation(DirectX::Keyboard::State &kb)
 	//下キーが押されたら
 	if (kb.Down || kb.S)
 	{
-		PlayerMove(Player::FRONT);
+		PlayerMove(Player::BACK);
 	}
 	//右キーが押されたら
 	if (kb.Right || kb.D)
@@ -199,6 +204,11 @@ void Player::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
 	if (kb.Up || kb.W)
 	{
 		PlayerMove(Player::FRONT_OUTCOURSE);
+	}
+	//下キーが押されたら
+	if (kb.Down || kb.S)
+	{
+		PlayerMove(Player::BACK);
 	}
 	//右キーが押されたら
 	if (kb.Right || kb.D)

@@ -99,15 +99,15 @@ void Game::Update(DX::StepTimer const& timer)
 		m_currentScene = m_sSelect.get();
 	}
 	//プレイシーンへ
-	if (kb.P)
+	if (kb.Enter)
 	{
 		m_currentScene = m_sPlay.get();
 	}
-	//リザルトシーンへ
-	if (kb.R)
-	{
-		m_currentScene = m_sResult.get();
-	}
+	////リザルトシーンへ
+	//if (kb.R)
+	//{
+	//	m_currentScene = m_sResult.get();
+	//}
 
 	//シーン切り替え
 	if (m_currentScene != nullptr)
@@ -252,11 +252,11 @@ void Game::CreateDeviceDependentResources()
 	m_sPlay->SetDeviceResources(m_deviceResources.get());
 	m_sPlay->CreateDeviceDependentResources();
 	m_sPlay->Initialize();
-	//リザルトシーン
-	m_sResult = std::make_unique<SceneResult>();
-	m_sResult->SetGame(this);
-	m_sResult->Initialize();
-	//
+	////リザルトシーン
+	//m_sResult = std::make_unique<SceneResult>();
+	//m_sResult->SetGame(this);
+	//m_sResult->Initialize();
+
 	//シーン切り替えの初期化
 	m_currentScene = m_sSelect.get();
 

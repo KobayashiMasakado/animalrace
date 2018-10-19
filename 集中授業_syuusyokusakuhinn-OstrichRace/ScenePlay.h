@@ -137,10 +137,9 @@ private:
 	bool m_goalCPUFlag[GOAL_SET_NUM];
 	
 	//ƒAƒCƒeƒ€Žæ“¾
-	bool m_itemPlayerCheck;
 	bool m_itemCPUCheck;
 
-	bool m_itemPlayerBadCheck;
+//	bool m_itemPlayerBadCheck;
 	bool m_itemCPUBadCheck;
 
 	bool m_itemFunCheck;

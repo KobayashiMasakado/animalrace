@@ -24,6 +24,7 @@ public:
 		NONE,            // 移動しない
 		FRONT,           // 前進　
 		BACK,	         // 後進
+		BACK_OUTCOURSE,	 // 後進(通常より速度は遅い)
 		LEFT_TURN,       // 右旋回
 		RIGHT_TURN,      // 左旋回
 		UP_ANGLE,        // 上向きに角度を変える

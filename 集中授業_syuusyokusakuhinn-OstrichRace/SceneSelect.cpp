@@ -54,7 +54,6 @@ void SceneSelect::Update(DX::StepTimer timer)
 		m_y += CURSOR_MOVE;
 		m_charaSerect = 2;
 		ModelDate* modelDate = ModelDate::GetInstance();
-
 		ScenePlay* scenePlay = m_game->GetScenePlay();
 		Player* player = scenePlay->GetPlayer();
 		player->SetModel(modelDate->GetCPU());

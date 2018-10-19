@@ -35,9 +35,7 @@ void ScenePlay::Initialize()
 		m_goalCPUFlag[i] = false;
 	}
 	//アイテムフラグの初期化
-	m_itemPlayerCheck = false;
 	m_itemCPUCheck = false;
-	m_itemPlayerBadCheck = false;
 	m_itemCPUBadCheck = false;
 	m_itemFunCheck = false;
 
@@ -49,26 +47,22 @@ void ScenePlay::Initialize()
 	m_time = 0;
 	m_timeS = 0;
 
-	//m_debugCamera = std::make_unique<DebugCamera>(800, 600);
+//	m_debugCamera = std::make_unique<DebugCamera>(800, 600);
 }
 
 void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 {
 	// デバッグカメラの更新
 //	m_debugCamera->Update();
-
 	// キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
-
     //カウントダウン（処理はカウントアップ）
 	m_count += 1;
-	
 	///更新/////////////////////
 	float elapsedTime = timer.GetTotalSeconds();
 	m_effectLeafManager->Update(timer);
 	m_effectMeatManager->Update(timer);
 	m_effectFunManager->Update(timer);
-
 	//プレイヤーの更新
 	m_player->Update(elapsedTime);
 	//CPUの更新
@@ -83,7 +77,6 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 		m_itemFun[i]->Update(elapsedTime);
 		m_itemFunErase[i]->Update(elapsedTime);
 	}
-	
 	//ゴールの更新
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
@@ -94,7 +87,6 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	{
 		m_box[i]->Update(elapsedTime);
 	}
-	
 	///////////////////////////////
 	//当たり判定フラグを初期化する
 	m_hitPlayerFlag = false;
@@ -104,22 +96,30 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	static int id;
 	Vector3 s;
 	Vector3 playerPos = m_player->GetPlayer();
-	Vector3 v[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
-	if (m_floorMesh->HitCheck_Segment(v[0], v[1], &id, &s))
+	Vector3 cpuPos = m_cpu->GetCPUPosition();
+	Vector3 pV[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+	Vector3 cV[2] = { Vector3(cpuPos.x,100,cpuPos.z),Vector3(cpuPos.x,-1,cpuPos.z) };
+	if (m_floorMesh->HitCheck_Segment(pV[0], pV[1], &id, &s))
 	{
 		m_hitPlayerFlag = true;
 		s.y -= 0.1f;
 		m_player->SetPosition(s);
 	}
+	if (m_floorMesh->HitCheck_Segment(cV[0], cV[1], &id, &s))
+	{
+		m_hitCpuFlag = true;
+		s.y -= 0.1f;
+		m_cpu->SetPosition(s);
+	}
+
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
+			,m_cpu->GetCollision()) == true)
 		{
 			m_hitCpuFlag = true;
 		}
 	}
-
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		//ゴールとプレイヤーの当たり判定をする
@@ -139,6 +139,7 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 			m_goalCPUFlag[i] = true;
 		}
 	}
+
 	//カウントダウンが終わったら
 	if (m_count > GAME_START_TIME)
 	{
@@ -161,9 +162,10 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 				//プレイヤー操作(コース外)
 				m_player->PlayerOperationwOutSide(kb);
 			}
-			
 			//アイテム取得
 			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase,m_itemFun,m_itemFunErase);
+			//CPUアイテム取得
+			m_cpu->CPUItemGet(m_itemCPU, m_itemCPUErase, m_itemPlayer, m_itemPlayerErase,m_itemFun,m_itemFunErase);
 			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -174,15 +176,23 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 			else if (m_hitCpuFlag == true)
 			{
 				//CPUの方向を変えて移動させる
-				//アイテム取得時の移動速度
-				if (m_itemCPUCheck == true)
+				
+		    	//アイテム取得時の移動速度
+		    	if (m_cpu->GetItemCPU() == true)
+		    	{
+		    		m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
+		    	}
+				else if (m_cpu->GetItemCPUBad() == true ||
+					     m_cpu->GetItemCPUFun() == true)
 				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
-				}//通常の移動速度
-				else if (m_itemCPUCheck == false)
+					m_cpu->EnemyChangeAngle(Enemy::FRONT_FUNGET);
+				}	
+				//通常の移動速度
+				else 
 				{
 					m_cpu->EnemyChangeAngle(Enemy::FRONT);
 				}
+				
 
 				if (Collision::HitCheck_Capsule2Capsule(m_box[2]->GetCollision(), m_cpu->GetCollision()) == true)
 				{
@@ -286,8 +296,7 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 			{
 				m_cpu->EnemyChangeAngle(Enemy::BACK);
 			}
-			//CPUアイテム取得
-			m_cpu->CPUItemGet(m_itemCPU,m_itemCPUErase);
+			
 		}
 	}
 	//重力
@@ -315,7 +324,7 @@ void ScenePlay::Render()
 	ganeCamera->SetEye(target + cameraPos);
 	m_view = ganeCamera->GetViewMatrix();
 
-	//m_view = m_debugCamera->GetCameraMatrix();
+//	m_view = m_debugCamera->GetCameraMatrix();
 	///描画///////////////////
 	if (m_player->GetItemPlayer() == true)
 	{
@@ -606,6 +615,7 @@ void ScenePlay::CreateDeviceDependentResources()
 }
 void ScenePlay::GameSeter()
 {
+	//アイテムのゲームオブジェクトを設定
 	for (int i = 0; i < ITEM_SET_NUM; i++)
 	{
 		m_itemPlayer[i]->SetGame(m_game);
@@ -615,19 +625,20 @@ void ScenePlay::GameSeter()
 		m_itemFun[i]->SetGame(m_game);
 		m_itemFunErase[i]->SetGame(m_game);
 	}
-	
+	//床のゲームオブジェクトを設定
 	m_floorMesh->SetGame(m_game);
+	//ゴールのゲームオブジェクトを設定
 	for (int i = 0; i < GOAL_SET_NUM; i++)
 	{
 		m_goal[i]->SetGame(m_game);
 	}
-
+	//AIルートのゲームオブジェクトを設定
 	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
 	{
 		m_box[i]->SetGame(m_game);
 	}
-
+	//プレイヤーのゲームオブジェクトを設定
 	m_player->SetGame(m_game);
-
+	//CPUのゲームオブジェクトを設定
 	m_cpu->SetGame(m_game);
 }

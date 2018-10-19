@@ -30,6 +30,7 @@ bool Enemy::Update(float elapsedTime)
 {
 	m_vec  = Vector3(0, 0, 0);
 	m_vecZ = Vector3(0, 0, 0);
+
 	if (m_move & (1 << NONE))
 	{
 		m_vec.z = 0.0f;
@@ -37,12 +38,17 @@ bool Enemy::Update(float elapsedTime)
 	//前進
 	if (m_move & (1 << FRONT))
 	{
-		m_vec.z = 0.5f;
+		m_vec.z = 0.35f;
 	}
 	//前進(アイテム獲得で速度は速い)
-	else if (m_move & (1 << FRONT_ITEMGET))
+	if (m_move & (1 << FRONT_ITEMGET))
 	{
-		m_vec.z = 0.65f;
+		m_vec.z = 0.80f;
+	}
+	//前進(アイテム獲得で速度は遅い)
+	if (m_move & (1 << FRONT_FUNGET))
+	{
+		m_vec.z = 0.1f;
 	}
 	//後進
 	if (m_move & (1 << BACK))
@@ -256,20 +262,40 @@ void Enemy::EnemyChangeAngle(Direction dir)
 	//}
 //}
 
-void Enemy::CPUItemGet(std::unique_ptr<Item> m_itemCPU[ITEM_SET_NUM], std::unique_ptr<Item> m_itemCPUErase[ITEM_SET_NUM])
+void Enemy::CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM], 
+	                   std::unique_ptr<Item> itemCPUErase[ITEM_SET_NUM],
+	                   std::unique_ptr<Item> itemCPUBad[ITEM_SET_NUM],
+	                   std::unique_ptr<Item> itemCPUBadErase[ITEM_SET_NUM],
+	                   std::unique_ptr<Item> itemCPUFun[ITEM_SET_NUM],
+	                   std::unique_ptr<Item> itemCPUFunErase[ITEM_SET_NUM])
 {
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
 	{
 		//CPUアイテム取得
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPU[i]->GetCollision(), GetCollision()))
+		if (Collision::HitCheck_Capsule2Capsule(itemCPU[i]->GetCollision(), GetCollision()))
 		{
 			m_itemCPUCheck = true;
 		}
-
-		if (Collision::HitCheck_Capsule2Capsule(m_itemCPUErase[0]->GetCollision(), GetCollision()))
+		if (Collision::HitCheck_Capsule2Capsule(itemCPUErase[i]->GetCollision(), GetCollision()))
 		{
 			m_itemCPUCheck = false;
 		}
+		if (Collision::HitCheck_Capsule2Capsule(itemCPUBad[i]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUBadCheck = true;
+		}
+		if (Collision::HitCheck_Capsule2Capsule(itemCPUBadErase[i]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUBadCheck = false;
+		}
 
+		if (Collision::HitCheck_Capsule2Capsule(itemCPUFun[i]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUFunCheck = true;
+		}
+		if (Collision::HitCheck_Capsule2Capsule(itemCPUFunErase[i]->GetCollision(), GetCollision()))
+		{
+			m_itemCPUFunCheck = false;
+		}
 	}
 }

@@ -79,7 +79,7 @@ void Item::ItemPlayerCreate(int item)
 
 		break;
 	case 1:
-		SetPosition(Vector3(-36.0f, 0.0f, 50.0f));
+		SetPosition(Vector3(-42.0f, 0.0f, 50.0f));
 		capsule.start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
 
@@ -130,7 +130,7 @@ void Item::ItemCPUCreate(int item)
 		capsule.end = Vector3(0.5f, 0.5f, 0.5f);		    //‹«ŠE‹…‚Ì’†S
 		break;
 	case 1:
-		SetPosition(Vector3(-42.0f, 0.0f, 50.0f));
+		SetPosition(Vector3(-36.0f, 0.0f, 50.0f ));
 		capsule.start = Vector3(1.0f, 1.0f, 1.0f);           //‹«ŠE‹…‚Ì’†S
 		capsule.end = Vector3(1.0f, 1.0f, 1.0f);		    //‹«ŠE‹…‚Ì’†S
 		break;
