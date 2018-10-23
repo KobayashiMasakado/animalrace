@@ -15,7 +15,6 @@ using namespace DirectX::SimpleMath;
 
 SceneSelect::SceneSelect()
 {
-
 }
 
 SceneSelect::~SceneSelect()

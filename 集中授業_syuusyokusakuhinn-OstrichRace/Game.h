@@ -102,7 +102,10 @@ public:
 	{
 		return m_sSelect.get();
 	}
-
+public:
+	//フルスクリーンモードに切り替える関数
+	//(FALSEでウインドウモードに戻す)
+	void ChangeFullScreen(BOOL flag);
 
 private:
 

@@ -84,6 +84,12 @@ void Game::Update(DX::StepTimer const& timer)
 // キーボードの状態を取得する
 	Keyboard::State kb = Keyboard::Get().GetState();
 
+	if (kb.Space)
+	{
+		//WM_QUITメッセージを送出する
+		PostQuitMessage(0);
+	}
+
 	//タスクの更新処理
 	m_taskManager.Update(elapsedTime);
 
@@ -103,11 +109,11 @@ void Game::Update(DX::StepTimer const& timer)
 	{
 		m_currentScene = m_sPlay.get();
 	}
-	////リザルトシーンへ
-	//if (kb.R)
-	//{
-	//	m_currentScene = m_sResult.get();
-	//}
+	//リザルトシーンへ
+	if (kb.R)
+	{
+		m_currentScene = m_sResult.get();
+	}
 
 	//シーン切り替え
 	if (m_currentScene != nullptr)
@@ -171,8 +177,11 @@ void Game::Clear()
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
     // Set the viewport.
-    auto viewport = m_deviceResources->GetScreenViewport();
-    context->RSSetViewports(1, &viewport);
+   /* auto viewport = m_deviceResources->GetScreenViewport();
+    context->RSSetViewports(1, &viewport);*/
+	//ビューポートの設定
+	D3D11_VIEWPORT viewport = { 0.0f,0.0f,960.0f,720.0f,0.0f,1.0f };
+	context->RSSetViewports(1, &viewport);
 
     m_deviceResources->PIXEndEvent();
 }
@@ -252,13 +261,15 @@ void Game::CreateDeviceDependentResources()
 	m_sPlay->SetDeviceResources(m_deviceResources.get());
 	m_sPlay->CreateDeviceDependentResources();
 	m_sPlay->Initialize();
-	////リザルトシーン
-	//m_sResult = std::make_unique<SceneResult>();
-	//m_sResult->SetGame(this);
-	//m_sResult->Initialize();
+	//リザルトシーン
+	m_sResult = std::make_unique<SceneResult>();
+	m_sResult->SetGame(this);
+	m_sResult->SetDeviceResources(m_deviceResources.get());
+	m_sResult->CreateDeviceDependentResources();
+	m_sResult->Initialize();
 
 	//シーン切り替えの初期化
-	m_currentScene = m_sSelect.get();
+	m_currentScene = m_sResult.get();
 
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
@@ -305,8 +316,17 @@ void Game::CreateWindowSizeDependentResources()
 	{
 		m_sPlay->SetProjection(m_projection);
 	}
+	if (m_sResult != nullptr)
+	{
+		m_sResult->SetProjection(m_projection);
+	}
 	// デバッグカメラにウインドウのサイズ変更を伝える
 //	m_debugCamera->SetWindowSize(size.right, size.bottom);
+}
+
+void Game::ChangeFullScreen(BOOL flag)
+{
+	m_deviceResources->GetSwapChain()->SetFullscreenState(flag, NULL);
 }
 
 void Game::OnDeviceLost()

@@ -171,6 +171,7 @@
     <ClInclude Include="Goal.h" />
     <ClInclude Include="GridFloor.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LinearInterpolation.h" />
     <ClInclude Include="ModelDate.h" />
     <ClInclude Include="Myeffect.h" />
     <ClInclude Include="Number.h" />

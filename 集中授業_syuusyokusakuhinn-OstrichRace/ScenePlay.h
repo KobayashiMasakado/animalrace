@@ -21,6 +21,8 @@
 #include "MyEffect.h"
 #include "EffectManager.h"
 
+//#include "LinearInterpolation.h"
+
 class ScenePlay : public SceneBase
 {
 
@@ -75,6 +77,8 @@ private:
 	Player* m_player;
 	//CPU
 	Enemy* m_cpu;
+
+//	LinearInterpolation* m_lcs;
 
 	std::unique_ptr<Root> m_box[ENEMY_HITCHECK_NUM];
 

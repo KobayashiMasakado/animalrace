@@ -55,6 +55,7 @@
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="Character1.h" />
     <ClInclude Include="Character2.h" />
+    <ClInclude Include="LinearInterpolation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
