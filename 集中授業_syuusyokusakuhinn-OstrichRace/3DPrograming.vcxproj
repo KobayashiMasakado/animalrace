@@ -160,17 +160,21 @@
     <ClInclude Include="CollisionCapsule.h" />
     <ClInclude Include="CollisionField.h" />
     <ClInclude Include="CollisionMesh.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="DebugCamera.h" />
     <ClInclude Include="DebugCapsule.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="EffectCreate.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="FrontCommand.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="GridFloor.h" />
+    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LeftSideCommand.h" />
     <ClInclude Include="LinearInterpolation.h" />
     <ClInclude Include="ModelDate.h" />
     <ClInclude Include="Myeffect.h" />
@@ -179,6 +183,7 @@
     <ClInclude Include="ObjectCreate.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RightSideCommand.h" />
     <ClInclude Include="Root.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="ScenePlay.h" />
@@ -198,11 +203,14 @@
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="FrontCommand.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="GridFloor.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LeftSideCommand.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModelDate.cpp" />
     <ClCompile Include="MyEffect.cpp" />
@@ -216,6 +224,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RightSideCommand.cpp" />
     <ClCompile Include="Root.cpp" />
     <ClCompile Include="ScenePlay.cpp" />
     <ClCompile Include="SceneResult.cpp" />

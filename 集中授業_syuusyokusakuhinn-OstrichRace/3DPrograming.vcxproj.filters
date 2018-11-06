@@ -56,6 +56,11 @@
     <ClInclude Include="Character1.h" />
     <ClInclude Include="Character2.h" />
     <ClInclude Include="LinearInterpolation.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="FrontCommand.h" />
+    <ClInclude Include="LeftSideCommand.h" />
+    <ClInclude Include="RightSideCommand.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -87,6 +92,10 @@
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSelect.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="FrontCommand.cpp" />
+    <ClCompile Include="LeftSideCommand.cpp" />
+    <ClCompile Include="RightSideCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

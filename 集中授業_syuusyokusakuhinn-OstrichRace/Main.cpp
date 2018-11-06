@@ -37,7 +37,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(hr))
         return 1;
 	//フルスクリーンモードの選択
-	if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面のモードの選択", MB_YESNO) == IDYES)
+	if (MessageBox(NULL, L"フルスクリーンにしますか？", L"画面のモードの選択", 
+		MB_YESNO) == IDYES)
 	{
 		//YESの場合
 		s_fullscreen = true;
@@ -238,6 +239,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_DESTROY:
         PostQuitMessage(0);
+		game->OnDeviceLost();
         break;
 
 	case WM_INPUT:

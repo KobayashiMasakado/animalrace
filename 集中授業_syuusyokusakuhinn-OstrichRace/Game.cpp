@@ -180,7 +180,7 @@ void Game::Clear()
    /* auto viewport = m_deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);*/
 	//ビューポートの設定
-	D3D11_VIEWPORT viewport = { 0.0f,0.0f,960.0f,720.0f,0.0f,1.0f };
+	D3D11_VIEWPORT viewport = { 0.0f,0.0f,800.0f,600.0f,0.0f,1.0f };
 	context->RSSetViewports(1, &viewport);
 
     m_deviceResources->PIXEndEvent();
@@ -269,7 +269,7 @@ void Game::CreateDeviceDependentResources()
 	m_sResult->Initialize();
 
 	//シーン切り替えの初期化
-	m_currentScene = m_sResult.get();
+	m_currentScene = m_sPlay.get();
 
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
@@ -332,6 +332,11 @@ void Game::ChangeFullScreen(BOOL flag)
 void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
+
+	m_sTitle->Finalize();
+	m_sSelect->Finalize();
+	m_sPlay->Finalize();
+	m_sResult->Finalize();
 
 	// コモンステートの解放
 	m_states.reset();

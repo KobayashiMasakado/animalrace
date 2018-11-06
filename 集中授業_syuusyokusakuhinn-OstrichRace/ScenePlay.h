@@ -175,9 +175,12 @@ public:
 	//•`‰æ
 	void Render() override;
 
-	void Finalize() override { delete m_objCreate; }
+	/*void Finalize() override { delete m_objCreate; }*/
+	void Finalize() override;
 	void CreateDeviceDependentResources();
 	
+	void CollisionUpdate();
+
 	//ƒQ[ƒ€‚ğSet
 	void GameSeter();
 

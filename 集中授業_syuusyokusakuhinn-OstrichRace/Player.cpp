@@ -17,6 +17,7 @@ Player::Player()
 	m_itemPlayerCheck = false;
 	m_itemPlayerBadCheck = false;
 	m_itemFunCheck = false;
+	m_state = State::STATE_NONE;
 }
 /// <summary>
 /// デストラクタ
@@ -34,49 +35,21 @@ bool Player::Update(float elapsedTime)
 {
 	m_vec = Vector3(0, 0, 0);
 
-	if (m_move & (1 << NONE))
+	std::list<Command*> command = m_inputHandle.HandleInput();
+	for (std::list<Command*>::iterator ite = command.begin(); ite != command.end(); ite++)
+	{
+		(*ite)->execute(this);
+	}
+
+	if (m_move == (1 << NONE))
 	{
 		m_vec.z = 0.0f;
 	}
-	//前進
-	if (m_move & (1 << FRONT))
-	{
-		m_vec.z = 0.45f;
-	}
-	//前進(通常より速度は速い)
-	else if (m_move & (1 << FRONT_ITEMGET))
-	{
-		m_vec.z = 0.9f;
-	}
-	//前進(通常より速度は遅い)
-	else if (m_move & (1 << FRONT_OUTCOURSE))
-	{
-		m_vec.z = 0.05f;
-	}
-	//前進(通常より速度は遅い)
-	else if (m_move & (1 << FRONT_FUNGET))
-	{
-		m_vec.z = 0.2f;
-	}
+	
 	//後進
 	else if (m_move & (1 << BACK))
 	{
 		m_vec.z = -0.15f;
-	}
-	//後進(通常より速度は遅い)
-	else if (m_move & (1 << BACK))
-	{
-		m_vec.z = -0.05f;
-	}
-	//右旋回
-	if (m_move & (1 << RIGHT_TURN))
-	{
-		m_dir -= XMConvertToRadians(1.0f);
-	}
-	//左旋回
-	else if (m_move & (1 << LEFT_TURN))
-	{
-		m_dir += XMConvertToRadians(1.0f);
 	}
 
 	//上
@@ -89,12 +62,15 @@ bool Player::Update(float elapsedTime)
 	{
 		m_z = XMConvertToRadians(1.0f);
 	}
+
+	PlayerState();
+
 	//重力
 	if (m_move & (1 << GRAVITY))
 	{
 		m_vec.y -= 0.1f;
 	}
-	
+
 	//ビットフラグをリセットする
 	m_move = 0;
 
@@ -106,6 +82,9 @@ bool Player::Update(float elapsedTime)
 
 	//ワールド行列を作成する
 	m_world = Matrix::CreateFromQuaternion(m_rotation) * Matrix::CreateTranslation(m_position);
+
+	// フラグを伏せる
+	m_courseOut = false;
 
 	return true;
 }
@@ -132,6 +111,75 @@ void Player::PlayerMove(Direction dir)
 	m_move |= (1 << dir);
 }
 
+void Player::PlayerState(State state)
+{
+	m_state |= state;
+}
+
+void Player::PlayerDeleteState(State state)
+{
+	int buf = !m_state;
+	buf |= state;
+	m_state = !buf;
+}
+
+void Player::PlayerState()
+{
+	if (m_itemPlayerCheck == true)
+	{
+		PlayerState(State::FRONT_ITEMGET);
+	}
+	else
+	{
+		PlayerDeleteState(State::FRONT_ITEMGET);
+	}
+	if (m_itemFunCheck == true)
+	{
+		PlayerState(State::FRONT_FUNGET);
+	}
+	else
+	{
+		PlayerDeleteState(State::FRONT_FUNGET);
+	}
+
+	if (m_itemPlayerBadCheck == true)
+	{
+		PlayerState(State::BACK_OUTCOURSE);
+	}
+	else
+	{
+		PlayerDeleteState(State::BACK_OUTCOURSE);
+	}
+	if (m_courseOut == true)
+	{
+		PlayerState(State::FRONT_OUTCOURSE);
+	}
+	else
+	{
+		PlayerDeleteState(State::FRONT_OUTCOURSE);
+	}
+
+	//前進(通常より速度は速い)
+	if ((m_state & (FRONT_ITEMGET)) == State::FRONT_ITEMGET)
+	{
+		m_vec.z *= 2.0f;
+	}
+	//前進(通常より速度は遅い)
+	if ((m_state & (FRONT_OUTCOURSE)) == State::FRONT_OUTCOURSE)
+	{
+		m_vec.z *= 0.13f;
+	}
+	//前進(通常より速度は遅い)
+	if ((m_state & (FRONT_FUNGET)) == State::FRONT_FUNGET)
+	{
+		m_vec.z *= 0.5f;
+	}
+}
+
+void Player::PlayerDirection()
+{
+}
+
 void Player::PlayerCreate()
 {
 	Collision::Capsule capsulePlayer;
@@ -156,70 +204,7 @@ void Player::PlayerCreate()
 	capsulePlayer.end = Vector3(0.3f, 3.0f, 0.2f); 		    //境界球の中心
 	capsulePlayer.r = 0.6f;							     	//半径
 	SetCollision(capsulePlayer);
-}
-
-void Player::PlayerOperation(DirectX::Keyboard::State &kb)
-{
-	//上キーが押されたら
-	if (kb.Up || kb.W)
-	{
-		if (m_itemPlayerCheck == true)
-		{
-			PlayerMove(Player::FRONT_ITEMGET);
-		}
-		else if (m_itemFunCheck == true)
-		{
-			PlayerMove(Player::FRONT_FUNGET);
-		}
-		else if (m_itemPlayerBadCheck == true)
-		{
-			PlayerMove(Player::FRONT_FUNGET);
-		}
-		else  if (m_itemPlayerCheck == false)
-		{
-			PlayerMove(Player::FRONT);
-		}
-	}
-	//下キーが押されたら
-	if (kb.Down || kb.S)
-	{
-		PlayerMove(Player::BACK);
-	}
-	//右キーが押されたら
-	if (kb.Right || kb.D)
-	{
-		PlayerMove(Player::RIGHT_TURN);
-	}
-	//左キーが押されたら
-	if (kb.Left || kb.A)
-	{
-		PlayerMove(Player::LEFT_TURN);
-	}
-}
-
-//プレイヤー操作(コース外)
-void Player::PlayerOperationwOutSide(DirectX::Keyboard::State & kb)
-{
-	//上キーが押されたら
-	if (kb.Up || kb.W)
-	{
-		PlayerMove(Player::FRONT_OUTCOURSE);
-	}
-	//下キーが押されたら
-	if (kb.Down || kb.S)
-	{
-		PlayerMove(Player::BACK);
-	}
-	//右キーが押されたら
-	if (kb.Right || kb.D)
-	{
-		PlayerMove(Player::RIGHT_TURN);
-	}
-	//左キーが押されたら
-	if (kb.Left || kb.A)
-	{
-		PlayerMove(Player::LEFT_TURN);
-	}
+	Update(0);
 }
 
 void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
@@ -265,7 +250,6 @@ void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
 			m_itemFunCheck = false;
 		}
 	}
-
 }
 
 void Player::SetUpEffect()

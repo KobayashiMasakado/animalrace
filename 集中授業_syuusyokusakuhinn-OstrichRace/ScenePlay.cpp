@@ -65,7 +65,10 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	m_effectMeatManager->Update(timer);
 	m_effectFunManager->Update(timer);
 	//プレイヤーの更新
-	m_player->Update(elapsedTime);
+	if (m_count > GAME_START_TIME)
+	{
+		m_player->Update(elapsedTime);
+	}
 	//CPUの更新
 	m_cpu->Update(elapsedTime);
 	//アイテムの更新
@@ -88,59 +91,9 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 	{
 		m_box[i]->Update(elapsedTime);
 	}
-	///////////////////////////////
-	//当たり判定フラグを初期化する
-	m_hitPlayerFlag = false;
-	m_hitCpuFlag = false;
-	///当たり判定////////////
-	//プレイヤーとコースの当たり判定
-	static int id;
-	Vector3 s;
-	Vector3 playerPos = m_player->GetPlayer();
-	Vector3 cpuPos = m_cpu->GetCPUPosition();
-	Vector3 pV[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
-	Vector3 cV[2] = { Vector3(cpuPos.x,100,cpuPos.z),Vector3(cpuPos.x,-1,cpuPos.z) };
-	if (m_floorMesh->HitCheck_Segment(pV[0], pV[1], &id, &s))
-	{
-		m_hitPlayerFlag = true;
-		s.y -= 0.1f;
-		m_player->SetPosition(s);
-	}
-	if (m_floorMesh->HitCheck_Segment(cV[0], cV[1], &id, &s))
-	{
-		m_hitCpuFlag = true;
-		s.y -= 0.1f;
-		m_cpu->SetPosition(s);
-	}
-
-	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
-	{
-		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
-			,m_cpu->GetCollision()) == true)
-		{
-			m_hitCpuFlag = true;
-		}
-	}
-	for (int i = 0; i < GOAL_SET_NUM; i++)
-	{
-		//ゴールとプレイヤーの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_player->GetCollision()) == true)
-		{
-			if (m_checkPoint == i)
-			{
-				m_goalPlayerFlag[i] = true;
-				m_checkPoint = i + 1;
-			}
-		}
-		//ゴールとCPUの当たり判定をする
-		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
-			, m_cpu->GetCollision()) == true)
-		{
-			m_goalCPUFlag[i] = true;
-		}
-	}
-
+	/////当たり判定////////////
+	CollisionUpdate();
+	
 	//カウントダウンが終わったら
 	if (m_count > GAME_START_TIME)
 	{
@@ -153,20 +106,20 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 			{
 				m_player->PlayerMove(Player::NONE);
 			}
-			else if (m_hitPlayerFlag == true)
-			{
-				//プレイヤー操作
-				m_player->PlayerOperation(kb);
-			}
-			else if (m_hitPlayerFlag == false)
-			{
-				//プレイヤー操作(コース外)
-				m_player->PlayerOperationwOutSide(kb);
-			}
+			//else if (m_hitPlayerFlag == true)
+			//{
+			//	//プレイヤー操作
+			//	m_player->PlayerOperation(kb);
+			//}
+			//else if (m_hitPlayerFlag == false)
+			//{
+			//	//プレイヤー操作(コース外)
+			//	m_player->PlayerOperationwOutSide(kb);
+			//}
 			//アイテム取得
-			m_player->PlayerItemGet(m_itemPlayer,m_itemPlayerErase,m_itemCPU,m_itemCPUErase,m_itemFun,m_itemFunErase);
+			m_player->PlayerItemGet(m_itemPlayer, m_itemPlayerErase, m_itemCPU, m_itemCPUErase, m_itemFun, m_itemFunErase);
 			//CPUアイテム取得
-			m_cpu->CPUItemGet(m_itemCPU, m_itemCPUErase, m_itemPlayer, m_itemPlayerErase,m_itemFun,m_itemFunErase);
+			m_cpu->CPUItemGet(m_itemCPU, m_itemCPUErase, m_itemPlayer, m_itemPlayerErase, m_itemFun, m_itemFunErase);
 			//CPUの移動
 			//ゴールしたら
 			if (m_goalPlayerFlag[i] == true)
@@ -176,121 +129,13 @@ void ScenePlay::Update(DX::StepTimer timer)//float elapsedTime)
 			//ゴールしてないなら
 			else if (m_hitCpuFlag == true)
 			{
+				/*for (int i = 0; i < 6; i++)
+				{
+					m_cpu->CPUWarp(static_cast<Enemy::Warp>(i));
+				}*/
 				//CPUの方向を変えて移動させる
-				
-		    	//アイテム取得時の移動速度
-		    	if (m_cpu->GetItemCPU() == true)
-		    	{
-		    		m_cpu->EnemyChangeAngle(Enemy::FRONT_ITEMGET);
-		    	}
-				else if (m_cpu->GetItemCPUBad() == true ||
-					     m_cpu->GetItemCPUFun() == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_FUNGET);
-				}	
-				//通常の移動速度
-				else 
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT);
-				}
-				
+				m_cpu->EnemyDirection(m_box);
 
-				if (Collision::HitCheck_Capsule2Capsule(m_box[2]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::UP_ANGLE);
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
-				}
-				else	if (Collision::HitCheck_Capsule2Capsule(m_box[1]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[3]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[4]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::DOWN_ANGLE);
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_SIDE);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[5]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLB);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[6]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::BACK);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[7]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[8]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[9]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[10]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[11]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[12]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::RIGHT_OBLF);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[13]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[14]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[15]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[16]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[17]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::UP_ANGLE); 
-					m_cpu->EnemyChangeAngle(Enemy::BACK);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[18]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::BACK);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[19]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::DOWN_ANGLE);
-					m_cpu->EnemyChangeAngle(Enemy::BACK);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[20]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLB);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[21]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_SIDE);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[0]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::FRONT_SECOND);
-				}
-				else if (Collision::HitCheck_Capsule2Capsule(m_box[22]->GetCollision(), m_cpu->GetCollision()) == true)
-				{
-					m_cpu->EnemyChangeAngle(Enemy::LEFT_OBLF);
-				}
 			}
 			//下がる
 			else if (m_hitCpuFlag == false)
@@ -449,6 +294,21 @@ void ScenePlay::Render()
 	/////////////////////////////////////
 	m_sprites->End();
 }
+
+void ScenePlay::Finalize()
+{ 
+	delete m_player;
+	delete m_cpu;
+	//delete m_root;
+	delete m_effectFunManager;
+	delete m_effectLeafManager;
+	delete m_effectMeatManager;
+
+	//delete m_deviceResources;
+
+	delete m_objCreate; 
+}
+
 void ScenePlay::CreateDeviceDependentResources()
 {
 	//スプライトバッチの作成
@@ -614,6 +474,66 @@ void ScenePlay::CreateDeviceDependentResources()
 
 	
 }
+//
+void ScenePlay::CollisionUpdate()
+{
+	///////////////////////////////
+	//当たり判定フラグを初期化する
+	m_hitPlayerFlag = false;
+	m_hitCpuFlag = false;
+	///当たり判定////////////
+	//プレイヤーとコースの当たり判定
+	static int id;
+	Vector3 s;
+	Vector3 playerPos = m_player->GetPlayer();
+	Vector3 cpuPos = m_cpu->GetCPUPosition();
+	Vector3 pV[2] = { Vector3(playerPos.x,100,playerPos.z),Vector3(playerPos.x,-1,playerPos.z) };
+	Vector3 cV[2] = { Vector3(cpuPos.x,100,cpuPos.z),Vector3(cpuPos.x,-1,cpuPos.z) };
+	
+	if (m_floorMesh->HitCheck_Segment(pV[0], pV[1], &id, &s))
+	{
+		m_hitPlayerFlag = true;
+		s.y -= 0.1f;
+		m_player->SetPosition(s);
+	}
+	if (m_floorMesh->HitCheck_Segment(cV[0], cV[1], &id, &s))
+	{
+		m_hitCpuFlag = true;
+		s.y -= 0.1f;
+		m_cpu->SetPosition(s);
+	}
+
+	for (int i = 0; i < ENEMY_HITCHECK_NUM; i++)
+	{
+		if (Collision::HitCheck_Capsule2Capsule(m_box[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_hitCpuFlag = true;
+		}
+	}
+	for (int i = 0; i < GOAL_SET_NUM; i++)
+	{
+		//ゴールとプレイヤーの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_player->GetCollision()) == true)
+		{
+			if (m_checkPoint == i)
+			{
+				m_goalPlayerFlag[i] = true;
+				m_checkPoint = i + 1;
+			}
+		}
+		//ゴールとCPUの当たり判定をする
+		if (Collision::HitCheck_Capsule2Capsule(m_goal[i]->GetCollision()
+			, m_cpu->GetCollision()) == true)
+		{
+			m_goalCPUFlag[i] = true;
+		}
+	}
+
+	m_player->SetCourseOut(!m_hitPlayerFlag);
+}
+
 void ScenePlay::GameSeter()
 {
 	//アイテムのゲームオブジェクトを設定

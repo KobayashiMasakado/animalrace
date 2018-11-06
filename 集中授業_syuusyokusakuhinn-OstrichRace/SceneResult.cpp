@@ -34,8 +34,8 @@ void SceneResult::Render()
 	auto context = m_deviceResources->GetD3DDeviceContext();
 	//2Dスプライトの描画
 	m_sprites->Begin(SpriteSortMode_Deferred, m_states->NonPremultiplied());
-	m_sprites->Draw(m_tResult1.Get(), Vector2(300, 250));
-	m_sprites->Draw(m_tResult2.Get(), Vector2(300, 50));
+	m_sprites->Draw(m_tResult1.Get(), Vector2(350, 250));
+	m_sprites->Draw(m_tResult2.Get(), Vector2(250, 150));
 	m_sprites->End();
 }
 

@@ -100,6 +100,6 @@ void SceneSelect::CreateDeviceDependentResources()
 
 void SceneSelect::Finalize()
 {
-
+	
 }
 

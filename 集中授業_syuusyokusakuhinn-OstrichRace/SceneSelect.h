@@ -49,8 +49,6 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tSelectPointer;
 
-	//ƒvƒŒƒCƒ„[
-	Player* m_player;
 public:
 	SceneSelect();
 	~SceneSelect();

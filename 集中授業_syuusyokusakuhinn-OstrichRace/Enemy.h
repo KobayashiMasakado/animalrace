@@ -11,7 +11,7 @@
 #include "CollisionCapsule.h"
 
 #include "Item.h"
-#include "Root.h"
+class Root;
 
 class Enemy : public CollisionCapsule
 {
@@ -37,20 +37,36 @@ public:
 		FRONT_ITEMGET, //前進(アイテム獲得で速度は速い)
 		FRONT_FUNGET,  // 前進(通常より遅い)
 	};
+
+	enum Warp
+	{
+		ZERO,
+		ONE,
+		TWO,
+		THREE,
+		FORE,
+		FIVE
+	};
 private:
 	//速度
 	DirectX::SimpleMath::Vector3 m_vec;
-	DirectX::SimpleMath::Vector3 m_vecZ;
 
 	//向き
 	float m_dir;
-	float m_z;
 	//移動情報（ビット）
 	int m_move;
+
+	int m_moveW;
 
 	bool m_itemCPUCheck;
 	bool m_itemCPUBadCheck;
 	bool m_itemCPUFunCheck;
+
+	//CPUがワープする場所
+	DirectX::SimpleMath::Vector3 m_cpuSetPos[6];
+
+	//
+	int m_count;
 
 public:
 	//コンストラクタ
@@ -65,6 +81,9 @@ public:
 	void CPUCreate();
 	//CPUが走る
 	void EnemyChangeAngle(Direction dir);
+	void EnemyDirection(std::unique_ptr<Root> box[ENEMY_HITCHECK_NUM]);
+	//CPUがワープする
+	void CPUWarp(Warp warp);
 
 	void CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM], 
 		std::unique_ptr<Item> itemCPUErase[ITEM_SET_NUM],
