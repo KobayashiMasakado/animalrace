@@ -77,27 +77,27 @@ public:
 
 	//プレイヤーが走る
 	void PlayerMove(Direction dir);
+	//プレイヤーのステータスのFLAGを立てる
 	void PlayerState(State state);
+	//プレイヤーのステータスのFLAGを伏せる
 	void PlayerDeleteState(State state);
-
+	//プレイヤーのステータス管理
 	void PlayerState();
-
-	void PlayerDirection();
-
+	//プレイヤーを生成
 	void PlayerCreate();
 
-	void PlayerItemGet(std::unique_ptr<Item> itemPlayer[2], 
-		               std::unique_ptr<Item> itemPlayerErase[2],
-		               std::unique_ptr<Item> itemCPU[2], 
-		               std::unique_ptr<Item> itemCPUErase[2],
-	                   std::unique_ptr<Item> itemFun[2],
-	                   std::unique_ptr<Item> itemFunErase[2]);
+	void PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
+		std::unique_ptr<Item> itemPlayerErase[2],
+		std::unique_ptr<Item> itemCPU[2],
+		std::unique_ptr<Item> itemCPUErase[2],
+		std::unique_ptr<Item> itemFun[2],
+		std::unique_ptr<Item> itemFunErase[2]);
 
 	bool GetItemPlayer() { return m_itemPlayerCheck; }
 	bool GetItemPlayerBad() { return m_itemPlayerBadCheck; }
 	bool GetItemFun() { return m_itemFunCheck; }
 
-	float GetDirection(){ return m_dir;}
+	float GetDirection() { return m_dir; }
 
 	//プレイヤーの移動のGet関数
 	DirectX::SimpleMath::Vector3 GetPlayer()
@@ -119,7 +119,7 @@ public:
 	{
 		return this->m_vec;
 	}
-	
+
 	void SetVector(DirectX::SimpleMath::Vector3 vec)
 	{
 		this->m_vec = vec;

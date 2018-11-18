@@ -24,7 +24,7 @@ Player::Player()
 /// </summary>
 Player::~Player()
 {
-	
+
 }
 /// <summary>
 /// 更新
@@ -45,7 +45,7 @@ bool Player::Update(float elapsedTime)
 	{
 		m_vec.z = 0.0f;
 	}
-	
+
 	//後進
 	else if (m_move & (1 << BACK))
 	{
@@ -77,7 +77,7 @@ bool Player::Update(float elapsedTime)
 	//オブジェクトを移動する
 	m_rotation = Quaternion::CreateFromAxisAngle(Vector3(0.0f, 1.0f, 0.0f), m_dir);
 	m_vec = Vector3::Transform(m_vec, m_rotation);
-	
+
 	m_position += (m_vec);
 
 	//ワールド行列を作成する
@@ -93,12 +93,12 @@ bool Player::Update(float elapsedTime)
 /// </summary>
 void Player::Render()
 {
-	
+
 	if (m_game && m_model)
 	{
 		//モデルの描画
-		m_model->Draw(m_game->GetContext(),*m_game->GetState(),m_world, m_game->GetView(), m_game->GetProjection());
-	
+		m_model->Draw(m_game->GetContext(), *m_game->GetState(), m_world, m_game->GetView(), m_game->GetProjection());
+
 	}
 }
 /// <summary>
@@ -110,19 +110,18 @@ void Player::PlayerMove(Direction dir)
 	//ビットフラグ
 	m_move |= (1 << dir);
 }
-
+//プレイヤーのステータスのFLAGを立てる
 void Player::PlayerState(State state)
 {
 	m_state |= state;
 }
-
+//プレイヤーのステータスのFLAGを伏せる
 void Player::PlayerDeleteState(State state)
 {
-	int buf = !m_state;
-	buf |= state;
-	m_state = !buf;
+	int buf = (m_state | state);
+	m_state = buf ^ state;
 }
-
+//プレイヤーのステータス管理
 void Player::PlayerState()
 {
 	if (m_itemPlayerCheck == true)
@@ -175,11 +174,7 @@ void Player::PlayerState()
 		m_vec.z *= 0.5f;
 	}
 }
-
-void Player::PlayerDirection()
-{
-}
-
+//プレイヤーを生成
 void Player::PlayerCreate()
 {
 	Collision::Capsule capsulePlayer;
@@ -197,7 +192,7 @@ void Player::PlayerCreate()
 	{
 		SetModel(modelDate->GetCPU());
 	}
-//	SetModel(modelDate->GetPlayer());
+	//	SetModel(modelDate->GetPlayer());
 	SetUpEffect();
 	// カプセル型のコリジョンをつける
 	capsulePlayer.start = Vector3(0.3f, 0.0f, 0.2f); 		//境界球の中心
@@ -208,11 +203,11 @@ void Player::PlayerCreate()
 }
 
 void Player::PlayerItemGet(std::unique_ptr<Item> itemPlayer[2],
-                           std::unique_ptr<Item> itemPlayerErase[2],
-                           std::unique_ptr<Item> itemCPU[2],
-                           std::unique_ptr<Item> itemCPUErase[2],
-						   std::unique_ptr<Item> itemFun[2],
-						   std::unique_ptr<Item> itemFunErase[2])
+	std::unique_ptr<Item> itemPlayerErase[2],
+	std::unique_ptr<Item> itemCPU[2],
+	std::unique_ptr<Item> itemCPUErase[2],
+	std::unique_ptr<Item> itemFun[2],
+	std::unique_ptr<Item> itemFunErase[2])
 {
 	//プレイヤーのアイテム取得
 	for (int i = 0; i < ScenePlay::ITEM_SET_NUM; i++)
