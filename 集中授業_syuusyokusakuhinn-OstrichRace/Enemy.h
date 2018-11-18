@@ -7,6 +7,8 @@
 /// MasakadoKobayashi
 ///-------------------------------------------
 #include "pch.h"
+
+#include <sys/timeb.h>
 #include "DeviceResources.h"
 #include "CollisionCapsule.h"
 
@@ -48,8 +50,11 @@ public:
 		FIVE
 	};
 private:
-	//速度
-	DirectX::SimpleMath::Vector3 m_vec;
+	//aa鎮魂歌
+	DirectX::SimpleMath::Vector3 m_startPos;
+	DirectX::SimpleMath::Vector3 m_targetPos;
+
+	DirectX::SimpleMath::Vector3 m_CPUPoint[5];
 
 	//向き
 	float m_dir;
@@ -65,8 +70,15 @@ private:
 	//CPUがワープする場所
 	DirectX::SimpleMath::Vector3 m_cpuSetPos[6];
 
+	//	DirectX::SimpleMath::Vector3 m_vec;
+
+	timeb m_startTime;
 	//
-	int m_count;
+	float m_count;
+
+	/*float xn[100];
+	float yn[100];
+	int x;*/
 
 public:
 	//コンストラクタ
@@ -85,16 +97,18 @@ public:
 	//CPUがワープする
 	void CPUWarp(Warp warp);
 
-	void CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM], 
+	void CPUItemGet(std::unique_ptr<Item> itemCPU[ITEM_SET_NUM],
 		std::unique_ptr<Item> itemCPUErase[ITEM_SET_NUM],
-	    std::unique_ptr<Item> itemCPUBad[ITEM_SET_NUM],
-	    std::unique_ptr<Item> itemCPUBadErase[ITEM_SET_NUM],
-	    std::unique_ptr<Item> itemFun[ITEM_SET_NUM],
+		std::unique_ptr<Item> itemCPUBad[ITEM_SET_NUM],
+		std::unique_ptr<Item> itemCPUBadErase[ITEM_SET_NUM],
+		std::unique_ptr<Item> itemFun[ITEM_SET_NUM],
 		std::unique_ptr<Item> itemFunErase[ITEM_SET_NUM]);
 
 	bool GetItemCPU() { return m_itemCPUCheck; }
 	bool GetItemCPUBad() { return m_itemCPUBadCheck; }
 	bool GetItemCPUFun() { return m_itemCPUFunCheck; }
+
+	DirectX::SimpleMath::Vector3 lerp(DirectX::SimpleMath::Vector3 startPos, DirectX::SimpleMath::Vector3 targetPos, float time);
 
 	//プレイヤーの移動のGet関数
 	DirectX::SimpleMath::Vector3 GetCPUPosition()

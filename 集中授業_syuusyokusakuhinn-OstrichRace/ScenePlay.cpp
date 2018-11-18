@@ -170,7 +170,7 @@ void ScenePlay::Render()
 	ganeCamera->SetEye(target + cameraPos);
 	m_view = ganeCamera->GetViewMatrix();
 
-//	m_view = m_debugCamera->GetCameraMatrix();
+	//m_view = m_debugCamera->GetCameraMatrix();
 	///•`‰æ///////////////////
 	if (m_player->GetItemPlayer() == true)
 	{
